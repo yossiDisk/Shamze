@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>תוצאות חיפוש</title>
 
   <script>
@@ -78,20 +78,43 @@
 
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{font-family:Arial,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0;padding:0;background:#f4f5f7;color:#222}
+    body{
+      font-family:Arial,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      margin:0; padding:0; background:#f4f5f7; color:#222;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
 
     /* Header (first list header) */
-    .product-header{border:1px solid var(--card-br);padding:12px 14px;margin:12px;background:var(--card-bg);border-radius:12px;box-shadow:var(--card-shadow)}
-    .product-header-callout{background:linear-gradient(180deg,#f8fbff 0%,#f3f7ff 100%);border:1px solid #dfe8ff;border-radius:10px;padding:12px;text-align:center}
-    .product-header-callout .instruction{font-size:14px;margin:0 0 4px;color:var(--brand);font-weight:600}
-    .product-header-callout .product-summary{font-size:16px;color:#333}
-    .product-header-callout .product-summary .price{margin-right:8px;color:#555;font-size:14px}
+    .product-header{
+      border:1px solid var(--card-br); padding:12px 14px; margin:12px;
+      background:var(--card-bg); border-radius:12px; box-shadow:var(--card-shadow)
+    }
+    .product-header-callout{
+      background:linear-gradient(180deg,#f8fbff 0%,#f3f7ff 100%);
+      border:1px solid #dfe8ff; border-radius:10px; padding:12px; text-align:center
+    }
+    .product-header-callout .instruction{
+      font-size:clamp(12px, 2.8vw, 14px); margin:0 0 4px; color:var(--brand); font-weight:600
+    }
+    .product-header-callout .product-summary{
+      font-size:clamp(13px, 3.2vw, 16px); color:#333
+    }
+    .product-header-callout .product-summary .price{
+      margin-right:8px; color:#555; font-size:clamp(12px, 2.9vw, 14px)
+    }
 
     /* Sort */
-    .sort-container{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 12px 0}
-    .sort-section select{padding:8px 10px;border:1px solid #dcdcdc;border-radius:10px;background:#fff;font-size:13px;color:#333;cursor:pointer;outline:none;transition:border-color .2s,box-shadow .2s;min-width:140px}
+    .sort-container{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; margin:8px 12px 0
+    }
+    .sort-section select{
+      padding:8px 10px; border:1px solid #dcdcdc; border-radius:10px; background:#fff;
+      font-size:clamp(12px, 3vw, 13px); color:#333; cursor:pointer; outline:none;
+      transition:border-color .2s,box-shadow .2s; min-width:140px
+    }
     .sort-section select:hover{border-color:var(--brand)}
-    .sort-section select:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(26,115,232,.12)}
+    .sort-section select:focus{border-color:var(--brand); box-shadow:0 0 0 3px rgba(26,115,232,.12)}
 
     /* Loading */
     .loading-container{text-align:center;margin:18px}
@@ -104,62 +127,55 @@
     /* Product card (first list) */
     .product{
       display:grid;
-      grid-template-columns: 128px 1fr auto;
-      gap:16px;
+      grid-template-columns: 112px 1fr auto; /* מעט קטן כברירת מחדל */
+      gap:12px;
       align-items:center;
       border:1px solid var(--card-br);
       background:var(--card-bg);
       border-radius:14px;
-      padding:14px 16px;
+      padding:12px;
       box-shadow:var(--card-shadow);
       transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
-      cursor:pointer;
-      position:relative;
-      isolation:isolate;
+      cursor:pointer; position:relative; isolation:isolate;
     }
-    .product:hover{
-      transform:translateY(-2px);
-      box-shadow:var(--card-shadow-hover);
-      border-color:#d7d7da;
-    }
+    .product:hover{ transform:translateY(-2px); box-shadow:var(--card-shadow-hover); border-color:#d7d7da; }
 
     /* Image wrapper with BIGGER hover grow (first list) */
     .product-figure{
-      width:128px;
-      aspect-ratio:1/1;
-      border-radius:12px;
-      overflow:hidden;
+      width:112px; aspect-ratio:1/1; border-radius:12px; overflow:hidden;
       background:radial-gradient(120% 120% at 0% 0%, #f9fbff 0%, #eef2ff 50%, #eaeefc 100%);
-      display:flex;align-items:center;justify-content:center;
-      position:relative;
+      display:flex;align-items:center;justify-content:center; position:relative;
     }
     .product-figure img{
-      width:100%;height:100%;object-fit:contain;
-      transform:scale(.88);
-      transition:transform .35s cubic-bezier(.22,.61,.36,1), filter .35s;
-      will-change:transform;
+      width:100%;height:100%;object-fit:contain; transform:scale(.9);
+      transition:transform .35s cubic-bezier(.22,.61,.36,1), filter .35s; will-change:transform;
     }
-    @media (prefers-reduced-motion:no-preference){
+    @media (hover:hover){
       .product:hover .product-figure img{ transform:scale(1.35); filter: drop-shadow(0 6px 14px rgba(0,0,0,.18)); }
     }
 
     /* Content (no site badge in first list) */
     .product-main{display:flex;flex-direction:column;gap:6px;min-width:0;}
     .product-title{
-      margin:0;font-size:16px;font-weight:800;color:var(--title);line-height:1.25;
-      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+      margin:0; line-height:1.25; color:var(--title); font-weight:800;
+      /* גודל זורם לפי רוחב, יקטן במובייל צר */
+      font-size: clamp(12px, 3.6vw, 16px);
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
     }
 
     /* Price on the right */
     .price-col{display:flex;align-items:center;justify-content:flex-start;align-self:stretch;}
     .price-pill{
-      font-size:15px;font-weight:700;background:var(--pill-bg);color:var(--pill-fg);
-      border:1px solid #d7e5ff;padding:8px 12px;border-radius:999px;white-space:nowrap;
+      font-size: clamp(11px, 3.2vw, 15px);
+      font-weight:800;background:var(--pill-bg);color:var(--pill-fg);
+      border:1px solid #d7e5ff;padding:6px 10px;border-radius:999px;white-space:nowrap;
       box-shadow:inset 0 0 0 1px #eaf1ff;
     }
 
     .show-more-button{
-      display:block;margin:6px auto 4px;padding:10px 18px;background:var(--brand);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:15px;transition:background-color .2s}
+      display:block;margin:6px auto 4px;padding:10px 18px;background:var(--brand);color:#fff;
+      border:none;border-radius:10px;cursor:pointer;font-size:clamp(13px, 3.2vw, 15px);transition:background-color .2s
+    }
     .show-more-button:hover{background:#1558b3}
 
     /* Offer view: sticky back toolbar */
@@ -172,101 +188,101 @@
     .back-chip{
       display:inline-flex; align-items:center; gap:8px;
       border:1px solid #cfe0ff; background:#eaf2ff; color:#1356c9;
-      border-radius:999px; padding:8px 12px; font-size:14px; font-weight:700; cursor:pointer;
+      border-radius:999px; padding:8px 12px; font-size:clamp(12px, 3vw, 14px); font-weight:800; cursor:pointer;
     }
     .back-chip:hover{ background:#dce9ff; }
 
     /* === Minimal Offers Hero (image + name + original price only) === */
     .offers-hero{
-      margin:12px;
-      border:1px solid var(--card-br);
-      background: var(--grad-hero);
-      border-radius:16px;
-      box-shadow:var(--card-shadow);
-      padding:18px;
-      display:grid;
-      grid-template-columns: 220px 1fr;
-      gap:18px;
-      align-items:center;
+      margin:12px; border:1px solid var(--card-br);
+      background: var(--grad-hero); border-radius:16px; box-shadow:var(--card-shadow);
+      padding:14px;
+      display:grid; grid-template-columns: 180px 1fr; gap:14px; align-items:center;
     }
     .offers-hero-figure{
-      width:220px; aspect-ratio:1/1; border-radius:14px; overflow:hidden;
+      width:180px; aspect-ratio:1/1; border-radius:14px; overflow:hidden;
       background:#ffffff; display:flex; align-items:center; justify-content:center; border:1px solid #e6e9f5;
       position:relative;
     }
     .offers-hero-figure img{
-      width:100%; height:100%; object-fit:contain;
-      transform: scale(0.95);
-      transition: transform .35s cubic-bezier(.22,.61,.36,1), filter .35s;
-      will-change: transform;
+      width:100%; height:100%; object-fit:contain; transform: scale(0.96);
+      transition: transform .35s cubic-bezier(.22,.61,.36,1), filter .35s; will-change: transform;
     }
-    .offers-hero-figure:hover img{
-      transform: scale(1.15);
-      filter: drop-shadow(0 10px 22px rgba(0,0,0,.16));
+    @media (hover:hover){
+      .offers-hero-figure:hover img{ transform: scale(1.15); filter: drop-shadow(0 10px 22px rgba(0,0,0,.16)); }
     }
     .offers-hero-main{ min-width:0; }
     .offers-hero-title{
-      margin:0 0 8px; color:var(--title); font-weight:900; line-height:1.2;
-      font-size: clamp(18px, 3.8vw, 24px);
+      margin:0 0 6px; color:var(--title); font-weight:900; line-height:1.2;
+      /* קטן יותר במובייל צר, ועדיין קריא במסכים רחבים */
+      font-size: clamp(15px, 4.2vw, 22px);
       display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
     }
     .offers-hero-price{
-      margin:0; color:#0a3a90; font-weight:800; font-size:14px;
+      margin:0; color:#0a3a90; font-weight:900; font-size: clamp(12px, 3.2vw, 14px);
       background:#eef5ff; display:inline-block; padding:6px 10px; border-radius:999px; border:1px solid #d8e5ff;
     }
 
     /* Offer cards */
-    .loading-section{text-align:center;padding:30px;color:#444;font-size:15px}
-    .offer-card{border:1px solid #d6d6d6;border-radius:12px;padding:14px 16px;margin:0 12px 12px;background:#fff;box-shadow:var(--card-shadow);cursor:pointer;transition:all .2s}
+    .loading-section{text-align:center;padding:30px;color:#444;font-size:clamp(12px, 3.2vw, 15px)}
+    .offer-card{
+      border:1px solid #d6d6d6;border-radius:12px;padding:12px 14px;margin:0 12px 12px;background:#fff;
+      box-shadow:var(--card-shadow);cursor:pointer;transition:all .2s
+    }
     .offer-card:hover{background-color:#f5faff;box-shadow:var(--card-shadow-hover)}
-    .offer-details{display:flex;justify-content:space-between;align-items:center;font-size:15px;color:#333;font-weight:600}
-    .savings{margin-top:6px;font-size:13px;font-weight:600}
+    .offer-details{
+      display:flex;justify-content:space-between;align-items:center;
+      font-size:clamp(12px, 3.2vw, 15px);color:#333;font-weight:800
+    }
+    .savings{margin-top:6px;font-size:clamp(11px, 3vw, 13px);font-weight:800}
     .savings.good{color:#0c8b31}.savings.bad{color:#c62828}.savings.neutral{color:#777}
-    .cheapest-tag{margin-top:6px;display:inline-block;background-color:#0c8b31;color:#fff;padding:2px 8px;font-size:12px;border-radius:999px;font-weight:700;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+    .cheapest-tag{
+      margin-top:6px;display:inline-block;background-color:#0c8b31;color:#fff;padding:2px 8px;
+      font-size:clamp(11px, 2.8vw, 12px);border-radius:999px;font-weight:800;box-shadow:0 1px 3px rgba(0,0,0,.1)
+    }
 
     /* Skeleton + CTA blur */
     .results-skeleton{position:relative;margin:12px}
     .results-skeleton.blur .product{filter:blur(3px);pointer-events:none}
     .skeleton-product{
-      border:1px solid var(--card-br);padding:14px 16px;display:flex;align-items:center;
-      background:var(--card-bg);border-radius:14px;box-shadow:var(--card-shadow);margin-bottom:12px;gap:16px
+      border:1px solid var(--card-br);padding:12px;display:flex;align-items:center;
+      background:var(--card-bg);border-radius:14px;box-shadow:var(--card-shadow);margin-bottom:12px;gap:12px
     }
-    .skeleton-thumb{width:128px;height:128px;border-radius:12px;background:#eee}
+    .skeleton-thumb{width:112px;height:112px;border-radius:12px;background:#eee}
     .skeleton-text{flex:1}
-    .skeleton-line{height:16px;margin:8px 0;background:#eee;border-radius:8px}
+    .skeleton-line{height:14px;margin:6px 0;background:#eee;border-radius:8px}
     .skeleton-line.w1{width:70%}.skeleton-line.w2{width:45%}
     .overlay-continue{
       position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
       background:rgba(255,255,255,.8);backdrop-filter:blur(2px);border-radius:12px
     }
     .overlay-card{
-      background:#fff;border:1px solid #d6d6d6;border-radius:12px;padding:16px 18px;
+      background:#fff;border:1px solid #d6d6d6;border-radius:12px;padding:14px 16px;
       box-shadow:0 8px 24px rgba(0,0,0,.12);text-align:center;max-width:360px
     }
-    .overlay-card h4{margin:0 0 8px;color:#333}
-    .overlay-card p{margin:0 0 14px;color:#666;font-size:14px}
+    .overlay-card h4{margin:0 0 8px;color:#333;font-size:clamp(14px, 3.6vw, 16px)}
+    .overlay-card p{margin:0 0 12px;color:#666;font-size:clamp(12px, 3.2vw, 14px)}
     .overlay-btn{
       display:inline-block;padding:10px 16px;background:var(--brand);color:#fff;border:none;
-      border-radius:10px;cursor:pointer;font-size:15px
+      border-radius:10px;cursor:pointer;font-size:clamp(13px, 3.2vw, 15px)
     }
     .overlay-btn:hover{background:#1558b3}
 
-    @media (max-width:860px){
-      .offers-hero{ grid-template-columns: 180px 1fr; }
-      .offers-hero-figure{ width:180px; }
+    /* Mobile-first tightening for very small iframes */
+    @media (max-width:420px){
+      .product{ grid-template-columns: 92px 1fr auto; padding:10px; gap:10px; }
+      .product-figure{ width:92px; }
+      .search-results{ gap:10px; }
+      .offers-hero{ grid-template-columns: 150px 1fr; gap:12px; padding:12px; }
+      .offers-hero-figure{ width:150px; }
     }
-    @media (max-width:640px){
+    @media (max-width:360px){
+      .product{ grid-template-columns: 84px 1fr; grid-template-rows:auto auto; }
+      .price-col{ grid-column:1 / -1; }
+      .product-figure{ width:84px; }
       .offers-hero{ grid-template-columns: 1fr; }
-      .offers-hero-figure{ width:100%; max-width:360px; justify-self:center; }
+      .offers-hero-figure{ width:100%; max-width:320px; justify-self:center; }
       .offers-hero-main{ text-align:center; }
-    }
-    @media (max-width:560px){
-      .product{
-        grid-template-columns: 98px 1fr;
-        grid-template-rows: auto auto;
-      }
-      .product-figure{width:98px}
-      .price-col{grid-column: 1 / -1; justify-content:flex-start}
     }
   </style>
 </head>
@@ -603,28 +619,20 @@
       const img=document.createElement('img');
       if (product.image){
         img.src=product.image;
-      }else{
-        if (product.url) {
-          const direct = (()=>{
-            const url = product.url;
-            if (url.includes('ksp.co.il')){
-              const sku = url.match(/item\/(\d+)/)?.[1];
-              return sku ? `https://img.ksp.co.il/item/${sku}/b_1.jpg` : null;
-            }
-            if (url.includes('zap.co.il')){
-              const sku = url.match(/(\d+)$/)?.[1];
-              return sku ? `https://img.zap.co.il/pics/new/${sku}.gif` : null;
-            }
-            return null;
-          })();
-          if (direct) img.src = direct;
+      }else if (product.url){
+        const url = product.url;
+        if (url.includes('ksp.co.il')){
+          const sku = url.match(/item\/(\d+)/)?.[1];
+          if (sku) img.src = `https://img.ksp.co.il/item/${sku}/b_1.jpg`;
+        } else if (url.includes('zap.co.il')){
+          const sku = url.match(/(\d+)$/)?.[1];
+          if (sku) img.src = `https://img.zap.co.il/pics/new/${sku}.gif`;
         }
       }
-      img.alt='תמונת מוצר';
-      img.loading='lazy';
+      img.alt='תמונת מוצר'; img.loading='lazy';
       figure.appendChild(img);
 
-      // MAIN (ללא שם אתר!)
+      // MAIN (ללא שם אתר)
       const main=document.createElement('div');
       main.className='product-main';
       const title=document.createElement('h3');
@@ -657,7 +665,7 @@
           <button class="back-chip" id="offersBackBtn" type="button" aria-label="חזרה לתוצאות">
             ← חזרה לרשימה הראשונה
           </button>
-          <span style="font-size:13px;color:${'var(--muted)'}">מציג הצעות מחיר נוספות</span>
+          <span style="font-size:clamp(11px, 2.8vw, 13px);color:${'var(--muted)'}">מציג הצעות מחיר נוספות</span>
         </div>
       `;
       document.getElementById('offersBackBtn').onclick = onBack;
@@ -667,7 +675,6 @@
     function renderOffersHero(product, numericPrice){
       const topContainer=document.getElementById('productHeader');
 
-      // מקור תמונה גם אם אין product.image
       let heroImg = product?.image || '';
       if (!heroImg && product?.url){
         const url = product.url;
@@ -792,7 +799,7 @@
       document.getElementById('offersToolbarMount').innerHTML='';   // הסרת toolbar
       const topContainer=document.getElementById('productHeader');   // הסרת HERO
       topContainer.innerHTML='';
-      displayProductHeader(); // מחזיר את כותרת ברירת המחדל של הרשימה הראשונה
+      displayProductHeader(); // כותרת ברירת המחדל
       displaySearchResults(lastResultsSnapshot);
       requestAnimationFrame(()=> window.scrollTo({ top:lastScrollY, behavior:'auto' }));
     }
