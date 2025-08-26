@@ -6,7 +6,7 @@ on:
 
 jobs:
   mirror:
-    if: github.repository == 'yossiDisk/Shamze'
+    if:  ${{ false }} 
     runs-on: ubuntu-latest
     env:
       TARGET_REPO: yossiDisk/shamze-pages
