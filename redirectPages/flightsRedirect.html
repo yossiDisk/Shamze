@@ -18,6 +18,7 @@
     /* --- בסיס --- */
     body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:2rem;background:#eef2f7;color:#212529;direction:rtl}
     header{text-align:center;margin-bottom:1rem;font-size:1.6rem;font-weight:700}
+    body.no-scroll{overflow:hidden}
 
     /* כרטיס סיכום */
     #summary{max-width:460px;margin:0 auto 2rem;background:#fff;padding:1.2rem 1.7rem;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);font-size:1rem;line-height:1.7}
@@ -26,279 +27,90 @@
     form{max-width:460px;margin:0 auto;background:#fff;padding:2rem 2.2rem;border-radius:14px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
     
     /* כותרת בחירת נוסעים */
-    .passengers-title {
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-      color: #212529;
-    }
+    .passengers-title {font-weight:600;margin-bottom:0.3rem;color:#212529}
     
     /* תיאור נוסעים */
-    .passengers-description {
-      font-size: 1.1rem;
-      color: #007bff;
-      margin-bottom: 1rem;
-      font-weight: 500;
-      min-height: 1.5rem;
-    }
+    .passengers-description {font-size:1.1rem;color:#007bff;margin-bottom:1rem;font-weight:500;min-height:1.5rem}
     
     /* אזור הנוסעים */
-    #passengersArea {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      min-height: 60px;
-      padding: 1rem;
-      background: #f8f9fa;
-      border-radius: 12px;
-      border: 2px dashed #dee2e6;
-      align-items: center;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-    
-    #passengersArea.has-passengers {
-      border-style: solid;
-      background: #f1f3f5;
-    }
+    #passengersArea{display:flex;flex-wrap:wrap;gap:.5rem;min-height:60px;padding:1rem;background:#f8f9fa;border-radius:12px;border:2px dashed #dee2e6;align-items:center;transition:all .3s ease;position:relative}
+    #passengersArea.has-passengers{border-style:solid;background:#f1f3f5}
     
     /* כפתור נוסע */
-    .passenger-pill {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.5rem 0.8rem;
-      background: #fff;
-      border: 1px solid #ced4da;
-      border-radius: 25px;
-      font-size: 0.9rem;
-      position: relative;
-      animation: slideIn 0.3s ease;
-      transition: all 0.2s ease;
-    }
-    
-    .passenger-pill:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateX(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-    
-    /* אנימציית מחיקה */
-    .passenger-pill.removing {
-      animation: slideOut 0.3s ease forwards;
-    }
-    
-    @keyframes slideOut {
-      to {
-        opacity: 0;
-        transform: translateX(-20px) scale(0.8);
-      }
-    }
-    
-    /* אייקון נוסע */
-    .passenger-icon {
-      font-size: 1.2rem;
-    }
+    .passenger-pill{display:flex;align-items:center;gap:.4rem;padding:.5rem .8rem;background:#fff;border:1px solid #ced4da;border-radius:25px;font-size:.9rem;position:relative;animation:slideIn .3s ease;transition:all .2s ease}
+    .passenger-pill:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+    @keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+    .passenger-pill.removing{animation:slideOut .3s ease forwards}
+    @keyframes slideOut{to{opacity:0;transform:translateX(-20px) scale(.8)}}
+    .passenger-icon{font-size:1.2rem}
     
     /* כפתור מחיקה */
-    .remove-btn {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #dc3545;
-      color: white;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      transition: all 0.2s ease;
-      margin-right: -0.3rem;
-    }
-    
-    .remove-btn:hover {
-      background: #c82333;
-      transform: scale(1.1);
-    }
+    .remove-btn{width:20px;height:20px;border-radius:50%;background:#dc3545;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:all .2s ease;margin-right:-.3rem}
+    .remove-btn:hover{background:#c82333;transform:scale(1.1)}
     
     /* מעטפת כפתור הוספה */
-    .add-passenger-wrapper {
-      position: relative;
-      display: inline-block;
-    }
+    .add-passenger-wrapper{position:relative;display:inline-block}
     
     /* כפתור הוספה */
-    #addPassengerBtn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.5rem 1rem;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-    }
+    #addPassengerBtn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;background:#007bff;color:#fff;border:none;border-radius:25px;cursor:pointer;font-size:.9rem;font-weight:500;transition:all .2s ease}
+    #addPassengerBtn:hover{background:#0056b3;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,123,255,.3)}
+    #addPassengerBtn[aria-expanded="true"]{background:#0062d1}
     
-    #addPassengerBtn:hover {
-      background: #0056b3;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,123,255,0.3);
-    }
+    /* רקע לחלונית (למובייל) */
+    #optionsBackdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;z-index:999}
+    #optionsBackdrop.show{display:block}
     
-    /* תפריט אפשרויות */
-    #passengerOptions {
-      position: absolute;
-      top: calc(100% + 8px);
-      right: 0;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-      padding: 0.5rem;
-      display: none;
-      z-index: 1000;
-      min-width: 280px;
-    }
+    /* תפריט אפשרויות - ברירת מחדל (דסקטופ: דרופדאון צמוד לכפתור) */
+    #passengerOptions{position:absolute;top:calc(100% + 8px);right:0;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15);padding:.5rem;display:none;z-index:1000;min-width:280px}
+    #passengerOptions.show{display:flex;gap:.3rem;animation:fadeInDown .2s ease}
+    @keyframes fadeInDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
     
-    #passengerOptions.show {
-      display: flex;
-      gap: 0.3rem;
-      animation: fadeInDown 0.2s ease;
-    }
+    .option-btn{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.8rem 1rem;background:transparent;border:none;border-radius:8px;cursor:pointer;transition:all .2s ease;min-width:80px;color:#212529}
+    .option-btn:hover{background:#f1f3f5;transform:scale(1.05)}
+    .option-icon{font-size:1.8rem}
+    .option-label{font-size:.75rem;color:#495057;text-align:center;line-height:1.2}
     
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
+    /* עיצוב מובייל: הופך את התפריט ל־Bottom Sheet */
+    @media (max-width: 640px){
+      .add-passenger-wrapper{display:block}
+      #passengerOptions{
+        position:fixed;
+        right:0;left:0;bottom:0;top:auto;
+        border-radius:16px 16px 0 0;
+        padding:1rem .75rem;
+        min-width:auto;
+        width:100%;
+        max-height:60vh;
+        overflow:auto;
+        transform:translateY(100%);
+        transition:transform .25s ease;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      #passengerOptions.show{display:block;transform:translateY(0)}
+      .option-btn{min-width:auto;width:100%;flex-direction:row;justify-content:flex-start;gap:.6rem;padding:1rem;border:1px solid #e9ecef;margin-bottom:.5rem;border-radius:12px}
+      .option-icon{font-size:1.6rem}
+      .option-label{font-size:.9rem;text-align:right}
     }
-    
-    .option-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.2rem;
-      padding: 0.8rem 1rem;
-      background: transparent;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      min-width: 80px;
-      color: #212529;
-    }
-    
-    .option-btn:hover {
-      background: #f1f3f5;
-      transform: scale(1.05);
-    }
-    
-    .option-icon {
-      font-size: 1.8rem;
-    }
-    
-    .option-label {
-      font-size: 0.75rem;
-      color: #495057;
-      text-align: center;
-      line-height: 1.2;
-    }
-    
+
     /* מונה נוסעים */
-    .passenger-counter {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 4rem;
-      font-weight: bold;
-      color: #007bff;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 1000;
-    }
-    
-    .passenger-counter.show {
-      animation: counterPop 0.6s ease;
-    }
-    
-    @keyframes counterPop {
-      0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.5);
-      }
-      50% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1.2);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(1);
-      }
-    }
+    .passenger-counter{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:4rem;font-weight:bold;color:#007bff;opacity:0;pointer-events:none;z-index:1000}
+    .passenger-counter.show{animation:counterPop .6s ease}
+    @keyframes counterPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}100%{opacity:0;transform:translate(-50%,-50%) scale(1)}}
     
     /* הודעות ומידע */
     .note{margin-top:1rem;font-size:.9rem;color:#555}
     .error{color:#dc3545;font-size:.9rem;margin-top:.5rem;min-height:1.2rem}
     
     /* כפתור המשך */
-    button[type="submit"]{
-      margin-top:1.5rem;
-      width:100%;
-      padding:.9rem;
-      border:none;
-      border-radius:8px;
-      font-size:1.05rem;
-      font-weight:700;
-      cursor:pointer;
-      background:#007bff;
-      color:#fff;
-      transition:all 0.25s ease;
-    }
-    
-    button[type="submit"]:hover:not(:disabled){
-      background:#0062d1;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,123,255,0.3);
-    }
-    
-    button[type="submit"]:disabled{
-      background:#6c757d;
-      cursor:not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
+    button[type="submit"]{margin-top:1.5rem;width:100%;padding:.9rem;border:none;border-radius:8px;font-size:1.05rem;font-weight:700;cursor:pointer;background:#007bff;color:#fff;transition:all .25s ease}
+    button[type="submit"]:hover:not(:disabled){background:#0062d1;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,123,255,.3)}
+    button[type="submit"]:disabled{background:#6c757d;cursor:not-allowed;transform:none;box-shadow:none}
 
     /* שכבת טעינה */
     #loader{position:fixed;inset:0;background:#ffffff;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:9999;gap:1.4rem;padding:2rem}
     .sky{position:relative;width:100%;height:140px;overflow:hidden}
-    .plane {
-      position: absolute;
-      font-size: 3rem;
-      animation: fly 6s linear infinite;
-    }
+    .plane{position:absolute;font-size:3rem;animation:fly 6s linear infinite}
     .cloud{position:absolute;font-size:2.2rem;color:#b0c4de;opacity:.8;animation:cloud 14s linear infinite}
-    @keyframes fly {
-      0%   { left: -20%; top: 90%; transform: rotate(0deg); }
-      100% { left: 110%; top: 10%; transform: rotate(-25deg); }
-    }
+    @keyframes fly{0%{left:-20%;top:90%;transform:rotate(0)}100%{left:110%;top:10%;transform:rotate(-25deg)}}
     @keyframes cloud{0%{left:110%}100%{left:-30%}}
     #loaderMain{font-weight:600;font-size:1.15rem}
     #loaderTip{font-size:.95rem;color:#555}
@@ -308,119 +120,21 @@
     #progressBar{height:100%;width:0;background:#007bff;transition:width .25s linear}
     
     /* כרטיס ביטוח נסיעות */
-    #insuranceSection {
-      display: none;
-      margin-top: 1.8rem;
-      width: 90%;
-      max-width: 600px;
-      background: #f8f9fa;
-      border: 2px solid #dee2e6;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    
-    #insuranceHeader {
-      text-align: center;
-      margin-bottom: 1.2rem;
-    }
-    
-    #insuranceHeader h3 {
-      color: #495057;
-      margin: 0 0 0.5rem 0;
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-    
-    #insuranceHeader p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #6c757d;
-    }
-    
-    /* פרטי הטיסה */
-    #flightDetails {
-      background: white;
-      padding: 1rem 1.2rem;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-      border: 1px solid #e9ecef;
-      text-align: center;
-    }
-    
-    .flight-info {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 0.8rem;
-    }
-    
-    .info-item {
-      text-align: center;
-      min-width: 80px;
-    }
-    
-    .info-label {
-      font-size: 0.75rem;
-      color: #6c757d;
-      margin-bottom: 0.2rem;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-    
-    .info-value {
-      font-size: 1rem;
-      color: #495057;
-      font-weight: 600;
-    }
-    
-    #compareBtn {
-      width: 100%;
-      padding: 1rem;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    
-    #compareBtn:hover {
-      background: #0056b3;
-    }
-    
-    .benefits {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 0.8rem;
-      margin-top: 1rem;
-    }
-    
-    .benefit {
-      background: rgba(255,255,255,0.8);
-      padding: 0.8rem;
-      border-radius: 6px;
-      text-align: center;
-      font-size: 0.8rem;
-      border: 1px solid #e9ecef;
-    }
-    
-    .benefit-icon {
-      font-size: 1.2rem;
-      margin-bottom: 0.3rem;
-      display: block;
-    }
-    
-    #interactionStatus {
-      text-align: center;
-      margin-top: 0.8rem;
-      font-size: 0.8rem;
-      color: #6c757d;
-      font-style: italic;
-    }
+    #insuranceSection{display:none;margin-top:1.8rem;width:90%;max-width:600px;background:#f8f9fa;border:2px solid #dee2e6;border-radius:12px;padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+    #insuranceHeader{text-align:center;margin-bottom:1.2rem}
+    #insuranceHeader h3{color:#495057;margin:0 0 .5rem 0;font-size:1.1rem;font-weight:600}
+    #insuranceHeader p{margin:0;font-size:.9rem;color:#6c757d}
+    #flightDetails{background:#fff;padding:1rem 1.2rem;border-radius:8px;margin-bottom:1rem;border:1px solid #e9ecef;text-align:center}
+    .flight-info{display:flex;justify-content:space-around;flex-wrap:wrap;gap:1rem;margin-bottom:.8rem}
+    .info-item{text-align:center;min-width:80px}
+    .info-label{font-size:.75rem;color:#6c757d;margin-bottom:.2rem;text-transform:uppercase;font-weight:600}
+    .info-value{font-size:1rem;color:#495057;font-weight:600}
+    #compareBtn{width:100%;padding:1rem;background:#007bff;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;transition:background-color .2s}
+    #compareBtn:hover{background:#0056b3}
+    .benefits{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.8rem;margin-top:1rem}
+    .benefit{background:rgba(255,255,255,.8);padding:.8rem;border-radius:6px;text-align:center;font-size:.8rem;border:1px solid #e9ecef}
+    .benefit-icon{font-size:1.2rem;margin-bottom:.3rem;display:block}
+    #interactionStatus{text-align:center;margin-top:.8rem;font-size:.8rem;color:#6c757d;font-style:italic}
   </style>
 </head>
 
@@ -442,13 +156,13 @@
       
       <!-- מעטפת כפתור הוספה עם תפריט -->
       <div class="add-passenger-wrapper">
-        <button type="button" id="addPassengerBtn">
+        <button type="button" id="addPassengerBtn" aria-expanded="false" aria-controls="passengerOptions">
           <span>➕</span>
           <span>הוסף נוסע</span>
         </button>
         
         <!-- תפריט אפשרויות -->
-        <div id="passengerOptions">
+        <div id="passengerOptions" role="dialog" aria-label="בחר סוג נוסע">
           <button type="button" class="option-btn" data-type="adult">
             <span class="option-icon">👤</span>
             <span class="option-label">נוסע<br>(מעל גיל 12)</span>
@@ -473,6 +187,9 @@
   
   <!-- מונה נוסעים -->
   <div class="passenger-counter" id="passengerCounter"></div>
+
+  <!-- backdrop למובייל -->
+  <div id="optionsBackdrop" aria-hidden="true"></div>
 
   <!-- overlay loader -->
   <div id="loader">
@@ -582,6 +299,7 @@
   const addBtnWrapper = document.querySelector('.add-passenger-wrapper');
   const addBtn = document.getElementById('addPassengerBtn');
   const passengerOptions = document.getElementById('passengerOptions');
+  const optionsBackdrop = document.getElementById('optionsBackdrop');
   const passengerCounter = document.getElementById('passengerCounter');
   const passengersDescription = document.getElementById('passengersDescription');
 
@@ -614,39 +332,23 @@
     let description = '';
     
     // מבוגרים
-    if (a === 1) {
-      description = 'מבוגר אחד';
-    } else if (a === 2) {
-      description = '2 מבוגרים';
-    } else if (a > 2) {
-      description = `${a} מבוגרים`;
-    }
+    if (a === 1) description = 'מבוגר אחד';
+    else if (a === 2) description = '2 מבוגרים';
+    else if (a > 2) description = `${a} מבוגרים`;
     
     // ילדים
     if (c > 0) {
       if (description) description += ' ו';
-      if (c === 1) {
-        description += 'ילד';
-      } else if (c === 2) {
-        description += '2 ילדים';
-      } else {
-        description += `${c} ילדים`;
-      }
+      description += (c === 1) ? 'ילד' : (c === 2) ? '2 ילדים' : `${c} ילדים`;
     }
     
     // תינוקות
     if (i > 0) {
       if (description) description += ' ו';
-      if (i === 1) {
-        description += 'תינוק';
-      } else if (i === 2) {
-        description += '2 תינוקות';
-      } else {
-        description += `${i} תינוקות`;
-      }
+      description += (i === 1) ? 'תינוק' : (i === 2) ? '2 תינוקות' : `${i} תינוקות`;
     }
     
-    passengersDescription.textContent = description;
+    passengersDescription.textContent = description || 'בחר נוסעים';
   }
   
   /* ----- אנימציית ספירת נוסעים ----- */
@@ -654,25 +356,42 @@
     const total = passengers.adults + passengers.children + passengers.infants;
     passengerCounter.textContent = total;
     passengerCounter.classList.add('show');
-    
-    setTimeout(() => {
-      passengerCounter.classList.remove('show');
-    }, 600);
+    setTimeout(() => passengerCounter.classList.remove('show'), 600);
   }
 
-  /* ----- ניהול כפתור ההוספה ----- */
-  let menuTimeout;
-  
-  addBtnWrapper.addEventListener('mouseenter', () => {
-    clearTimeout(menuTimeout);
+  /* ----- תפריט הוספת נוסע: מעבר ל־click + outside-click ----- */
+  function openOptions(){
     passengerOptions.classList.add('show');
+    optionsBackdrop.classList.add('show');
+    addBtn.setAttribute('aria-expanded','true');
+    // במובייל: למנוע גלילת רקע
+    if (window.matchMedia("(max-width: 640px)").matches) {
+      document.body.classList.add('no-scroll');
+    }
+  }
+  function closeOptions(){
+    passengerOptions.classList.remove('show');
+    optionsBackdrop.classList.remove('show');
+    addBtn.setAttribute('aria-expanded','false');
+    document.body.classList.remove('no-scroll');
+  }
+  function toggleOptions(){
+    if (passengerOptions.classList.contains('show')) closeOptions();
+    else openOptions();
+  }
+
+  addBtn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    toggleOptions();
   });
-  
-  addBtnWrapper.addEventListener('mouseleave', () => {
-    menuTimeout = setTimeout(() => {
-      passengerOptions.classList.remove('show');
-    }, 300);
+
+  // סגירה בלחיצה מחוץ לתפריט (כולל על הרקע)
+  document.addEventListener('click', (e)=>{
+    const withinMenu = passengerOptions.contains(e.target);
+    const withinBtn  = addBtn.contains(e.target);
+    if (!withinMenu && !withinBtn) closeOptions();
   });
+  optionsBackdrop.addEventListener('click', closeOptions);
 
   /* ----- הוספת נוסע ----- */
   const passengerTypes = {
@@ -682,12 +401,13 @@
   };
 
   // כפתורי האפשרויות
-  document.querySelectorAll('.option-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+  document.querySelectorAll('.option-btn').forEach(btnOpt => {
+    btnOpt.addEventListener('click', (e) => {
       e.stopPropagation();
-      const type = btn.dataset.type;
+      const type = btnOpt.dataset.type;
       addPassenger(type);
-      passengerOptions.classList.remove('show');
+      // לאפשר פתיחה נוספת מיידית
+      closeOptions();
     });
   });
 
@@ -710,9 +430,8 @@
       <button type="button" class="remove-btn" aria-label="הסר נוסע">✕</button>
     `;
 
-    // הוספת אירוע מחיקה
-    const removeBtn = pill.querySelector('.remove-btn');
-    removeBtn.addEventListener('click', () => removePassenger(pill));
+    // אירוע מחיקה
+    pill.querySelector('.remove-btn').addEventListener('click', () => removePassenger(pill));
 
     // הוספה לפני מעטפת כפתור ההוספה
     passengersArea.insertBefore(pill, addBtnWrapper);
@@ -722,17 +441,13 @@
     updateTripPassengers();
     updatePassengersDescription();
     
-    // הצגת אנימציית ספירה אם לא מדלגים
-    if (!skipAnimation) {
-      showPassengerCount();
-    }
+    if (!skipAnimation) showPassengerCount();
   }
 
   function removePassenger(pill) {
     const type = pill.dataset.type;
     const typeInfo = passengerTypes[type];
     
-    // אם זה המבוגר האחרון, לא למחוק
     if (type === 'adult' && passengers.adults === 1) {
       showErr('חייב להיות לפחות מבוגר אחד');
       setTimeout(hideErr, 2000);
@@ -741,7 +456,6 @@
 
     passengers[typeInfo.key]--;
     
-    // אנימציית מחיקה
     pill.classList.add('removing');
     setTimeout(() => {
       pill.remove();
@@ -755,13 +469,13 @@
   function updateUI() {
     const total = passengers.adults + passengers.children + passengers.infants;
     
-    if (total === 1) {
-      passengersArea.classList.remove('has-passengers');
-    }
+    if (total === 1) passengersArea.classList.remove('has-passengers');
 
     // הסתרת כפתור ההוספה אם הגענו למקסימום
     if (total >= 8 || passengers.children + passengers.infants >= 8) {
       addBtnWrapper.style.display = 'none';
+      // אם נסגר, וודא שגם החלונית סגורה
+      closeOptions();
     } else {
       addBtnWrapper.style.display = 'inline-block';
     }
@@ -775,7 +489,6 @@
     err.hidden = false; 
     btn.disabled = true; 
   }
-  
   function hideErr(){ 
     err.hidden = true; 
     btn.disabled = false; 
@@ -806,7 +519,6 @@
       }
     }
     
-    // ולידציה רגילה
     if (a < 1) return showErr('חייב להיות לפחות מבוגר אחד');
     if (total > 8) return showErr('לא ניתן לבחור יותר מ-8 נוסעים');
     if (c + i > 8) return showErr('המספר הכולל של ילדים ותינוקות לא יכול להיות מעל 8');
@@ -830,56 +542,30 @@
       const diffTime = inD - out;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       return diffDays > 0 ? diffDays : null;
-    } catch(e) {
-      return null;
-    }
+    } catch(e) { return null; }
   }
 
   /* ----- עדכון פרטי הנסיעה בכרטיס הביטוח ----- */
   function updateTripDetails() {
-    // יעד
-    if (dest) {
-      tripDest.textContent = dest;
-    }
-    
-    // מספר נוסעים
+    if (dest) tripDest.textContent = dest;
     updateTripPassengers();
-    
-    // מספר ימים
     const days = calculateDays(outD, inD);
-    if (days) {
-      tripDaysEl.textContent = days;
-    }
+    if (days) tripDaysEl.textContent = days;
   }
-
-  // עדכון פרטי הנסיעה
   updateTripDetails();
 
   /* ----- מעקב אחר לחיצה על ביטוח ----- */
   let userClickedInsurance = false;
-
-  // לחיצה על כפתור השוואת ביטוח
   compareBtn.addEventListener('click', function() {
     userClickedInsurance = true;
-    
-    // בניית URL עם פרמטרים
     let insuranceUrl = 'https://shukabit.co.il/node/124?affiliate_program=177';
     const params = new URLSearchParams();
-    
     if (dest) params.append('destination', dest);
     if (outD && inD) params.append('dates', `${outD} - ${inD}`);
-    
     const totalPassengers = passengers.adults + passengers.children + passengers.infants;
     if (totalPassengers > 0) params.append('travelers', totalPassengers.toString());
-    
-    if (params.toString()) {
-      insuranceUrl += '&' + params.toString();
-    }
-    
-    // פתיחה בטאב חדש
+    if (params.toString()) insuranceUrl += '&' + params.toString();
     window.open(insuranceUrl, '_blank');
-    
-    // עדכון המראה
     compareBtn.textContent = '✅ נפתח בטאב חדש';
     compareBtn.style.background = '#28a745';
     statusDiv.textContent = 'נפתח בטאב חדש - החיפוש ממשיך כאן';
@@ -907,12 +593,7 @@
     `משווים תעריפים בין חברות תעופה…`,
     `מוצאים עבורך מושבים נוחים…`
   ];
-  const tips = [
-    'טיפ: ארוז אוזניות לטיסה נעימה',
-    'טיפ: בקש מושב מעבר אם קמים הרבה',
-    'טיפ: הורד סרטים לפני ההמראה',
-    'טיפ: שתה מים במהלך הטיסה'
-  ];
+  const tips = ['טיפ: ארוז אוזניות לטיסה נעימה','טיפ: בקש מושב מעבר אם קמים הרבה','טיפ: הורד סרטים לפני ההמראה','טיפ: שתה מים במהלך הטיסה'];
   let idx = 0, interval;
 
   const total = 30000;   // 30 שניות המתנה
@@ -956,10 +637,7 @@
           event_label: 'redirected_to_booking'
         });
 
-        // המתן רגע שהאירוע יישלח ואז הפנה
-        setTimeout(() => {
-          location.href = finalUrl;
-        }, 100);
+        setTimeout(() => { location.href = finalUrl; }, 100);
       }
     };
 
@@ -968,21 +646,17 @@
     // backup timeout
     setTimeout(() => { 
       clearInterval(interval);
-      
-      // 🔥 מעקב Analytics - השלמה בזמן קצוב
       gtag('event', 'process_completed', {
         event_category: 'passenger_selection', 
         event_label: 'redirected_to_booking_timeout'
       });
-      
-      setTimeout(() => {
-        location.href = finalUrl;
-      }, 100);
+      setTimeout(() => { location.href = finalUrl; }, 100);
     }, total);
   }
 
   validate();
-  updatePassengersDescription(); // הוספת קריאה ראשונית
+  updatePassengersDescription();
+
 })();
 </script>
 </body>
