@@ -2448,7 +2448,7 @@
 
           let productContent = `
       ${imageTag}
-      <h3 onclick="goToProduct('${product.urlAff}', '${product.site}', '${product.name}')">
+      <h3 onclick="goToProduct('${product.urlAff}&product_token=${product.product_token}', '${product.site}', '${product.name}')">
         ${product.name}
       </h3>
       <p>מחיר: ${product.price}</p>
