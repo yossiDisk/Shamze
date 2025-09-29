@@ -728,6 +728,7 @@
 
       const apiUrl=`https://vpfi5d6dw9.execute-api.il-central-1.amazonaws.com/default/getDirectShoppingLink`
         + `?product_id=${encodeURIComponent(product.LinkParams?.value||'')}`
+        + `&product_token=${encodeURIComponent(product.product_token||'')}`
         + `&expectedPrice=${encodeURIComponent(numericPrice)}`
         + `&expectedMerchant=${encodeURIComponent(product.site||'')}`
         + `&list=true`;
