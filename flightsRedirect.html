@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2FYGT228T0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-2FYGT228T0');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>בחירת נוסעים</title>
+
+  <style>
+    /* --- בסיס --- */
+    body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:2rem;background:#eef2f7;color:#212529;direction:rtl}
+    header{text-align:center;margin-bottom:1rem;font-size:1.6rem;font-weight:700}
+    body.no-scroll{overflow:hidden}
+
+    /* כרטיס סיכום */
+    #summary{max-width:460px;margin:0 auto 2rem;background:#fff;padding:1.2rem 1.7rem;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);font-size:1rem;line-height:1.7}
+
+    /* טופס */
+    form{max-width:460px;margin:0 auto;background:#fff;padding:2rem 2.2rem;border-radius:14px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+    
+    /* כותרת בחירת נוסעים */
+    .passengers-title {font-weight:600;margin-bottom:0.3rem;color:#212529}
+    
+    /* תיאור נוסעים */
+    .passengers-description {font-size:1.1rem;color:#007bff;margin-bottom:1rem;font-weight:500;min-height:1.5rem}
+    
+    /* אזור הנוסעים */
+    #passengersArea{display:flex;flex-wrap:wrap;gap:.5rem;min-height:60px;padding:1rem;background:#f8f9fa;border-radius:12px;border:2px dashed #dee2e6;align-items:center;transition:all .3s ease;position:relative}
+    #passengersArea.has-passengers{border-style:solid;background:#f1f3f5}
+    
+    /* כפתור נוסע */
+    .passenger-pill{display:flex;align-items:center;gap:.4rem;padding:.5rem .8rem;background:#fff;border:1px solid #ced4da;border-radius:25px;font-size:.9rem;position:relative;animation:slideIn .3s ease;transition:all .2s ease}
+    .passenger-pill:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+    @keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+    .passenger-pill.removing{animation:slideOut .3s ease forwards}
+    @keyframes slideOut{to{opacity:0;transform:translateX(-20px) scale(.8)}}
+    .passenger-icon{font-size:1.2rem}
+    
+    /* כפתור מחיקה */
+    .remove-btn{width:20px;height:20px;border-radius:50%;background:#dc3545;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:all .2s ease;margin-right:-.3rem}
+    .remove-btn:hover{background:#c82333;transform:scale(1.1)}
+    
+    /* מעטפת כפתור הוספה */
+    .add-passenger-wrapper{position:relative;display:inline-block}
+    
+    /* כפתור הוספה */
+    #addPassengerBtn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;background:#007bff;color:#fff;border:none;border-radius:25px;cursor:pointer;font-size:.9rem;font-weight:500;transition:all .2s ease}
+    #addPassengerBtn:hover{background:#0056b3;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,123,255,.3)}
+    #addPassengerBtn[aria-expanded="true"]{background:#0062d1}
+    
+    /* רקע לחלונית (למובייל) */
+    #optionsBackdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;z-index:999}
+    #optionsBackdrop.show{display:block}
+    
+    /* תפריט אפשרויות - ברירת מחדל (דסקטופ: דרופדאון צמוד לכפתור) */
+    #passengerOptions{position:absolute;top:calc(100% + 8px);right:0;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15);padding:.5rem;display:none;z-index:1000;min-width:280px}
+    #passengerOptions.show{display:flex;gap:.3rem;animation:fadeInDown .2s ease}
+    @keyframes fadeInDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+    
+    .option-btn{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.8rem 1rem;background:transparent;border:none;border-radius:8px;cursor:pointer;transition:all .2s ease;min-width:80px;color:#212529}
+    .option-btn:hover{background:#f1f3f5;transform:scale(1.05)}
+    .option-icon{font-size:1.8rem}
+    .option-label{font-size:.75rem;color:#495057;text-align:center;line-height:1.2}
+    
+    /* עיצוב מובייל: הופך את התפריט ל־Bottom Sheet */
+    @media (max-width: 640px){
+      .add-passenger-wrapper{display:block}
+      #passengerOptions{
+        position:fixed;
+        right:0;left:0;bottom:0;top:auto;
+        border-radius:16px 16px 0 0;
+        padding:1rem .75rem;
+        min-width:auto;
+        width:100%;
+        max-height:60vh;
+        overflow:auto;
+        transform:translateY(100%);
+        transition:transform .25s ease;
+      }
+      #passengerOptions.show{display:block;transform:translateY(0)}
+      .option-btn{min-width:auto;width:100%;flex-direction:row;justify-content:flex-start;gap:.6rem;padding:1rem;border:1px solid #e9ecef;margin-bottom:.5rem;border-radius:12px}
+      .option-icon{font-size:1.6rem}
+      .option-label{font-size:.9rem;text-align:right}
+    }
+
+    /* מונה נוסעים */
+    .passenger-counter{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:4rem;font-weight:bold;color:#007bff;opacity:0;pointer-events:none;z-index:1000}
+    .passenger-counter.show{animation:counterPop .6s ease}
+    @keyframes counterPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}100%{opacity:0;transform:translate(-50%,-50%) scale(1)}}
+    
+    /* הודעות ומידע */
+    .note{margin-top:1rem;font-size:.9rem;color:#555}
+    .error{color:#dc3545;font-size:.9rem;margin-top:.5rem;min-height:1.2rem}
+    
+    /* כפתור המשך */
+    button[type="submit"]{margin-top:1.5rem;width:100%;padding:.9rem;border:none;border-radius:8px;font-size:1.05rem;font-weight:700;cursor:pointer;background:#007bff;color:#fff;transition:all .25s ease}
+    button[type="submit"]:hover:not(:disabled){background:#0062d1;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,123,255,.3)}
+    button[type="submit"]:disabled{background:#6c757d;cursor:not-allowed;transform:none;box-shadow:none}
+
+    /* שכבת טעינה */
+    #loader{position:fixed;inset:0;background:#ffffff;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:9999;gap:1.4rem;padding:2rem}
+    .sky{position:relative;width:100%;height:140px;overflow:hidden}
+    .plane{position:absolute;font-size:3rem;animation:fly 6s linear infinite}
+    .cloud{position:absolute;font-size:2.2rem;color:#b0c4de;opacity:.8;animation:cloud 14s linear infinite}
+    @keyframes fly{0%{left:-20%;top:90%;transform:rotate(0)}100%{left:110%;top:10%;transform:rotate(-25deg)}}
+    @keyframes cloud{0%{left:110%}100%{left:-30%}}
+    #loaderMain{font-weight:600;font-size:1.15rem}
+    #loaderTip{font-size:.95rem;color:#555}
+
+    /* פס-התקדמות */
+    #progressWrap{width:70%;max-width:420px;height:8px;background:#e0e0e0;border-radius:5px;overflow:hidden;margin-top:.2rem}
+    #progressBar{height:100%;width:0;background:#007bff;transition:width .25s linear}
+    
+    /* כרטיס ביטוח נסיעות */
+    #insuranceSection{display:none;margin-top:1.8rem;width:90%;max-width:600px;background:#f8f9fa;border:2px solid #dee2e6;border-radius:12px;padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+    #insuranceHeader{text-align:center;margin-bottom:1.2rem}
+    #insuranceHeader h3{color:#495057;margin:0 0 .5rem 0;font-size:1.1rem;font-weight:600}
+    #insuranceHeader p{margin:0;font-size:.9rem;color:#6c757d}
+    #flightDetails{background:#fff;padding:1rem 1.2rem;border-radius:8px;margin-bottom:1rem;border:1px solid #e9ecef;text-align:center}
+    .flight-info{display:flex;justify-content:space-around;flex-wrap:wrap;gap:1rem;margin-bottom:.8rem}
+    .info-item{text-align:center;min-width:80px}
+    .info-label{font-size:.75rem;color:#6c757d;margin-bottom:.2rem;text-transform:uppercase;font-weight:600}
+    .info-value{font-size:1rem;color:#495057;font-weight:600}
+    #compareBtn{width:100%;padding:1rem;background:#007bff;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;transition:background-color .2s}
+    #compareBtn:hover{background:#0056b3}
+    .benefits{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.8rem;margin-top:1rem}
+    .benefit{background:rgba(255,255,255,.8);padding:.8rem;border-radius:6px;text-align:center;font-size:.8rem;border:1px solid #e9ecef}
+    .benefit-icon{font-size:1.2rem;margin-bottom:.3rem;display:block}
+    #interactionStatus{text-align:center;margin-top:.8rem;font-size:.8rem;color:#6c757d;font-style:italic}
+  </style>
+</head>
+
+<body>
+  <header id="routeHeader">טעינת מידע…</header>
+
+  <div id="summary" hidden></div>
+
+  <form id="passengerForm" novalidate>
+    <div class="passengers-title">סמן את מספר הנוסעים:</div>
+    <div class="passengers-description" id="passengersDescription">מבוגר אחד</div>
+    
+    <div id="passengersArea">
+      <!-- נוסע ראשוני -->
+      <div class="passenger-pill" data-type="adult" data-id="1">
+        <span class="passenger-icon">👤</span>
+        <span>נוסע (מעל גיל 12)</span>
+      </div>
+      
+      <!-- מעטפת כפתור הוספה עם תפריט -->
+      <div class="add-passenger-wrapper">
+        <button type="button" id="addPassengerBtn" aria-expanded="false" aria-controls="passengerOptions">
+          <span>➕</span>
+          <span>הוסף נוסע</span>
+        </button>
+        
+        <!-- תפריט אפשרויות -->
+        <div id="passengerOptions" role="dialog" aria-label="בחר סוג נוסע">
+          <button type="button" class="option-btn" data-type="adult">
+            <span class="option-icon">👤</span>
+            <span class="option-label">נוסע<br>(מעל גיל 12)</span>
+          </button>
+          <button type="button" class="option-btn" data-type="child">
+            <span class="option-icon">🧒</span>
+            <span class="option-label">ילד<br>(גילאי 2-12)</span>
+          </button>
+          <button type="button" class="option-btn" data-type="infant">
+            <span class="option-icon">👶</span>
+            <span class="option-label">תינוק<br>(מתחת לגיל 2)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">המחיר הסופי עשוי להשתנות בהתאם למספר הנוסעים.</p>
+
+    <div id="errorMsg" class="error" hidden></div>
+    <button type="submit" id="submitBtn">המשך</button>
+  </form>
+  
+  <!-- מונה נוסעים -->
+  <div class="passenger-counter" id="passengerCounter"></div>
+
+  <!-- backdrop למובייל -->
+  <div id="optionsBackdrop" aria-hidden="true"></div>
+
+  <!-- overlay loader -->
+  <div id="loader">
+     <div class="sky">
+      <div class="plane">🛫</div>
+       <div class="cloud" style="top:20%;animation-delay:0s">☁️</div>
+       <div class="cloud" style="top:60%;font-size:3rem;animation-delay:4s">☁️</div>
+       <div class="cloud" style="top:35%;font-size:2.6rem;animation-delay:8s">☁️</div>
+     </div>
+     <div id="loaderMain">מכינים עבורך את הדיל הטוב ביותר…</div>
+     <div id="loaderTip">טיפ: תמיד כדאי לבדוק ביטוח נסיעות מראש!</div>
+     <div id="progressWrap"><div id="progressBar"></div></div>
+
+     <div id="loadingGame" style="width:70%;max-width:420px;margin-top:.6rem"></div>
+
+
+     <!-- כרטיס ביטוח נסיעות -->
+     <div id="insuranceSection">
+       <div id="insuranceHeader">
+         <h3>רגע - חשבת על ביטוח נסיעות?</h3>
+         <p>בזמן שאנחנו מחפשים עבורך טיסות, תוכל להשוות ביטוח</p>
+       </div>
+       
+       <div id="flightDetails">
+         <div class="flight-info">
+           <div class="info-item">
+             <div class="info-label">יעד</div>
+             <div class="info-value" id="tripDestination">-</div>
+           </div>
+           <div class="info-item">
+             <div class="info-label">נוסעים</div>
+             <div class="info-value" id="tripPassengers">-</div>
+           </div>
+           <div class="info-item">
+             <div class="info-label">ימים</div>
+             <div class="info-value" id="tripDays">-</div>
+           </div>
+         </div>
+         
+         <button type="button" id="compareBtn">השווה מחירי ביטוח לנסיעה הזו</button>
+       </div>
+       
+       <div class="benefits">
+         <div class="benefit">
+           <span class="benefit-icon">💰</span>
+           <strong>חיסכון</strong><br>
+           השוואה בין כל החברות
+         </div>
+         <div class="benefit">
+           <span class="benefit-icon">⚡</span>
+           <strong>מהיר</strong><br>
+           תוצאות תוך דקה
+         </div>
+         <div class="benefit">
+           <span class="benefit-icon">🛡️</span>
+           <strong>מקיף</strong><br>
+           רפואי + ביטול + אבדן
+         </div>
+       </div>
+       
+       <div id="interactionStatus">לחיצה על הכפתור תפתח בטאב חדש - החיפוש ימשיך כרגיל</div>
+     </div>
+  </div>
+<script>
+/* Guess the Flag – embed API (Shadow DOM) */
+(function(){
+  const COUNTRIES = [
+    { name: 'France',    flag: { type: 'tri-vertical', colors: ['#0055A4','#FFFFFF','#EF4135'] } },
+    { name: 'Germany',   flag: { type: 'tri-horizontal', colors: ['#000000','#DD0000','#FFCE00'] } },
+    { name: 'Italy',     flag: { type: 'tri-vertical', colors: ['#009246','#FFFFFF','#CE2B37'] } },
+    { name: 'Netherlands', flag: { type: 'tri-horizontal', colors: ['#AE1C28','#FFFFFF','#21468B'] } },
+    { name: 'Belgium',   flag: { type: 'tri-vertical', colors: ['#000000','#FDDA24','#EF3340'] } },
+    { name: 'Ireland',   flag: { type: 'tri-vertical', colors: ['#169B62','#FFFFFF','#FF883E'] } },
+    { name: 'Russia',    flag: { type: 'tri-horizontal', colors: ['#FFFFFF','#0039A6','#D52B1E'] } },
+    { name: 'Austria',   flag: { type: 'tri-horizontal', colors: ['#ED2939','#FFFFFF','#ED2939'] } },
+    { name: 'Poland',    flag: { type: 'bi-horizontal', colors: ['#FFFFFF','#DC143C'] } },
+    { name: 'Ukraine',   flag: { type: 'bi-horizontal', colors: ['#0057B7','#FFD700'] } },
+    { name: 'Japan',     flag: { type: 'japan' } },
+    { name: 'Sweden',    flag: { type: 'nordic', base: '#006AA7', cross: '#FECC00' } },
+    { name: 'Denmark',   flag: { type: 'nordic', base: '#C60C30', cross: '#FFFFFF' } },
+    { name: 'Finland',   flag: { type: 'nordic', base: '#FFFFFF', cross: '#003580' } },
+    { name: 'Norway',    flag: { type: 'nordic-3', base: '#BA0C2F', mid: '#FFFFFF', cross: '#00205B' } },
+  ];
+
+  function styleSheet(compact){
+    return `
+    :root{ --text:#e6eefc; --muted:#9bb0d3; --accent:#4f8cff; --right:#2fd46b; --wrong:#ff5d6c; }
+    *{ box-sizing:border-box; }
+    .game{ width:100%; background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0)); border:1px solid rgba(255,255,255,.06); border-radius:14px; overflow:hidden; color:var(--text); font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; }
+    .bar{ display:flex; align-items:center; justify-content:space-between; padding:${compact? '8px 10px':'12px 14px'}; background:rgba(255,255,255,.04); border-bottom:1px solid rgba(255,255,255,.08); }
+    .title{ font-weight:700; font-size:${compact? '13px':'15px'}; }
+    .score{ color:var(--muted); font-weight:600; }
+    .flag-wrap{ padding:${compact? '10px 10px 4px':'16px 16px 8px'}; }
+    .flag{ width:100%; aspect-ratio:4/3; background:#fff; border-radius:12px; border:2px solid rgba(0,0,0,.15); position:relative; display:grid; place-items:center; }
+    .choices{ padding:${compact? '6px 8px 10px':'8px 12px 14px'}; display:grid; gap:${compact? '6px':'8px'}; }
+    .choice{ background:#fffff; border:1px solid rgba(255,255,255,.08); color:var(--text); border-radius:10px; padding:${compact? '8px':'10px'}; cursor:pointer; text-align:left; transition:.18s ease; font-size:${compact? '13px':'14px'} }
+    .choice:hover{ transform:translateY(-1px); border-color:rgba(255,255,255,.18); }
+    .choice[disabled]{ opacity:.75; cursor:not-allowed; }
+    .choice.correct{ outline:2px solid var(--right); }
+    .choice.wrong{ outline:2px solid var(--wrong); }
+    .footer{ display:flex; align-items:center; gap:8px; padding:${compact? '6px 8px 10px':'10px 12px 12px'}; }
+    .btn{ background:var(--accent); color:#fff; border:none; border-radius:999px; padding:${compact? '6px 10px':'8px 12px'}; font-weight:700; cursor:pointer; }
+    .pill{ margin-inline-start:auto; font-size:${compact? '11px':'12px'}; color:var(--muted); padding:6px 10px; border:1px solid rgba(255,255,255,.08); border-radius:999px; }
+    .toast{ position:absolute; inset-inline:0; top:8px; display:grid; place-items:center; pointer-events:none; }
+    .toast>div{ background:rgba(15,24,44,.9); color:var(--text); padding:8px 12px; border-radius:999px; font-weight:700; border:1px solid rgba(255,255,255,.1); }
+    .stripe-row,.stripe-col{ display:grid; width:100%; height:100%; }
+    .stripe-row{ grid-auto-rows:1fr; }
+    .stripe-col{ grid-auto-flow:column; grid-auto-columns:1fr; }
+    .block{ width:100%; height:100%; }
+    .center-circle{ width:45%; aspect-ratio:1/1; border-radius:50%; }
+    .layer{ position:absolute; inset:0; }
+    `;
+  }
+
+  function renderFlag(node, def) {
+    node.innerHTML = '';
+    node.style.background = '#fff';
+    node.style.position = 'relative';
+    const el = (t,c) => { const n=document.createElement(t); if(c) n.className=c; return n; };
+    if (def.type === 'tri-horizontal' || def.type === 'bi-horizontal') {
+      const wrap = el('div','stripe-row');
+      def.colors.forEach(c=>{ const b=el('div','block'); b.style.background=c; wrap.appendChild(b); });
+      node.appendChild(wrap); return;
+    }
+    if (def.type === 'tri-vertical') {
+      const wrap = el('div','stripe-col');
+      def.colors.forEach(c=>{ const b=el('div','block'); b.style.background=c; wrap.appendChild(b); });
+      node.appendChild(wrap); return;
+    }
+    if (def.type === 'japan') {
+      node.style.background = '#ffffff';
+      const dot = el('div','center-circle'); dot.style.background = '#bc002d'; node.appendChild(dot); return;
+    }
+    if (def.type === 'nordic') {
+      const base = el('div','layer'); base.style.background = def.base; node.appendChild(base);
+      const hBar = el('div'); Object.assign(hBar.style,{position:'absolute',left:0,right:0,top:'42%',height:'16%',background:def.cross}); node.appendChild(hBar);
+      const vBar = el('div'); Object.assign(vBar.style,{position:'absolute',top:0,bottom:0,left:'30%',width:'16%',background:def.cross}); node.appendChild(vBar); return;
+    }
+    if (def.type === 'nordic-3') {
+      const base = el('div','layer'); base.style.background = def.base; node.appendChild(base);
+      const wh = el('div'); Object.assign(wh.style,{position:'absolute',left:0,right:0,top:'40%',height:'20%',background:def.mid}); node.appendChild(wh);
+      const wv = el('div'); Object.assign(wv.style,{position:'absolute',top:0,bottom:0,left:'28%',width:'20%',background:def.mid}); node.appendChild(wv);
+      const bh = el('div'); Object.assign(bh.style,{position:'absolute',left:0,right:0,top:'42.5%',height:'15%',background:def.cross}); node.appendChild(bh);
+      const bv = el('div'); Object.assign(bv.style,{position:'absolute',top:0,bottom:0,left:'30.5%',width:'15%',background:def.cross}); node.appendChild(bv); return;
+    }
+  }
+
+  function createGuessTheFlag(container, opts={}){
+    if (!container) throw new Error('container <div> is required');
+    const { compact=true, durationMs=null, onFinish=null } = opts;
+    const root = container.attachShadow({ mode: 'open' });
+
+    const wrap = document.createElement('div'); wrap.className='game';
+    wrap.innerHTML = `
+      <div class="bar"><div class="title">Guess the Flag ✈️</div><div class="score" id="score">Score: 0</div></div>
+      <div class="flag-wrap"><div class="flag" id="flag" aria-label="Flag to guess"></div></div>
+      <div class="choices" id="choices" aria-live="polite"></div>
+      <div class="footer"><button class="btn" id="newGame">New</button><span class="pill" id="streak">Streak: 0</span></div>
+      <div class="toast" id="toast" hidden><div id="toastText"></div></div>
+    `;
+    const style = document.createElement('style'); style.textContent = styleSheet(compact);
+    root.appendChild(style); root.appendChild(wrap);
+
+    let score = 0, streak = 0, current = null, options = [];
+    let timer = null, endAt = null, stopped = false;
+
+    const $ = sel => root.querySelector(sel);
+    const elc = (t,c,txt)=>{ const n=root.ownerDocument.createElement(t); if(c) n.className=c; if(txt) n.textContent=txt; return n; };
+    const shuffle = arr => arr.map(v => [Math.random(), v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+    const pick = (arr, n) => shuffle(arr).slice(0, n);
+    function toast(text){ const t=$('#toast'), tt=$('#toastText'); tt.textContent=text; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>t.hidden=true, 850); }
+
+    function newRound(){
+      const pool = COUNTRIES.slice();
+      const correct = pool[Math.floor(Math.random()*pool.length)];
+      const distractors = pick(pool.filter(c=>c!==correct), 2);
+      options = shuffle([correct, ...distractors]);
+      current = correct; render();
+    }
+
+    function render(){
+      renderFlag($('#flag'), current.flag);
+      const box = $('#choices'); box.innerHTML='';
+      options.forEach(opt=>{
+        const btn = elc('button','choice', opt.name);
+        btn.addEventListener('click',()=>choose(opt, btn));
+        box.appendChild(btn);
+      });
+      $('#score').textContent = `Score: ${score}`;
+      $('#streak').textContent = `Streak: ${streak}`;
+    }
+
+    function choose(opt, btn){
+      const btns = [...root.querySelectorAll('.choice')]; btns.forEach(b=> b.disabled=true);
+      const right = (opt===current);
+      if (right){ score += 10; streak += 1; btn.classList.add('correct'); toast('✔ Correct!'); }
+      else { streak = 0; btn.classList.add('wrong'); const i=options.indexOf(current); if(i>=0) btns[i].classList.add('correct'); toast('✖ Oops!'); }
+      $('#score').textContent=`Score: ${score}`; $('#streak').textContent=`Streak: ${streak}`;
+      setTimeout(()=>{ if(!stopped) newRound(); }, 800);
+    }
+
+    function start(){
+      stopped = false; score=0; streak=0; newRound();
+      if (durationMs){
+        endAt = Date.now() + durationMs;
+        clearInterval(timer);
+        timer = setInterval(()=>{ if (Date.now() >= endAt){ stop(true); } }, 100);
+      }
+    }
+    function stop(triggerFinish=false){
+      stopped = true; clearInterval(timer); timer=null; endAt=null;
+      if (triggerFinish && typeof onFinish === 'function') onFinish({ score, streak });
+    }
+
+    $('#newGame').addEventListener('click', ()=>{ score=0; streak=0; newRound(); });
+    return { start, stop, root };
+  }
+
+  window.createGuessTheFlag = createGuessTheFlag;
+})();
+</script>
+
+
+<script>
+(function(){
+
+  /* ----- קריאת פרמטר link ----- */
+  const raw = location.href.match(/[?&]link=([^#]+)/);
+  let flightUrl;
+  try { flightUrl = new URL(decodeURIComponent(raw ? raw[1] : '')); }
+  catch(e) { flightUrl = new URL(location.href); }
+
+  const fp   = flightUrl.searchParams;
+  const origin = fp.get('origin');
+  const dest   = fp.get('destination');
+  const outD   = fp.get('out_date');
+  const inD    = fp.get('in_date');
+  const priceR = fp.get('price');
+  const air    = fp.get('deal_airline');
+  const price  = priceR ? Math.round(parseFloat(priceR)) : null;
+
+  // 🔥 מעקב Analytics - כניסה לעמוד
+  gtag('event', 'page_entry', {
+    event_category: 'passenger_selection',
+    event_label: 'started_process'
+  });
+
+  /* ----- כותרת + סיכום ----- */
+  const header = document.getElementById('routeHeader');
+  header.textContent = (origin && dest && outD && inD)
+        ? `${origin} → ${dest} | ${outD} – ${inD} (הלוך-חזור)`
+        : 'נתוני טיסה חסרים';
+
+  const summary = document.getElementById('summary');
+  if (origin && dest) {
+    summary.innerHTML =
+      `<strong>יעד:</strong> ${origin} → ${dest}<br>` +
+      (outD ? `<strong>תאריכים:</strong> ${outD} – ${inD} (הלוך-חזור)<br>` : '') +
+      (air  ? `<strong>חברת תעופה:</strong> ${air}<br>` : '') +
+      (price!==null ? `<strong>מחיר:</strong> ${price} $` : '');
+    summary.hidden = false;
+  }
+
+  /* ----- DOM elements ----- */
+  const form  = document.getElementById('passengerForm');
+  const err   = document.getElementById('errorMsg');
+  const btn   = document.getElementById('submitBtn');
+  const passengersArea = document.getElementById('passengersArea');
+  const addBtnWrapper = document.querySelector('.add-passenger-wrapper');
+  const addBtn = document.getElementById('addPassengerBtn');
+  const passengerOptions = document.getElementById('passengerOptions');
+  const optionsBackdrop = document.getElementById('optionsBackdrop');
+  const passengerCounter = document.getElementById('passengerCounter');
+  const passengersDescription = document.getElementById('passengersDescription');
+
+  /* --- mini game wiring --- */
+const loadingGameContainer = document.getElementById('loadingGame');
+const flagGame = createGuessTheFlag(loadingGameContainer, { compact: true });
+
+
+  /* overlay */
+  const loader       = document.getElementById('loader');
+  const loadMain     = document.getElementById('loaderMain');
+  const loadTip      = document.getElementById('loaderTip');
+  const progress     = document.getElementById('progressBar');
+  
+  /* רכיבי כרטיס ביטוח */
+  const compareBtn   = document.getElementById('compareBtn');
+  const statusDiv    = document.getElementById('interactionStatus');
+  const tripDest     = document.getElementById('tripDestination');
+  const tripPass     = document.getElementById('tripPassengers');
+  const tripDaysEl   = document.getElementById('tripDays');
+
+  /* ----- משתנים לניהול נוסעים ----- */
+  let passengerIdCounter = 2; // מתחילים מ-2 כי יש כבר נוסע אחד
+  let passengers = {
+    adults: 1,
+    children: 0,
+    infants: 0
+  };
+
+  /* ----- פונקציה לעדכון תיאור הנוסעים ----- */
+  function updatePassengersDescription() {
+    const a = passengers.adults;
+    const c = passengers.children;
+    const i = passengers.infants;
+    let description = '';
+    
+    // מבוגרים
+    if (a === 1) description = 'מבוגר אחד';
+    else if (a === 2) description = '2 מבוגרים';
+    else if (a > 2) description = `${a} מבוגרים`;
+    
+    // ילדים
+    if (c > 0) {
+      if (description) description += ' ו';
+      description += (c === 1) ? 'ילד' : (c === 2) ? '2 ילדים' : `${c} ילדים`;
+    }
+    
+    // תינוקות
+    if (i > 0) {
+      if (description) description += ' ו';
+      description += (i === 1) ? 'תינוק' : (i === 2) ? '2 תינוקות' : `${i} תינוקות`;
+    }
+    
+    passengersDescription.textContent = description || 'בחר נוסעים';
+  }
+  
+  /* ----- אנימציית ספירת נוסעים ----- */
+  function showPassengerCount() {
+    const total = passengers.adults + passengers.children + passengers.infants;
+    passengerCounter.textContent = total;
+    passengerCounter.classList.add('show');
+    setTimeout(() => passengerCounter.classList.remove('show'), 600);
+  }
+
+  /* ----- תפריט הוספת נוסע: מעבר ל־click + outside-click ----- */
+  function openOptions(){
+    passengerOptions.classList.add('show');
+    optionsBackdrop.classList.add('show');
+    addBtn.setAttribute('aria-expanded','true');
+    // במובייל: למנוע גלילת רקע
+    if (window.matchMedia("(max-width: 640px)").matches) {
+      document.body.classList.add('no-scroll');
+    }
+  }
+  function closeOptions(){
+    passengerOptions.classList.remove('show');
+    optionsBackdrop.classList.remove('show');
+    addBtn.setAttribute('aria-expanded','false');
+    document.body.classList.remove('no-scroll');
+  }
+  function toggleOptions(){
+    if (passengerOptions.classList.contains('show')) closeOptions();
+    else openOptions();
+  }
+
+  addBtn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    toggleOptions();
+  });
+
+  // סגירה בלחיצה מחוץ לתפריט (כולל על הרקע)
+  document.addEventListener('click', (e)=>{
+    const withinMenu = passengerOptions.contains(e.target);
+    const withinBtn  = addBtn.contains(e.target);
+    if (!withinMenu && !withinBtn) closeOptions();
+  });
+  optionsBackdrop.addEventListener('click', closeOptions);
+
+  /* ----- הוספת נוסע ----- */
+  const passengerTypes = {
+    adult: { icon: '👤', text: 'נוסע (מעל גיל 12)', key: 'adults' },
+    child: { icon: '🧒', text: 'ילד (גילאי 2-12)', key: 'children' },
+    infant: { icon: '👶', text: 'תינוק (מתחת לגיל 2)', key: 'infants' }
+  };
+
+  // כפתורי האפשרויות
+  document.querySelectorAll('.option-btn').forEach(btnOpt => {
+    btnOpt.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const type = btnOpt.dataset.type;
+      addPassenger(type);
+      // לאפשר פתיחה נוספת מיידית
+      closeOptions();
+    });
+  });
+
+  function addPassenger(type, skipAnimation = false) {
+    // בדיקת מגבלות
+    if (!validate(type)) return;
+
+    const typeInfo = passengerTypes[type];
+    passengers[typeInfo.key]++;
+
+    // יצירת אלמנט נוסע חדש
+    const pill = document.createElement('div');
+    pill.className = 'passenger-pill';
+    pill.dataset.type = type;
+    pill.dataset.id = passengerIdCounter++;
+    
+    pill.innerHTML = `
+      <span class="passenger-icon">${typeInfo.icon}</span>
+      <span>${typeInfo.text}</span>
+      <button type="button" class="remove-btn" aria-label="הסר נוסע">✕</button>
+    `;
+
+    // אירוע מחיקה
+    pill.querySelector('.remove-btn').addEventListener('click', () => removePassenger(pill));
+
+    // הוספה לפני מעטפת כפתור ההוספה
+    passengersArea.insertBefore(pill, addBtnWrapper);
+    passengersArea.classList.add('has-passengers');
+    
+    updateUI();
+    updateTripPassengers();
+    updatePassengersDescription();
+    
+    if (!skipAnimation) showPassengerCount();
+  }
+
+  function removePassenger(pill) {
+    const type = pill.dataset.type;
+    const typeInfo = passengerTypes[type];
+    
+    if (type === 'adult' && passengers.adults === 1) {
+      showErr('חייב להיות לפחות מבוגר אחד');
+      setTimeout(hideErr, 2000);
+      return;
+    }
+
+    passengers[typeInfo.key]--;
+    
+    pill.classList.add('removing');
+    setTimeout(() => {
+      pill.remove();
+      updateUI();
+      updateTripPassengers();
+      updatePassengersDescription();
+      showPassengerCount();
+    }, 300);
+  }
+
+  function updateUI() {
+    const total = passengers.adults + passengers.children + passengers.infants;
+    
+    if (total === 1) passengersArea.classList.remove('has-passengers');
+
+    // הסתרת כפתור ההוספה אם הגענו למקסימום
+    if (total >= 8 || passengers.children + passengers.infants >= 8) {
+      addBtnWrapper.style.display = 'none';
+      // אם נסגר, וודא שגם החלונית סגורה
+      closeOptions();
+    } else {
+      addBtnWrapper.style.display = 'inline-block';
+    }
+
+    validate();
+  }
+
+  /* ----- ולידציה ----- */
+  function showErr(msg){ 
+    err.textContent = msg; 
+    err.hidden = false; 
+    btn.disabled = true; 
+  }
+  function hideErr(){ 
+    err.hidden = true; 
+    btn.disabled = false; 
+  }
+
+  function validate(typeToAdd = null) {
+    const a = passengers.adults;
+    const c = passengers.children;
+    const i = passengers.infants;
+    const total = a + c + i;
+    
+    // בדיקה לפני הוספה
+    if (typeToAdd) {
+      const futureTotal = total + 1;
+      const futureChildren = c + (typeToAdd === 'child' ? 1 : 0);
+      const futureInfants = i + (typeToAdd === 'infant' ? 1 : 0);
+      
+      if (futureTotal > 8) {
+        showErr('לא ניתן להוסיף יותר מ-8 נוסעים בסך הכל');
+        setTimeout(hideErr, 2000);
+        return false;
+      }
+      
+      if (futureChildren + futureInfants > 8) {
+        showErr('המספר הכולל של ילדים ותינוקות לא יכול להיות מעל 8');
+        setTimeout(hideErr, 2000);
+        return false;
+      }
+    }
+    
+    if (a < 1) return showErr('חייב להיות לפחות מבוגר אחד');
+    if (total > 8) return showErr('לא ניתן לבחור יותר מ-8 נוסעים');
+    if (c + i > 8) return showErr('המספר הכולל של ילדים ותינוקות לא יכול להיות מעל 8');
+    
+    hideErr(); 
+    return true;
+  }
+
+  /* ----- עדכון מספר נוסעים בכרטיס הביטוח ----- */
+  function updateTripPassengers() {
+    const total = passengers.adults + passengers.children + passengers.infants;
+    tripPass.textContent = total;
+  }
+
+  /* ----- חישוב מספר ימים ----- */
+  function calculateDays(outDate, inDate) {
+    if (!outDate || !inDate) return null;
+    try {
+      const out = new Date(outDate);
+      const inD = new Date(inDate);
+      const diffTime = inD - out;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays > 0 ? diffDays : null;
+    } catch(e) { return null; }
+  }
+
+  /* ----- עדכון פרטי הנסיעה בכרטיס הביטוח ----- */
+  function updateTripDetails() {
+    if (dest) tripDest.textContent = dest;
+    updateTripPassengers();
+    const days = calculateDays(outD, inD);
+    if (days) tripDaysEl.textContent = days;
+  }
+  updateTripDetails();
+
+  /* ----- מעקב אחר לחיצה על ביטוח ----- */
+  let userClickedInsurance = false;
+  compareBtn.addEventListener('click', function() {
+    userClickedInsurance = true;
+    let insuranceUrl = 'https://shukabit.co.il/node/124?affiliate_program=177';
+    const params = new URLSearchParams();
+    if (dest) params.append('destination', dest);
+    if (outD && inD) params.append('dates', `${outD} - ${inD}`);
+    const totalPassengers = passengers.adults + passengers.children + passengers.infants;
+    if (totalPassengers > 0) params.append('travelers', totalPassengers.toString());
+    if (params.toString()) insuranceUrl += '&' + params.toString();
+    window.open(insuranceUrl, '_blank');
+    compareBtn.textContent = '✅ נפתח בטאב חדש';
+    compareBtn.style.background = '#28a745';
+    statusDiv.textContent = 'נפתח בטאב חדש - החיפוש ממשיך כאן';
+    statusDiv.style.color = '#28a745';
+  });
+
+  /* ----- שליחה ----- */
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    const url = new URL(flightUrl);
+    url.pathname = url.pathname.replace('redirect', 'redirect-page');
+    url.searchParams.set('adults',   passengers.adults.toString());
+    url.searchParams.set('children', passengers.children.toString());
+    url.searchParams.set('infants',  passengers.infants.toString());
+
+    startPreload(url);
+  });
+
+  /* ----- הודעות מתחלפות ----- */
+  const msgs = [
+    `בודקים מבצעים ל-${dest || 'היעד שבחרת'}…`,
+    `מעדכנים זמינות ${outD ? 'ל-' + outD + '–' + inD : ''}…`,
+    `משווים תעריפים בין חברות תעופה…`,
+    `מוצאים עבורך מושבים נוחים…`
+  ];
+  const tips = ['טיפ: ארוז אוזניות לטיסה נעימה','טיפ: בקש מושב מעבר אם קמים הרבה','טיפ: הורד סרטים לפני ההמראה','טיפ: שתה מים במהלך הטיסה'];
+  let idx = 0, interval;
+
+  const total = 30000;   // 30 שניות המתנה
+  function rotate(){
+    loadMain.textContent = msgs[idx % msgs.length];
+    loadTip.textContent  = tips[idx % tips.length];
+    idx++;
+  }
+
+  /* ----- טעינה מוקדמת ----- */
+function startPreload(finalUrl){
+  loader.style.display = 'flex';
+  rotate();
+  interval = setInterval(rotate, 2500);
+
+  /* progress bar */
+  progress.style.width = '0';
+  const start = Date.now();
+  const progInt = setInterval(() => {
+    const pct = Math.min(100, ((Date.now()-start) / total) * 100);
+    progress.style.width = pct + '%';
+    if (pct >= 100) clearInterval(progInt);
+  }, 200);
+
+  /* 🔸 START GAME when loader opens */
+  try { flagGame.start(); } catch(e) {}
+
+  /* iframe hidden preload */
+  const hiddenIframe = document.createElement('iframe');
+  hiddenIframe.style.width = hiddenIframe.style.height = '0';
+  hiddenIframe.style.border = '0';
+  document.body.appendChild(hiddenIframe);
+
+  let first = true;
+  hiddenIframe.onload = () => {
+    if (first) {
+      first = false;
+    } else {
+      clearInterval(interval);
+      /* 🔸 STOP GAME on success */
+      try { flagGame.stop(true); } catch(e) {}
+
+      gtag('event', 'process_completed', {
+        event_category: 'passenger_selection', 
+        event_label: 'redirected_to_booking'
+      });
+
+      setTimeout(() => { location.href = finalUrl; }, 100);
+    }
+  };
+
+  hiddenIframe.src = finalUrl;
+  
+  // backup timeout
+  setTimeout(() => { 
+    clearInterval(interval);
+    /* 🔸 STOP GAME on timeout */
+    try { flagGame.stop(true); } catch(e) {}
+
+    gtag('event', 'process_completed', {
+      event_category: 'passenger_selection', 
+      event_label: 'redirected_to_booking_timeout'
+    });
+    setTimeout(() => { location.href = finalUrl; }, 100);
+  }, total);
+}
+
+
+  validate();
+  updatePassengersDescription();
+
+})();
+</script>
+</body>
+</html>
