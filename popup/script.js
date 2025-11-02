@@ -72,19 +72,19 @@ function handleCurrentUrlMode(url, sitesData) {
     const header = document.createElement('div');
     header.className = 'site-info-header';
     
+    const headerContent = document.createElement('div');
+    headerContent.className = 'site-info-header-content';
+    
     const logo = document.createElement('img');
     logo.src = 'https://lh3.googleusercontent.com/Sp3b24fVCvCVewv5udOP_e-qNVWGuxcZX9DEgYmKncXjeO9kp6KKCJ8NFcVs0VQNFeWo1P9p8-aYV1fDyq1Ct0ZCXec=s60';
     logo.alt = 'שם זה זול יותר';
-    header.appendChild(logo);
+    headerContent.appendChild(logo);
 
     const headerTitle = document.createElement('h1');
     headerTitle.textContent = 'שם זה זול יותר';
-    header.appendChild(headerTitle);
-
-    const headerSubtitle = document.createElement('p');
-    headerSubtitle.textContent = 'קופונים והשוואות מחירים';
-    header.appendChild(headerSubtitle);
-
+    headerContent.appendChild(headerTitle);
+    
+    header.appendChild(headerContent);
     siteInfoContainer.appendChild(header);
 
     // Create content section
@@ -109,7 +109,7 @@ function handleCurrentUrlMode(url, sitesData) {
 
         const featuresLabel = document.createElement('p');
         featuresLabel.className = 'features-label';
-        featuresLabel.textContent = 'תכונות נתמכות באתר זה:';
+        featuresLabel.textContent = 'תכונות נתמכות:';
         featuresSection.appendChild(featuresLabel);
 
         const featuresContent = document.createElement('p');
@@ -177,22 +177,23 @@ function handleCurrentUrlMode(url, sitesData) {
         siteContent.appendChild(couponSection);
     } else {
         // Site does not exist in our database
-        siteTitle.textContent = '״שם זה זול יותר״ לא נתמך עדיין באתר זה';
+        siteContent.className = 'site-content unsupported-site-content';
+        
+        siteTitle.textContent = 'לא נתמך עדיין באתר זה';
+        siteTitle.style.fontSize = '16px';
         siteContent.appendChild(siteTitle);
 
         // Display current site URL
         const siteUrlElement = document.createElement('p');
         siteUrlElement.textContent = baseUrl;
         siteUrlElement.className = 'site-url';
-        siteUrlElement.style.color = '#666';
-        siteUrlElement.style.marginBottom = '20px';
         siteContent.appendChild(siteUrlElement);
 
         // Create button to show available sites
         const showSitesButton = document.createElement('a');
         showSitesButton.className = 'button';
         showSitesButton.textContent = 'הצג אתרים זמינים';
-        showSitesButton.href = window.location.pathname; // Redirect to the main page without parameters
+        showSitesButton.href = window.location.pathname;
         siteContent.appendChild(showSitesButton);
 
         // Create button for request to add site

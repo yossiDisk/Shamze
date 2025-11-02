@@ -20,33 +20,35 @@ body {
 
 /* הוספת סגנונות לתצוגת התכונות הנתמכות */
 .features-section {
-  margin: 20px 0;
-  padding: 20px;
+  margin: 12px 0;
+  padding: 10px 12px;
   background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-  border-radius: 12px;
+  border-radius: 8px;
   text-align: center;
   border: 2px solid rgb(22, 163, 74);
-  box-shadow: 0 4px 6px rgba(22, 163, 74, 0.1);
+  box-shadow: 0 2px 4px rgba(22, 163, 74, 0.1);
 }
 
 .features-label {
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   color: rgb(22, 163, 74);
-  font-size: 18px;
+  font-size: 13px;
+  margin-top: 0;
 }
 
 .features-content {
   color: #166534;
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 12px;
+  line-height: 1.4;
   font-weight: 500;
+  margin: 0;
 }
 
 /* התאמה להצגה במסכים קטנים */
 @media (max-width: 480px) {
   .features-content {
-    font-size: 13px;
+    font-size: 11px;
   }
 }
 
@@ -82,127 +84,148 @@ body {
 
 /* כפתור חדש */
 .button + .button {
-  margin-top: 15px;
+  margin-top: 6px;
 }
 
 .site-info-container {
   max-width: 600px;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   background-color: #fff;
   text-align: center;
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 .site-info-header {
   background: linear-gradient(135deg, rgb(22, 163, 74) 0%, rgb(16, 185, 129) 100%);
   color: white;
-  padding: 30px 20px;
+  padding: 10px 15px;
   text-align: center;
+  flex-shrink: 0;
+}
+
+.site-info-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .site-info-header img {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 15px;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  width: 40px;
+  height: 40px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  flex-shrink: 0;
 }
 
 .site-info-header h1 {
-  font-size: 28px;
-  margin: 0 0 10px 0;
-  font-weight: bold;
-}
-
-.site-info-header p {
-  font-size: 16px;
+  font-size: 18px;
   margin: 0;
-  opacity: 0.9;
+  font-weight: bold;
+  line-height: 1.2;
 }
 
 .site-content {
-  padding: 30px 20px;
+  padding: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .site-title {
-  font-size: 24px;
+  font-size: 17px;
   color: #333;
-  margin-bottom: 25px;
+  margin: 0 0 12px 0;
   font-weight: 600;
+  line-height: 1.3;
 }
 
 .coupon-section {
-  margin-top: 30px;
-  padding: 25px 20px;
+  margin-top: auto;
+  padding: 12px;
   background-color: #f9fafb;
-  border-radius: 12px;
+  border-radius: 8px;
+  flex-shrink: 0;
 }
 
 .coupon-section h3 {
   color: rgb(22, 163, 74);
-  font-size: 20px;
-  margin-bottom: 15px;
+  font-size: 15px;
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 }
 
 .coupon-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 0;
 }
 
 .coupon-code {
   background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
-  border: 3px dashed rgb(22, 163, 74);
-  padding: 15px 30px;
-  border-radius: 10px;
-  font-size: 20px;
+  border: 2px dashed rgb(22, 163, 74);
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
   font-weight: bold;
   cursor: pointer;
   position: relative;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.15);
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.15);
+  max-width: 90%;
 }
 
 .coupon-code:hover {
   background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(22, 163, 74, 0.25);
 }
 
 .coupon-code[data-copied="true"]::after {
   content: "הועתק!";
   position: absolute;
-  top: -35px;
+  top: -26px;
   left: 50%;
   transform: translateX(-50%);
   background-color: rgb(22, 163, 74);
   color: white;
-  padding: 8px 15px;
-  border-radius: 6px;
-  font-size: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
 }
 
 .coupon-details {
-  margin-top: 10px;
-  font-size: 14px;
+  margin-top: 6px;
+  font-size: 11px;
   color: #666;
-  max-width: 400px;
-  line-height: 1.5;
+  max-width: 95%;
+  line-height: 1.4;
+  margin-bottom: 0;
 }
 
 .no-coupon-message {
   color: #9ca3af;
   font-style: italic;
-  margin-top: 10px;
-  font-size: 16px;
+  margin-top: 5px;
+  margin-bottom: 0;
+  font-size: 13px;
 }
 
 .header img {
-  width: 60px; /* Adjust the width as needed */
-  height: 60px; /* Adjust the height as needed */
+  width: 60px;
+  height: 60px;
   margin-right: 10px;
 }
 
@@ -245,26 +268,28 @@ body {
 
 .button {
   display: block;
-  margin: 15px auto;
-  padding: 12px 24px;
+  margin: 6px auto;
+  padding: 10px 20px;
   background: linear-gradient(135deg, rgb(22, 163, 74) 0%, rgb(16, 185, 129) 100%);
   color: #fff;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 6px;
   width: auto;
-  min-width: 200px;
+  min-width: 150px;
+  max-width: 90%;
   text-align: center;
   transition: all 0.3s ease;
   font-weight: 600;
-  font-size: 16px;
-  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.3);
+  line-height: 1.3;
 }
 
 .button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(22, 163, 74, 0.4);
   background: linear-gradient(135deg, rgb(16, 185, 129) 0%, rgb(22, 163, 74) 100%);
 }
 
@@ -433,9 +458,9 @@ th:hover {
 
 #priceHistoryChart {
   width: 100%;
-  max-width: 600px; /* Adjust this value as needed */
+  max-width: 600px;
   height: auto;
-  aspect-ratio: 2 / 1; /* This creates a 2:1 aspect ratio */
+  aspect-ratio: 2 / 1;
   margin: 0 auto 20px auto;
 }
 
@@ -503,8 +528,9 @@ th:hover {
 /* Additional styling for site URL in unsupported site view */
 .site-url {
   color: #666;
-  margin-bottom: 20px;
-  font-size: 15px;
+  margin: 8px 0;
+  font-size: 12px;
+  line-height: 1.3;
 }
 
 /* Background gradient for body in currentUrl mode */
@@ -512,44 +538,15 @@ body.currenturl-mode {
   background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
 }
 
-/* Responsive improvements */
-@media (max-width: 480px) {
-  .site-info-header h1 {
-    font-size: 24px;
-  }
-  
-  .site-info-header img {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .site-title {
-    font-size: 20px;
-  }
-  
-  .button {
-    min-width: 150px;
-    font-size: 14px;
-  }
-}
-
-/* Icon styling for coupon emoji */
-.coupon-section h3 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-/* Smooth animations */
+/* Smooth animations - lighter for mobile */
 .site-info-container * {
-  animation: fadeIn 0.5s ease-in;
+  animation: fadeIn 0.3s ease-in;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(5px);
   }
   to {
     opacity: 1;
@@ -557,13 +554,27 @@ body.currenturl-mode {
   }
 }
 
-/* Copy instruction hint */
+/* Copy instruction hint - smaller for mobile */
 .coupon-code::before {
-  content: '👆 לחץ כאן להעתקה';
+  content: '👆 לחץ להעתקה';
   display: block;
-  font-size: 12px;
+  font-size: 10px;
   color: rgb(22, 163, 74);
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   font-weight: normal;
   opacity: 0.8;
+  line-height: 1.2;
+}
+
+/* Compact layout for unsupported sites */
+.unsupported-site-content {
+  justify-content: center;
+}
+
+.unsupported-site-content .site-title {
+  margin-bottom: 8px;
+}
+
+.unsupported-site-content .button {
+  margin: 5px auto;
 }
