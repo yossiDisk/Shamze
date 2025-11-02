@@ -556,7 +556,7 @@ body.currenturl-mode {
 
 /* Copy instruction hint - smaller for mobile */
 .coupon-code::before {
-  content: '👆 לחץ להעתקה';
+  content: '👆 להעתקה';
   display: block;
   font-size: 10px;
   color: rgb(22, 163, 74);

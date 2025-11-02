@@ -150,7 +150,7 @@ function handleCurrentUrlMode(url, sitesData) {
                         }, 2000);
                     });
             };
-            couponCode.title = 'לחץ להעתקה';
+            couponCode.title = ' להעתקה';
             couponContainer.appendChild(couponCode);
 
             // If coupon details available, show them
