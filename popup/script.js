@@ -255,7 +255,7 @@ function handleCurrentUrlMode(url, sitesData) {
         }
 
         // Check for kupon property
-        if (siteInfo.compareWith.kupon === 'cupons') {
+        if (siteInfo.compareWith.kupon === 'cupons' || siteInfo.cupon !== "") {
             features.push('איתור קופון');
         }
 
