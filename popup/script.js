@@ -50,137 +50,163 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error fetching sites data:', error);
         });
 
-    function handleCurrentUrlMode(url, sitesData) {
-        // Clear existing content
-        if (content) {
-            content.innerHTML = '';
-        }
+function handleCurrentUrlMode(url, sitesData) {
+    // Clear existing content
+    if (content) {
+        content.innerHTML = '';
+    }
 
-        // Hide the top buttons in currentUrl mode
-        if (compareButton) compareButton.style.display = 'none';
-        if (couponButton) couponButton.style.display = 'none';
-        if (searchInput) searchInput.style.display = 'none';
+    // Hide the top buttons in currentUrl mode
+    if (compareButton) compareButton.style.display = 'none';
+    if (couponButton) couponButton.style.display = 'none';
+    if (searchInput) searchInput.style.display = 'none';
 
-        // Extract baseUrl from the current URL
-        const baseUrl = extractBaseUrl(url);
+    // Extract baseUrl from the current URL
+    const baseUrl = extractBaseUrl(url);
 
-        // Create container for site information
-        const siteInfoContainer = document.createElement('div');
-        siteInfoContainer.className = 'site-info-container';
+    // Create container for site information
+    const siteInfoContainer = document.createElement('div');
+    siteInfoContainer.className = 'site-info-container';
 
-        // Find if the site exists in our database
-        const siteInfo = findSiteByUrl(baseUrl, sitesData);
+    // Create header with logo and title
+    const header = document.createElement('div');
+    header.className = 'site-info-header';
+    
+    const logo = document.createElement('img');
+    logo.src = 'https://lh3.googleusercontent.com/Sp3b24fVCvCVewv5udOP_e-qNVWGuxcZX9DEgYmKncXjeO9kp6KKCJ8NFcVs0VQNFeWo1P9p8-aYV1fDyq1Ct0ZCXec=s60';
+    logo.alt = 'שם זה זול יותר';
+    header.appendChild(logo);
 
-        // Create site name/title element
-        const siteTitle = document.createElement('h2');
-        siteTitle.className = 'site-title';
+    const headerTitle = document.createElement('h1');
+    headerTitle.textContent = 'שם זה זול יותר';
+    header.appendChild(headerTitle);
 
-        if (siteInfo) {
-            // Site exists in our database
-            siteTitle.textContent = siteInfo.siteName;
-            siteInfoContainer.appendChild(siteTitle);
+    const headerSubtitle = document.createElement('p');
+    headerSubtitle.textContent = 'קופונים והשוואות מחירים';
+    header.appendChild(headerSubtitle);
 
-            // Add supported features section
-            const featuresSection = document.createElement('div');
-            featuresSection.className = 'features-section';
+    siteInfoContainer.appendChild(header);
 
-            const featuresLabel = document.createElement('p');
-            featuresLabel.className = 'features-label';
-            featuresLabel.textContent = 'תכונות נתמכות באתר זה:';
-            featuresSection.appendChild(featuresLabel);
+    // Create content section
+    const siteContent = document.createElement('div');
+    siteContent.className = 'site-content';
 
-            const featuresContent = document.createElement('p');
-            featuresContent.className = 'features-content';
-            featuresContent.textContent = getSupportedFeatures(siteInfo);
-            featuresSection.appendChild(featuresContent);
+    // Find if the site exists in our database
+    const siteInfo = findSiteByUrl(baseUrl, sitesData);
 
-            siteInfoContainer.appendChild(featuresSection);
+    // Create site name/title element
+    const siteTitle = document.createElement('h2');
+    siteTitle.className = 'site-title';
 
-            // Create review button
-            const reviewButton = document.createElement('a');
-            reviewButton.href = `https://docs.google.com/forms/d/e/1FAIpQLSed14bO55vne_cKNb25S39lUNw-4RWjceeeU13NAb-tOqbxow/viewform?usp=pp_url&entry.1214730731=${encodeURIComponent(baseUrl)}`;
-            reviewButton.className = 'button';
-            reviewButton.textContent = 'דירוג ההזמנה שלכם באתר זה';
-            reviewButton.target = '_blank';
-            siteInfoContainer.appendChild(reviewButton);
+    if (siteInfo) {
+        // Site exists in our database
+        siteTitle.textContent = siteInfo.siteName;
+        siteContent.appendChild(siteTitle);
 
-            // Create coupon section
-            const couponSection = document.createElement('div');
-            couponSection.className = 'coupon-section';
+        // Add supported features section
+        const featuresSection = document.createElement('div');
+        featuresSection.className = 'features-section';
 
-            // Check if coupon is available
-            let hasCoupon = false;
-            if (siteInfo.cupon && siteInfo.cupon.trim() !== '') {
-                hasCoupon = true;
+        const featuresLabel = document.createElement('p');
+        featuresLabel.className = 'features-label';
+        featuresLabel.textContent = 'תכונות נתמכות באתר זה:';
+        featuresSection.appendChild(featuresLabel);
 
-                // Create coupon container
-                const couponContainer = document.createElement('div');
-                couponContainer.className = 'coupon-container';
+        const featuresContent = document.createElement('p');
+        featuresContent.className = 'features-content';
+        featuresContent.textContent = getSupportedFeatures(siteInfo);
+        featuresSection.appendChild(featuresContent);
 
-                // Create coupon code element
-                const couponCode = document.createElement('div');
-                couponCode.className = 'coupon-code';
-                couponCode.textContent = siteInfo.cupon;
-                couponCode.onclick = function () {
-                    navigator.clipboard.writeText(siteInfo.cupon)
-                        .then(() => {
-                            // Show copy notification
-                            couponCode.setAttribute('data-copied', 'true');
-                            setTimeout(() => {
-                                couponCode.removeAttribute('data-copied');
-                            }, 2000);
-                        });
-                };
-                couponCode.title = 'לחץ להעתקה';
-                couponContainer.appendChild(couponCode);
+        siteContent.appendChild(featuresSection);
 
-                // If coupon details available, show them
-                if (siteInfo.cuponDetails) {
-                    const couponDetails = document.createElement('div');
-                    couponDetails.className = 'coupon-details';
-                    couponDetails.textContent = siteInfo.cuponDetails;
-                    couponContainer.appendChild(couponDetails);
-                }
+        // Create coupon section
+        const couponSection = document.createElement('div');
+        couponSection.className = 'coupon-section';
 
-                couponSection.appendChild(couponContainer);
-            } else {
-                // No coupon available
-                const noCouponMsg = document.createElement('div');
-                noCouponMsg.className = 'no-coupon-message';
-                noCouponMsg.textContent = 'אין קופון זמין';
-                couponSection.appendChild(noCouponMsg);
+        // Check if coupon is available
+        let hasCoupon = false;
+        if (siteInfo.cupon && siteInfo.cupon.trim() !== '') {
+            hasCoupon = true;
+
+            const couponTitle = document.createElement('h3');
+            couponTitle.textContent = '🎟️ קופון זמין';
+            couponSection.appendChild(couponTitle);
+
+            // Create coupon container
+            const couponContainer = document.createElement('div');
+            couponContainer.className = 'coupon-container';
+
+            // Create coupon code element
+            const couponCode = document.createElement('div');
+            couponCode.className = 'coupon-code';
+            couponCode.textContent = siteInfo.cupon;
+            couponCode.onclick = function () {
+                navigator.clipboard.writeText(siteInfo.cupon)
+                    .then(() => {
+                        // Show copy notification
+                        couponCode.setAttribute('data-copied', 'true');
+                        setTimeout(() => {
+                            couponCode.removeAttribute('data-copied');
+                        }, 2000);
+                    });
+            };
+            couponCode.title = 'לחץ להעתקה';
+            couponContainer.appendChild(couponCode);
+
+            // If coupon details available, show them
+            if (siteInfo.cuponDetails) {
+                const couponDetails = document.createElement('div');
+                couponDetails.className = 'coupon-details';
+                couponDetails.textContent = siteInfo.cuponDetails;
+                couponContainer.appendChild(couponDetails);
             }
 
-            siteInfoContainer.appendChild(couponSection);
+            couponSection.appendChild(couponContainer);
         } else {
-            // Site does not exist in our database
-            siteTitle.textContent = '״שם זה זול יותר׳׳ לא נתמך עדיין באתר זה';
-            siteInfoContainer.appendChild(siteTitle);
+            // No coupon available
+            const couponTitle = document.createElement('h3');
+            couponTitle.textContent = 'קופון';
+            couponSection.appendChild(couponTitle);
 
-            // Display current site URL
-            const siteUrlElement = document.createElement('p');
-            siteUrlElement.textContent = baseUrl;
-            siteUrlElement.className = 'site-url';
-            siteInfoContainer.appendChild(siteUrlElement);
-
-            // Create button to show available sites
-            const showSitesButton = document.createElement('a');
-            showSitesButton.className = 'button';
-            showSitesButton.textContent = 'הצג אתרים זמינים';
-            showSitesButton.href = window.location.pathname; // Redirect to the main page without parameters
-            siteInfoContainer.appendChild(showSitesButton);
-
-            // Create button for request to add site
-            const addSiteButton = document.createElement('a');
-            addSiteButton.href = `https://mail.google.com/mail/?view=cm&fs=1&to=shamzezolyoter@gmail.com&su=בקשה להוספת אתר&body=היי, אני רוצה לבקש הוספת האתר ${baseUrl} למערכת שם זה זול יותר.`;
-            addSiteButton.className = 'button';
-            addSiteButton.textContent = 'בקשה להוספת אתר';
-            addSiteButton.target = '_blank';
-            siteInfoContainer.appendChild(addSiteButton);
+            const noCouponMsg = document.createElement('div');
+            noCouponMsg.className = 'no-coupon-message';
+            noCouponMsg.textContent = 'אין קופון זמין';
+            couponSection.appendChild(noCouponMsg);
         }
 
-        content.appendChild(siteInfoContainer);
+        siteContent.appendChild(couponSection);
+    } else {
+        // Site does not exist in our database
+        siteTitle.textContent = '״שם זה זול יותר״ לא נתמך עדיין באתר זה';
+        siteContent.appendChild(siteTitle);
+
+        // Display current site URL
+        const siteUrlElement = document.createElement('p');
+        siteUrlElement.textContent = baseUrl;
+        siteUrlElement.className = 'site-url';
+        siteUrlElement.style.color = '#666';
+        siteUrlElement.style.marginBottom = '20px';
+        siteContent.appendChild(siteUrlElement);
+
+        // Create button to show available sites
+        const showSitesButton = document.createElement('a');
+        showSitesButton.className = 'button';
+        showSitesButton.textContent = 'הצג אתרים זמינים';
+        showSitesButton.href = window.location.pathname; // Redirect to the main page without parameters
+        siteContent.appendChild(showSitesButton);
+
+        // Create button for request to add site
+        const addSiteButton = document.createElement('a');
+        addSiteButton.href = `https://mail.google.com/mail/?view=cm&fs=1&to=shamzezolyoter@gmail.com&su=בקשה להוספת אתר&body=היי, אני רוצה לבקש הוספת האתר ${baseUrl} למערכת שם זה זול יותר.`;
+        addSiteButton.className = 'button';
+        addSiteButton.textContent = 'בקשה להוספת אתר';
+        addSiteButton.target = '_blank';
+        siteContent.appendChild(addSiteButton);
     }
+
+    siteInfoContainer.appendChild(siteContent);
+    content.appendChild(siteInfoContainer);
+}
 
     function getSupportedFeatures(siteInfo) {
         if (!siteInfo || !siteInfo.compareWith) return ''; // No data available

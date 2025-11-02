@@ -20,23 +20,27 @@ body {
 
 /* הוספת סגנונות לתצוגת התכונות הנתמכות */
 .features-section {
-  margin: 15px 0;
-  padding: 10px 15px;
-  background-color: #f5f5f5;
-  border-radius: 5px;
+  margin: 20px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-radius: 12px;
   text-align: center;
+  border: 2px solid rgb(22, 163, 74);
+  box-shadow: 0 4px 6px rgba(22, 163, 74, 0.1);
 }
 
 .features-label {
   font-weight: bold;
-  margin-bottom: 5px;
-  color: #333;
+  margin-bottom: 10px;
+  color: rgb(22, 163, 74);
+  font-size: 18px;
 }
 
 .features-content {
-  color: #2196F3;
-  font-size: 14px;
-  line-height: 1.4;
+  color: #166534;
+  font-size: 15px;
+  line-height: 1.6;
+  font-weight: 500;
 }
 
 /* התאמה להצגה במסכים קטנים */
@@ -83,24 +87,61 @@ body {
 
 .site-info-container {
   max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
+  margin: 0;
+  padding: 0;
   background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
   text-align: center;
+  min-height: 100vh;
+}
+
+.site-info-header {
+  background: linear-gradient(135deg, rgb(22, 163, 74) 0%, rgb(16, 185, 129) 100%);
+  color: white;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.site-info-header img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.site-info-header h1 {
+  font-size: 28px;
+  margin: 0 0 10px 0;
+  font-weight: bold;
+}
+
+.site-info-header p {
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.site-content {
+  padding: 30px 20px;
 }
 
 .site-title {
   font-size: 24px;
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  font-weight: 600;
 }
 
 .coupon-section {
   margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
+  padding: 25px 20px;
+  background-color: #f9fafb;
+  border-radius: 12px;
+}
+
+.coupon-section h3 {
+  color: rgb(22, 163, 74);
+  font-size: 20px;
+  margin-bottom: 15px;
 }
 
 .coupon-container {
@@ -111,33 +152,37 @@ body {
 }
 
 .coupon-code {
-  background-color: #f5f5f5;
-  border: 2px dashed #2196F3;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 18px;
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+  border: 3px dashed rgb(22, 163, 74);
+  padding: 15px 30px;
+  border-radius: 10px;
+  font-size: 20px;
   font-weight: bold;
   cursor: pointer;
   position: relative;
   margin-bottom: 15px;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.15);
 }
 
 .coupon-code:hover {
-  background-color: #e0f7fa;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
 }
 
 .coupon-code[data-copied="true"]::after {
   content: "הועתק!";
   position: absolute;
-  top: -30px;
+  top: -35px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #4CAF50;
+  background-color: rgb(22, 163, 74);
   color: white;
-  padding: 5px 10px;
-  border-radius: 3px;
-  font-size: 12px;
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .coupon-details {
@@ -145,12 +190,14 @@ body {
   font-size: 14px;
   color: #666;
   max-width: 400px;
+  line-height: 1.5;
 }
 
 .no-coupon-message {
-  color: #999;
+  color: #9ca3af;
   font-style: italic;
   margin-top: 10px;
+  font-size: 16px;
 }
 
 .header img {
@@ -198,22 +245,27 @@ body {
 
 .button {
   display: block;
-  margin: 10px auto;
-  padding: 10px 20px;
-  background-color: #2196F3;
+  margin: 15px auto;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, rgb(22, 163, 74) 0%, rgb(16, 185, 129) 100%);
   color: #fff;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  border-radius: 5px;
-  width: 150px;
+  border-radius: 8px;
+  width: auto;
+  min-width: 200px;
   text-align: center;
-  transition: background-color 0.3s, transform 0.3s;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
 }
 
 .button:hover {
-  background-color: #1976D2;
-  transform: scale(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.4);
+  background: linear-gradient(135deg, rgb(16, 185, 129) 0%, rgb(22, 163, 74) 100%);
 }
 
 .top-buttons {
@@ -446,4 +498,72 @@ th:hover {
 
 #data-table td:last-child:empty {
   background-color: #f0f0f0;
+}
+
+/* Additional styling for site URL in unsupported site view */
+.site-url {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+/* Background gradient for body in currentUrl mode */
+body.currenturl-mode {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+}
+
+/* Responsive improvements */
+@media (max-width: 480px) {
+  .site-info-header h1 {
+    font-size: 24px;
+  }
+  
+  .site-info-header img {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .site-title {
+    font-size: 20px;
+  }
+  
+  .button {
+    min-width: 150px;
+    font-size: 14px;
+  }
+}
+
+/* Icon styling for coupon emoji */
+.coupon-section h3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Smooth animations */
+.site-info-container * {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Copy instruction hint */
+.coupon-code::before {
+  content: '👆 לחץ כאן להעתקה';
+  display: block;
+  font-size: 12px;
+  color: rgb(22, 163, 74);
+  margin-bottom: 8px;
+  font-weight: normal;
+  opacity: 0.8;
 }
