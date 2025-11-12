@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -63,226 +64,568 @@
   </script>
 
   <style>
-    :root{
-      --card-bg:#ffffff;
-      --card-br:#e7e7e9;
-      --card-shadow:0 2px 6px rgba(0,0,0,.06);
-      --card-shadow-hover:0 10px 24px rgba(0,0,0,.12);
-      --pill-bg:#eef5ff;
-      --pill-fg:#0a3a90;
-      --title:#0f172a;
-      --brand:#1a73e8;
-      --muted:#666;
-      --grad-hero: linear-gradient(180deg,#f9fbff 0%,#f2f6ff 100%);
+    :root {
+      --card-bg: #ffffff;
+      --card-br: #e7e7e9;
+      --card-shadow: 0 2px 6px rgba(0, 0, 0, .06);
+      --card-shadow-hover: 0 10px 24px rgba(0, 0, 0, .12);
+      --pill-bg: #eef5ff;
+      --pill-fg: #0a3a90;
+      --title: #0f172a;
+      --brand: #1a73e8;
+      --muted: #666;
+      --grad-hero: linear-gradient(180deg, #f9fbff 0%, #f2f6ff 100%);
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      font-family:Arial,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-      margin:0; padding:0; background:#f4f5f7; color:#222;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      font-family: Arial, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f5f7;
+      color: #222;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     /* Header (first list header) */
-    .product-header{
-      border:1px solid var(--card-br); padding:12px 14px; margin:12px;
-      background:var(--card-bg); border-radius:12px; box-shadow:var(--card-shadow)
+    .product-header {
+      border: 1px solid var(--card-br);
+      padding: 12px 14px;
+      margin: 12px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: var(--card-shadow)
     }
-    .product-header-callout{
-      background:linear-gradient(180deg,#f8fbff 0%,#f3f7ff 100%);
-      border:1px solid #dfe8ff; border-radius:10px; padding:12px; text-align:center
+
+    .product-header-callout {
+      background: linear-gradient(180deg, #f8fbff 0%, #f3f7ff 100%);
+      border: 1px solid #dfe8ff;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center
     }
-    .product-header-callout .instruction{
-      font-size:clamp(12px, 2.8vw, 14px); margin:0 0 4px; color:var(--brand); font-weight:600
+
+    .product-header-callout .instruction {
+      font-size: clamp(12px, 2.8vw, 14px);
+      margin: 0 0 4px;
+      color: var(--brand);
+      font-weight: 600
     }
-    .product-header-callout .product-summary{
-      font-size:clamp(13px, 3.2vw, 16px); color:#333
+
+    .product-header-callout .product-summary {
+      font-size: clamp(13px, 3.2vw, 16px);
+      color: #333
     }
-    .product-header-callout .product-summary .price{
-      margin-right:8px; color:#555; font-size:clamp(12px, 2.9vw, 14px)
+
+    .product-header-callout .product-summary .price {
+      margin-right: 8px;
+      color: #555;
+      font-size: clamp(12px, 2.9vw, 14px)
     }
 
     /* Sort */
-    .sort-container{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px; margin:8px 12px 0
+    .sort-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 8px 12px 0
     }
-    .sort-section select{
-      padding:8px 10px; border:1px solid #dcdcdc; border-radius:10px; background:#fff;
-      font-size:clamp(12px, 3vw, 13px); color:#333; cursor:pointer; outline:none;
-      transition:border-color .2s,box-shadow .2s; min-width:140px
+
+    .sort-section select {
+      padding: 8px 10px;
+      border: 1px solid #dcdcdc;
+      border-radius: 10px;
+      background: #fff;
+      font-size: clamp(12px, 3vw, 13px);
+      color: #333;
+      cursor: pointer;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      min-width: 140px
     }
-    .sort-section select:hover{border-color:var(--brand)}
-    .sort-section select:focus{border-color:var(--brand); box-shadow:0 0 0 3px rgba(26,115,232,.12)}
+
+    .sort-section select:hover {
+      border-color: var(--brand)
+    }
+
+    .sort-section select:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(26, 115, 232, .12)
+    }
 
     /* Loading */
-    .loading-container{text-align:center;margin:18px}
-    .loading-spinner{border:4px solid #f3f3f3;border-top:4px solid #3498db;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;margin:10px auto}
-    @keyframes spin{to{transform:rotate(360deg)}}
+    .loading-container {
+      text-align: center;
+      margin: 18px
+    }
+
+    .loading-spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 10px auto
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
 
     /* Results list */
-    .search-results{display:flex;flex-direction:column;gap:12px;margin:12px}
+    .search-results {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 12px
+    }
 
     /* Product card (first list) */
-    .product{
-      display:grid;
-      grid-template-columns: 112px 1fr auto; /* מעט קטן כברירת מחדל */
-      gap:12px;
-      align-items:center;
-      border:1px solid var(--card-br);
-      background:var(--card-bg);
-      border-radius:14px;
-      padding:12px;
-      box-shadow:var(--card-shadow);
-      transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
-      cursor:pointer; position:relative; isolation:isolate;
+    .product {
+      display: grid;
+      grid-template-columns: 112px 1fr auto;
+      /* מעט קטן כברירת מחדל */
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--card-br);
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: var(--card-shadow);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+      cursor: pointer;
+      position: relative;
+      isolation: isolate;
     }
-    .product:hover{ transform:translateY(-2px); box-shadow:var(--card-shadow-hover); border-color:#d7d7da; }
+
+    .product:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--card-shadow-hover);
+      border-color: #d7d7da;
+    }
 
     /* Image wrapper with BIGGER hover grow (first list) */
-    .product-figure{
-      width:112px; aspect-ratio:1/1; border-radius:12px; overflow:hidden;
-      background:radial-gradient(120% 120% at 0% 0%, #f9fbff 0%, #eef2ff 50%, #eaeefc 100%);
-      display:flex;align-items:center;justify-content:center; position:relative;
-    }
-    .product-figure img{
-      width:100%;height:100%;object-fit:contain; transform:scale(.9);
-      transition:transform .35s cubic-bezier(.22,.61,.36,1), filter .35s; will-change:transform;
-    }
-    @media (hover:hover){
-      .product:hover .product-figure img{ transform:scale(1.35); filter: drop-shadow(0 6px 14px rgba(0,0,0,.18)); }
+    .product-figure {
+      width: 112px;
+      aspect-ratio: 1/1;
+      border-radius: 12px;
+      overflow: hidden;
+      background: radial-gradient(120% 120% at 0% 0%, #f9fbff 0%, #eef2ff 50%, #eaeefc 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
     }
 
-    /* Content (no site badge in first list) */
-    .product-main{display:flex;flex-direction:column;gap:6px;min-width:0;}
-    .product-title{
-      margin:0; line-height:1.25; color:var(--title); font-weight:800;
-      /* גודל זורם לפי רוחב, יקטן במובייל צר */
+    .product-figure img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transform: scale(.9);
+      transition: transform .35s cubic-bezier(.22, .61, .36, 1), filter .35s;
+      will-change: transform;
+    }
+
+    @media (hover:hover) {
+      .product:hover .product-figure img {
+        transform: scale(1.35);
+        filter: drop-shadow(0 6px 14px rgba(0, 0, 0, .18));
+      }
+    }
+
+    .product-title {
+      margin: 0;
+      line-height: 1.25;
+      color: var(--title);
+      font-weight: 800;
       font-size: clamp(12px, 3.6vw, 16px);
-      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      /* הוסף מעבר חלק */
+    }
+
+    /* הוסף כלל חדש: */
+    .product:hover .product-title {
+      -webkit-line-clamp: unset;
+      /* מבטל את ההגבלה */
+      overflow: visible;
+      display: block;
+      /* משנה מ-webkit-box לבלוק רגיל */
     }
 
     /* Price on the right */
-    .price-col{display:flex;align-items:center;justify-content:flex-start;align-self:stretch;}
-    .price-pill{
-      font-size: clamp(11px, 3.2vw, 15px);
-      font-weight:800;background:var(--pill-bg);color:var(--pill-fg);
-      border:1px solid #d7e5ff;padding:6px 10px;border-radius:999px;white-space:nowrap;
-      box-shadow:inset 0 0 0 1px #eaf1ff;
+    .price-col {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      align-self: stretch;
     }
 
-    .show-more-button{
-      display:block;margin:6px auto 4px;padding:10px 18px;background:var(--brand);color:#fff;
-      border:none;border-radius:10px;cursor:pointer;font-size:clamp(13px, 3.2vw, 15px);transition:background-color .2s
+    .price-pill {
+      font-size: clamp(11px, 3.2vw, 15px);
+      font-weight: 800;
+      background: var(--pill-bg);
+      color: var(--pill-fg);
+      border: 1px solid #d7e5ff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+      box-shadow: inset 0 0 0 1px #eaf1ff;
     }
-    .show-more-button:hover{background:#1558b3}
+
+    .show-more-button {
+      display: block;
+      margin: 6px auto 4px;
+      padding: 10px 18px;
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: clamp(13px, 3.2vw, 15px);
+      transition: background-color .2s
+    }
+
+    .show-more-button:hover {
+      background: #1558b3
+    }
 
     /* Offer view: sticky back toolbar */
-    .offers-toolbar{
-      position:sticky; top:8px; z-index:60;
-      margin:12px; padding:8px 10px; border:1px solid var(--card-br); background:#fff; border-radius:12px;
-      box-shadow:0 8px 24px rgba(0,0,0,.08);
-      display:flex; align-items:center; gap:10px;
+    .offers-toolbar {
+      position: sticky;
+      top: 8px;
+      z-index: 60;
+      margin: 12px;
+      padding: 8px 10px;
+      border: 1px solid var(--card-br);
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .back-chip{
-      display:inline-flex; align-items:center; gap:8px;
-      border:1px solid #cfe0ff; background:#eaf2ff; color:#1356c9;
-      border-radius:999px; padding:8px 12px; font-size:clamp(12px, 3vw, 14px); font-weight:800; cursor:pointer;
+
+    .back-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #cfe0ff;
+      background: #eaf2ff;
+      color: #1356c9;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: clamp(12px, 3vw, 14px);
+      font-weight: 800;
+      cursor: pointer;
     }
-    .back-chip:hover{ background:#dce9ff; }
+
+    .back-chip:hover {
+      background: #dce9ff;
+    }
 
     /* === Minimal Offers Hero (image + name + original price only) === */
-    .offers-hero{
-      margin:12px; border:1px solid var(--card-br);
-      background: var(--grad-hero); border-radius:16px; box-shadow:var(--card-shadow);
-      padding:14px;
-      display:grid; grid-template-columns: 180px 1fr; gap:14px; align-items:center;
+    .offers-hero {
+      margin: 12px;
+      border: 1px solid var(--card-br);
+      background: var(--grad-hero);
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 14px;
+      align-items: center;
     }
-    .offers-hero-figure{
-      width:180px; aspect-ratio:1/1; border-radius:14px; overflow:hidden;
-      background:#ffffff; display:flex; align-items:center; justify-content:center; border:1px solid #e6e9f5;
-      position:relative;
+
+    .offers-hero-figure {
+      width: 180px;
+      aspect-ratio: 1/1;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #e6e9f5;
+      position: relative;
     }
-    .offers-hero-figure img{
-      width:100%; height:100%; object-fit:contain; transform: scale(0.96);
-      transition: transform .35s cubic-bezier(.22,.61,.36,1), filter .35s; will-change: transform;
+
+    .offers-hero-figure img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transform: scale(0.96);
+      transition: transform .35s cubic-bezier(.22, .61, .36, 1), filter .35s;
+      will-change: transform;
     }
-    @media (hover:hover){
-      .offers-hero-figure:hover img{ transform: scale(1.15); filter: drop-shadow(0 10px 22px rgba(0,0,0,.16)); }
+
+    @media (hover:hover) {
+      .offers-hero-figure:hover img {
+        transform: scale(1.15);
+        filter: drop-shadow(0 10px 22px rgba(0, 0, 0, .16));
+      }
     }
-    .offers-hero-main{ min-width:0; }
-    .offers-hero-title{
-      margin:0 0 6px; color:var(--title); font-weight:900; line-height:1.2;
+
+    .offers-hero-main {
+      min-width: 0;
+    }
+
+    .offers-hero-title {
+      margin: 0 0 6px;
+      color: var(--title);
+      font-weight: 900;
+      line-height: 1.2;
       /* קטן יותר במובייל צר, ועדיין קריא במסכים רחבים */
       font-size: clamp(15px, 4.2vw, 22px);
-      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
-    .offers-hero-price{
-      margin:0; color:#0a3a90; font-weight:900; font-size: clamp(12px, 3.2vw, 14px);
-      background:#eef5ff; display:inline-block; padding:6px 10px; border-radius:999px; border:1px solid #d8e5ff;
+
+    .offers-hero-price {
+      margin: 0;
+      color: #0a3a90;
+      font-weight: 900;
+      font-size: clamp(12px, 3.2vw, 14px);
+      background: #eef5ff;
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #d8e5ff;
     }
 
     /* Offer cards */
-    .loading-section{text-align:center;padding:30px;color:#444;font-size:clamp(12px, 3.2vw, 15px)}
-    .offer-card{
-      border:1px solid #d6d6d6;border-radius:12px;padding:12px 14px;margin:0 12px 12px;background:#fff;
-      box-shadow:var(--card-shadow);cursor:pointer;transition:all .2s
+    .loading-section {
+      text-align: center;
+      padding: 30px;
+      color: #444;
+      font-size: clamp(12px, 3.2vw, 15px)
     }
-    .offer-card:hover{background-color:#f5faff;box-shadow:var(--card-shadow-hover)}
-    .offer-details{
-      display:flex;justify-content:space-between;align-items:center;
-      font-size:clamp(12px, 3.2vw, 15px);color:#333;font-weight:800
+
+    .offer-card {
+      border: 1px solid #d6d6d6;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin: 0 12px 12px;
+      background: #fff;
+      box-shadow: var(--card-shadow);
+      cursor: pointer;
+      transition: all .2s
     }
-    .savings{margin-top:6px;font-size:clamp(11px, 3vw, 13px);font-weight:800}
-    .savings.good{color:#0c8b31}.savings.bad{color:#c62828}.savings.neutral{color:#777}
-    .cheapest-tag{
-      margin-top:6px;display:inline-block;background-color:#0c8b31;color:#fff;padding:2px 8px;
-      font-size:clamp(11px, 2.8vw, 12px);border-radius:999px;font-weight:800;box-shadow:0 1px 3px rgba(0,0,0,.1)
+
+    .offer-card:hover {
+      background-color: #f5faff;
+      box-shadow: var(--card-shadow-hover)
+    }
+
+    .offer-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: clamp(12px, 3.2vw, 15px);
+      color: #333;
+      font-weight: 800
+    }
+
+    .savings {
+      margin-top: 6px;
+      font-size: clamp(11px, 3vw, 13px);
+      font-weight: 800
+    }
+
+    .savings.good {
+      color: #0c8b31
+    }
+
+    .savings.bad {
+      color: #c62828
+    }
+
+    .savings.neutral {
+      color: #777
+    }
+
+    .cheapest-tag {
+      margin-top: 6px;
+      display: inline-block;
+      background-color: #0c8b31;
+      color: #fff;
+      padding: 2px 8px;
+      font-size: clamp(11px, 2.8vw, 12px);
+      border-radius: 999px;
+      font-weight: 800;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .1)
     }
 
     /* Skeleton + CTA blur */
-    .results-skeleton{position:relative;margin:12px}
-    .results-skeleton.blur .product{filter:blur(3px);pointer-events:none}
-    .skeleton-product{
-      border:1px solid var(--card-br);padding:12px;display:flex;align-items:center;
-      background:var(--card-bg);border-radius:14px;box-shadow:var(--card-shadow);margin-bottom:12px;gap:12px
+    .results-skeleton {
+      position: relative;
+      margin: 12px
     }
-    .skeleton-thumb{width:112px;height:112px;border-radius:12px;background:#eee}
-    .skeleton-text{flex:1}
-    .skeleton-line{height:14px;margin:6px 0;background:#eee;border-radius:8px}
-    .skeleton-line.w1{width:70%}.skeleton-line.w2{width:45%}
-    .overlay-continue{
-      position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-      background:rgba(255,255,255,.8);backdrop-filter:blur(2px);border-radius:12px
+
+    .results-skeleton.blur .product {
+      filter: blur(3px);
+      pointer-events: none
     }
-    .overlay-card{
-      background:#fff;border:1px solid #d6d6d6;border-radius:12px;padding:14px 16px;
-      box-shadow:0 8px 24px rgba(0,0,0,.12);text-align:center;max-width:360px
+
+    .skeleton-product {
+      border: 1px solid var(--card-br);
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      background: var(--card-bg);
+      border-radius: 14px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 12px;
+      gap: 12px
     }
-    .overlay-card h4{margin:0 0 8px;color:#333;font-size:clamp(14px, 3.6vw, 16px)}
-    .overlay-card p{margin:0 0 12px;color:#666;font-size:clamp(12px, 3.2vw, 14px)}
-    .overlay-btn{
-      display:inline-block;padding:10px 16px;background:var(--brand);color:#fff;border:none;
-      border-radius:10px;cursor:pointer;font-size:clamp(13px, 3.2vw, 15px)
+
+    .skeleton-thumb {
+      width: 112px;
+      height: 112px;
+      border-radius: 12px;
+      background: #eee
     }
-    .overlay-btn:hover{background:#1558b3}
+
+    .skeleton-text {
+      flex: 1
+    }
+
+    .skeleton-line {
+      height: 14px;
+      margin: 6px 0;
+      background: #eee;
+      border-radius: 8px
+    }
+
+    .skeleton-line.w1 {
+      width: 70%
+    }
+
+    .skeleton-line.w2 {
+      width: 45%
+    }
+
+    .overlay-continue {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, .8);
+      backdrop-filter: blur(2px);
+      border-radius: 12px
+    }
+
+    .overlay-card {
+      background: #fff;
+      border: 1px solid #d6d6d6;
+      border-radius: 12px;
+      padding: 14px 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
+      text-align: center;
+      max-width: 360px
+    }
+
+    .overlay-card h4 {
+      margin: 0 0 8px;
+      color: #333;
+      font-size: clamp(14px, 3.6vw, 16px)
+    }
+
+    .overlay-card p {
+      margin: 0 0 12px;
+      color: #666;
+      font-size: clamp(12px, 3.2vw, 14px)
+    }
+
+    .overlay-btn {
+      display: inline-block;
+      padding: 10px 16px;
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: clamp(13px, 3.2vw, 15px)
+    }
+
+    .overlay-btn:hover {
+      background: #1558b3
+    }
 
     /* Mobile-first tightening for very small iframes */
-    @media (max-width:420px){
-      .product{ grid-template-columns: 92px 1fr auto; padding:10px; gap:10px; }
-      .product-figure{ width:92px; }
-      .search-results{ gap:10px; }
-      .offers-hero{ grid-template-columns: 150px 1fr; gap:12px; padding:12px; }
-      .offers-hero-figure{ width:150px; }
+    @media (max-width:420px) {
+      .product {
+        grid-template-columns: 92px 1fr auto;
+        padding: 10px;
+        gap: 10px;
+      }
+
+      .product-figure {
+        width: 92px;
+      }
+
+      .search-results {
+        gap: 10px;
+      }
+
+      .offers-hero {
+        grid-template-columns: 150px 1fr;
+        gap: 12px;
+        padding: 12px;
+      }
+
+      .offers-hero-figure {
+        width: 150px;
+      }
     }
-    @media (max-width:360px){
-      .product{ grid-template-columns: 84px 1fr; grid-template-rows:auto auto; }
-      .price-col{ grid-column:1 / -1; }
-      .product-figure{ width:84px; }
-      .offers-hero{ grid-template-columns: 1fr; }
-      .offers-hero-figure{ width:100%; max-width:320px; justify-self:center; }
-      .offers-hero-main{ text-align:center; }
+
+    @media (max-width:360px) {
+      .product {
+        grid-template-columns: 84px 1fr;
+        grid-template-rows: auto auto;
+      }
+
+      .price-col {
+        grid-column: 1 / -1;
+      }
+
+      .product-figure {
+        width: 84px;
+      }
+
+      .offers-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .offers-hero-figure {
+        width: 100%;
+        max-width: 320px;
+        justify-self: center;
+      }
+
+      .offers-hero-main {
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -314,68 +657,68 @@
     // ===== מונה טעינות אוטומטיות ללא קליק =====
     const AUTOLOADS_KEY = 'autoloads_without_click';
     const AUTOLOADS_LIMIT = 5;
-    function getAutoloadsCount(){ return parseInt(localStorage.getItem(AUTOLOADS_KEY) || '0', 10); }
-    function setAutoloadsCount(n){ localStorage.setItem(AUTOLOADS_KEY, String(n)); }
-    function incAutoloadsCount(){ setAutoloadsCount(getAutoloadsCount()+1); }
-    function resetAutoloads(){ setAutoloadsCount(0); }
-    function shouldAutoSearch(){ return getAutoloadsCount() < AUTOLOADS_LIMIT; }
+    function getAutoloadsCount() { return parseInt(localStorage.getItem(AUTOLOADS_KEY) || '0', 10); }
+    function setAutoloadsCount(n) { localStorage.setItem(AUTOLOADS_KEY, String(n)); }
+    function incAutoloadsCount() { setAutoloadsCount(getAutoloadsCount() + 1); }
+    function resetAutoloads() { setAutoloadsCount(0); }
+    function shouldAutoSearch() { return getAutoloadsCount() < AUTOLOADS_LIMIT; }
 
     // ===== קאש חיפושים (LRU עד 5) =====
     const SEARCH_CACHE_KEY = 'search_results_cache_v1';
     const SEARCH_CACHE_LIMIT = 5;
 
-    function loadCache(){ try { return JSON.parse(localStorage.getItem(SEARCH_CACHE_KEY) || '[]'); } catch { return []; } }
-    function saveCache(entries){ localStorage.setItem(SEARCH_CACHE_KEY, JSON.stringify(entries.slice(0, SEARCH_CACHE_LIMIT))); }
-    function normalizeQuery(q){ return (q||'').trim().toLowerCase(); }
-    function cleanPriceString(priceStr){ if(!priceStr) return null; return parseFloat(priceStr.replace(/[^\d.]/g,'')); }
-    function buildSearchKey(query){
+    function loadCache() { try { return JSON.parse(localStorage.getItem(SEARCH_CACHE_KEY) || '[]'); } catch { return []; } }
+    function saveCache(entries) { localStorage.setItem(SEARCH_CACHE_KEY, JSON.stringify(entries.slice(0, SEARCH_CACHE_LIMIT))); }
+    function normalizeQuery(q) { return (q || '').trim().toLowerCase(); }
+    function cleanPriceString(priceStr) { if (!priceStr) return null; return parseFloat(priceStr.replace(/[^\d.]/g, '')); }
+    function buildSearchKey(query) {
       const q = normalizeQuery(query);
       const p = cleanPriceString(getUrlParameter('price')) || 0;
       return `${q}__${p}`;
     }
-    function getFromCache(key){
+    function getFromCache(key) {
       const entries = loadCache();
       const idx = entries.findIndex(e => e.key === key);
-      if (idx > -1){
+      if (idx > -1) {
         const hit = entries[idx];
-        entries.splice(idx,1);
+        entries.splice(idx, 1);
         entries.unshift(hit);
         saveCache(entries);
         return hit.results;
       }
       return null;
     }
-    function putInCache(key, results){
+    function putInCache(key, results) {
       const entries = loadCache();
       const existIdx = entries.findIndex(e => e.key === key);
-      if (existIdx > -1) entries.splice(existIdx,1);
+      if (existIdx > -1) entries.splice(existIdx, 1);
       entries.unshift({ key, results, ts: Date.now() });
       if (entries.length > SEARCH_CACHE_LIMIT) entries.length = SEARCH_CACHE_LIMIT;
       saveCache(entries);
     }
 
     // ===== Utilities =====
-    function extractDomainFromUrl(url){ try{ return new URL(url).hostname.replace(/^www\./,''); }catch(e){ return 'unknown'; } }
-    function cleanDisplayPrice(priceStr){
-      if(!priceStr) return null;
-      const cleanPrice = priceStr.replace(/[₪]/g,'').trim();
-      const numPrice = parseFloat(cleanPrice.replace(/,/g,''));
+    function extractDomainFromUrl(url) { try { return new URL(url).hostname.replace(/^www\./, ''); } catch (e) { return 'unknown'; } }
+    function cleanDisplayPrice(priceStr) {
+      if (!priceStr) return null;
+      const cleanPrice = priceStr.replace(/[₪]/g, '').trim();
+      const numPrice = parseFloat(cleanPrice.replace(/,/g, ''));
       return (!numPrice || isNaN(numPrice)) ? null : cleanPrice;
     }
-    function formatPrice(price){
-      if(!price) return '';
+    function formatPrice(price) {
+      if (!price) return '';
       const s = String(price).trim();
       if (s.includes('₪') || s.includes('ש"ח') || s.includes('שח')) return s;
       if (/^[\d,.\s]+$/.test(s)) return `₪${s}`;
       return `₪${s}`;
     }
 
-    function displayProductHeader(){
+    function displayProductHeader() {
       const urlParams = new URLSearchParams(window.location.search);
       const query = urlParams.get('query');
       const price = urlParams.get('price');
       const headerDiv = document.getElementById('productHeader');
-      if(!headerDiv) return;
+      if (!headerDiv) return;
 
       const cleanPrice = cleanDisplayPrice(price);
       const priceText = cleanPrice ? `• מחיר: ₪${cleanPrice}` : '';
@@ -392,45 +735,45 @@
     }
 
     // ===== מצב מסך והיסטוריה לחזרה =====
-    let currentResults=[]; let currentSearchQuery='';
-    let lastResultsSnapshot=null;   // לשחזור הרשימה הראשונה
-    let lastScrollY=0;
-    let inOffersView=false;
+    let currentResults = []; let currentSearchQuery = '';
+    let lastResultsSnapshot = null;   // לשחזור הרשימה הראשונה
+    let lastScrollY = 0;
+    let inOffersView = false;
 
     // ===== לוג/טעינה =====
-    function showLoadingSpinner(){ document.getElementById('loadingContainer').style.display='block'; }
-    function hideLoadingSpinner(){ document.getElementById('loadingContainer').style.display='none'; }
+    function showLoadingSpinner() { document.getElementById('loadingContainer').style.display = 'block'; }
+    function hideLoadingSpinner() { document.getElementById('loadingContainer').style.display = 'none'; }
 
-    let countdownIntervalId=null;
-    function startCountdown(){
-      let countdown=10; const el=document.getElementById('countdown');
+    let countdownIntervalId = null;
+    function startCountdown() {
+      let countdown = 10; const el = document.getElementById('countdown');
       if (!el) return;
       if (countdownIntervalId) clearInterval(countdownIntervalId);
-      countdownIntervalId=setInterval(()=>{
-        countdown--; el.textContent=countdown;
-        if (countdown<=0){ clearInterval(countdownIntervalId); countdownIntervalId=null; if (currentResults.length===0){ displayErrorMessage(`<p>נותן לזה עוד רגע...</p>`);} }
-      },1000);
+      countdownIntervalId = setInterval(() => {
+        countdown--; el.textContent = countdown;
+        if (countdown <= 0) { clearInterval(countdownIntervalId); countdownIntervalId = null; if (currentResults.length === 0) { displayErrorMessage(`<p>נותן לזה עוד רגע...</p>`); } }
+      }, 1000);
     }
-    function stopCountdown(){ if (countdownIntervalId){ clearInterval(countdownIntervalId); countdownIntervalId=null; } }
-    function displayErrorMessage(message){
-      const container=document.getElementById('searchResults');
-      if (container) container.innerHTML=message;
+    function stopCountdown() { if (countdownIntervalId) { clearInterval(countdownIntervalId); countdownIntervalId = null; } }
+    function displayErrorMessage(message) {
+      const container = document.getElementById('searchResults');
+      if (container) container.innerHTML = message;
     }
-    function showLoading(){ const c=document.getElementById('loadingContainer'); if (c){ c.style.display='block'; startCountdown(); } }
-    function hideLoading(){ const c=document.getElementById('loadingContainer'); if (c) c.style.display='none'; }
+    function showLoading() { const c = document.getElementById('loadingContainer'); if (c) { c.style.display = 'block'; startCountdown(); } }
+    function hideLoading() { const c = document.getElementById('loadingContainer'); if (c) c.style.display = 'none'; }
 
-    function getUrlParameter(name){ return new URLSearchParams(window.location.search).get(name); }
+    function getUrlParameter(name) { return new URLSearchParams(window.location.search).get(name); }
 
     // ===== UI שלדים מטושטשים + CTA =====
-    function renderBlurredPreviewWithCTA(){
-      const container=document.getElementById('searchResults');
-      container.innerHTML='';
-      const wrap=document.createElement('div');
-      wrap.className='results-skeleton blur';
-      for (let i=0;i<3;i++){
-        const item=document.createElement('div');
-        item.className='skeleton-product';
-        item.innerHTML=`
+    function renderBlurredPreviewWithCTA() {
+      const container = document.getElementById('searchResults');
+      container.innerHTML = '';
+      const wrap = document.createElement('div');
+      wrap.className = 'results-skeleton blur';
+      for (let i = 0; i < 3; i++) {
+        const item = document.createElement('div');
+        item.className = 'skeleton-product';
+        item.innerHTML = `
           <div class="skeleton-thumb"></div>
           <div class="skeleton-text" style="flex:1">
             <div class="skeleton-line w1"></div>
@@ -439,9 +782,9 @@
         `;
         wrap.appendChild(item);
       }
-      const overlay=document.createElement('div');
-      overlay.className='overlay-continue';
-      overlay.innerHTML=`
+      const overlay = document.createElement('div');
+      overlay.className = 'overlay-continue';
+      overlay.innerHTML = `
         <div class="overlay-card">
           <h4>רוצה להמשיך את ההשוואה?</h4>
           <p>לחיצה תטען תוצאות מעודכנות ותאפס את המונה.</p>
@@ -451,7 +794,7 @@
       wrap.appendChild(overlay);
       container.appendChild(wrap);
 
-      document.getElementById('continueCompareBtn').onclick=()=>{
+      document.getElementById('continueCompareBtn').onclick = () => {
         resetAutoloads();
         const qp = new URLSearchParams(window.location.search).get('query');
         if (qp) search(qp);
@@ -459,12 +802,12 @@
     }
 
     // ===== חיפוש עם קאש =====
-    function search(query){
-      currentSearchQuery=query;
+    function search(query) {
+      currentSearchQuery = query;
       const key = buildSearchKey(query);
 
       const cached = getFromCache(key);
-      if (cached && Array.isArray(cached)){
+      if (cached && Array.isArray(cached)) {
         sendGAEvent('search_cache_hit', { search_key: key, results_count: cached.length });
         currentResults = cached;
         displaySearchResults(cached);
@@ -474,46 +817,46 @@
       sendGAEvent('search_cache_miss', { search_key: key });
 
       showLoadingSpinner();
-      return new Promise((resolve,reject)=>{
+      return new Promise((resolve, reject) => {
         fetchSearchResults(query, key)
-          .then(()=>{ hideLoadingSpinner(); resolve(); })
-          .catch(error=>{ hideLoadingSpinner(); reject(error); });
+          .then(() => { hideLoadingSpinner(); resolve(); })
+          .catch(error => { hideLoadingSpinner(); reject(error); });
       });
     }
 
-    function fetchSearchResults(query, keyForCache){
+    function fetchSearchResults(query, keyForCache) {
       showLoading();
 
-      const priceParam=getUrlParameter('price');
-      const referrerUrl=getUrlParameter('url');
-      const cleanedPrice=cleanPriceString(priceParam);
+      const priceParam = getUrlParameter('price');
+      const referrerUrl = getUrlParameter('url');
+      const cleanedPrice = cleanPriceString(priceParam);
 
-      const isAdvancedSearchEnabled=getAdvancedSearchStatus();
-      let apiUrl=`https://kufu51g8uk.execute-api.il-central-1.amazonaws.com/stag/search?query=${encodeURIComponent(query)}&items=10`;
-      if (isAdvancedSearchEnabled) apiUrl+='&wideSearch=true';
+      const isAdvancedSearchEnabled = getAdvancedSearchStatus();
+      let apiUrl = `https://kufu51g8uk.execute-api.il-central-1.amazonaws.com/stag/search?query=${encodeURIComponent(query)}&items=10`;
+      if (isAdvancedSearchEnabled) apiUrl += '&wideSearch=true';
 
-      if (cleanedPrice && cleanedPrice>0){
-        const minPrice=Math.max(1, cleanedPrice*0.3);
-        const maxPrice=cleanedPrice*3;
-        apiUrl+=`&minPrice=${minPrice.toFixed(2)}&maxPrice=${maxPrice.toFixed(2)}`;
-        if (referrerUrl) apiUrl+=`&url=${encodeURIComponent(referrerUrl)}`;
+      if (cleanedPrice && cleanedPrice > 0) {
+        const minPrice = Math.max(1, cleanedPrice * 0.3);
+        const maxPrice = cleanedPrice * 3;
+        apiUrl += `&minPrice=${minPrice.toFixed(2)}&maxPrice=${maxPrice.toFixed(2)}`;
+        if (referrerUrl) apiUrl += `&url=${encodeURIComponent(referrerUrl)}`;
       }
 
-      return fetch(apiUrl,{method:'GET',mode:'cors',headers:{'Accept':'application/json'}})
-        .then(response=>{
+      return fetch(apiUrl, { method: 'GET', mode: 'cors', headers: { 'Accept': 'application/json' } })
+        .then(response => {
           if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
           return response.json();
         })
-        .then(data=>{
+        .then(data => {
           stopCountdown();
           if (!Array.isArray(data)) throw new Error('Invalid response format: expected array');
-          currentResults=data;
+          currentResults = data;
           displaySearchResults(data);
           hideLoading();
-          try { putInCache(keyForCache || buildSearchKey(query), data); } catch(e){}
+          try { putInCache(keyForCache || buildSearchKey(query), data); } catch (e) { }
         })
-        .catch(error=>{
-          console.error('Search error:', {error:error.message, query, apiUrl, timestamp:new Date().toISOString()});
+        .catch(error => {
+          console.error('Search error:', { error: error.message, query, apiUrl, timestamp: new Date().toISOString() });
           hideLoading();
           const retryButtonHtml = `
             <div class="error-container" style="text-align:center;padding:20px;">
@@ -523,128 +866,128 @@
               <a href="https://mail.google.com/mail/?view=cm&fs=1&to=shamzezolyoter@gmail.com&su=פידבק על תוצאות החיפוש&body=היי, נראה שיש תקלה בטעינת תוצאות החיפוש:" target="_blank" style="color:#1a73e8;">דווח על התקלה</a>
             </div>`;
           displayErrorMessage(retryButtonHtml);
-          const retryButton=document.getElementById('retryButton');
-          if (retryButton){
-            retryButton.addEventListener('click',(e)=>{
+          const retryButton = document.getElementById('retryButton');
+          if (retryButton) {
+            retryButton.addEventListener('click', (e) => {
               e.preventDefault();
-              const retryUrl=`https://yossidisk.github.io/Shamze/cupons.html?source=side&search=true&query=${encodeURIComponent(currentSearchQuery||'')}`;
-              window.open(retryUrl,'_blank');
+              const retryUrl = `https://yossidisk.github.io/Shamze/cupons.html?source=side&search=true&query=${encodeURIComponent(currentSearchQuery || '')}`;
+              window.open(retryUrl, '_blank');
             });
           }
         });
     }
 
-    function sortResultsByClosestToPrice(results, referencePrice){
-      if (!referencePrice || results.length===0) return results;
-      const cleanedRef=parseFloat(referencePrice.replace(/[^\d.]/g,''));
+    function sortResultsByClosestToPrice(results, referencePrice) {
+      if (!referencePrice || results.length === 0) return results;
+      const cleanedRef = parseFloat(referencePrice.replace(/[^\d.]/g, ''));
       if (isNaN(cleanedRef)) return results;
 
-      let belowRef=[], aboveRef=[];
-      for (const product of results){
-        const price=parseFloat(product.price.replace(/[^\d.]/g,''));
+      let belowRef = [], aboveRef = [];
+      for (const product of results) {
+        const price = parseFloat(product.price.replace(/[^\d.]/g, ''));
         if (isNaN(price)) continue;
-        if (price<cleanedRef) belowRef.push({...product, numericPrice:price});
-        else aboveRef.push({...product, numericPrice:price});
+        if (price < cleanedRef) belowRef.push({ ...product, numericPrice: price });
+        else aboveRef.push({ ...product, numericPrice: price });
       }
-      belowRef.sort((a,b)=>b.numericPrice-a.numericPrice);
-      aboveRef.sort((a,b)=>a.numericPrice-b.numericPrice);
+      belowRef.sort((a, b) => b.numericPrice - a.numericPrice);
+      aboveRef.sort((a, b) => a.numericPrice - b.numericPrice);
       return [...belowRef, ...aboveRef];
     }
 
-    function calculateSimilarity(a,b){
-      a=a.toLowerCase().trim(); b=b.toLowerCase().trim();
-      if (a===b) return 100;
+    function calculateSimilarity(a, b) {
+      a = a.toLowerCase().trim(); b = b.toLowerCase().trim();
+      if (a === b) return 100;
       if (a.includes(b) || b.includes(a)) return 90;
-      const aWords=a.split(/\s+/), bWords=b.split(/\s+/);
-      const common=aWords.filter(w=>bWords.includes(w));
-      const score=(common.length/Math.max(aWords.length,bWords.length))*80;
+      const aWords = a.split(/\s+/), bWords = b.split(/\s+/);
+      const common = aWords.filter(w => bWords.includes(w));
+      const score = (common.length / Math.max(aWords.length, bWords.length)) * 80;
       return Math.round(score);
     }
 
     /* ===== Renderers ===== */
-    function displaySearchResults(results){
-      inOffersView=false;
-      document.getElementById('offersToolbarMount').innerHTML=''; // אין toolbar במצב רשימה
-      const container=document.getElementById('searchResults');
-      container.innerHTML='';
+    function displaySearchResults(results) {
+      inOffersView = false;
+      document.getElementById('offersToolbarMount').innerHTML = ''; // אין toolbar במצב רשימה
+      const container = document.getElementById('searchResults');
+      container.innerHTML = '';
 
-      if (!results || results.length===0){
+      if (!results || results.length === 0) {
         const noResultsHtml = `
           <div class="error-container" style="text-align:center;padding:20px;">
             <p style="color:#666;">לא נמצאו תוצאות למוצר "${currentSearchQuery}"</p>
             <a id="retryButton" href="#" target="_blank" style="display:inline-block;margin:10px;padding:10px 20px;background-color:#1a73e8;color:#fff;text-decoration:none;border-radius:10px;">נסה בדרך אחרת</a>
           </div>`;
         displayErrorMessage(noResultsHtml);
-        const retryButton=document.getElementById('retryButton');
-        if (retryButton){
-          retryButton.addEventListener('click',(e)=>{
+        const retryButton = document.getElementById('retryButton');
+        if (retryButton) {
+          retryButton.addEventListener('click', (e) => {
             e.preventDefault();
-            const retryUrl=`https://yossidisk.github.io/Shamze/cupons.html?source=side&search=true&query=${encodeURIComponent(currentSearchQuery)}`;
-            window.open(retryUrl,'_blank');
+            const retryUrl = `https://yossidisk.github.io/Shamze/cupons.html?source=side&search=true&query=${encodeURIComponent(currentSearchQuery)}`;
+            window.open(retryUrl, '_blank');
           });
         }
         return;
       }
 
-      const sortType=document.getElementById('sort-select')?.value;
-      if (!sortType || sortType==='default'){
-        const queryText=currentSearchQuery || getUrlParameter('query') || '';
-        results.sort((a,b)=> calculateSimilarity(b.name||'',queryText) - calculateSimilarity(a.name||'',queryText));
+      const sortType = document.getElementById('sort-select')?.value;
+      if (!sortType || sortType === 'default') {
+        const queryText = currentSearchQuery || getUrlParameter('query') || '';
+        results.sort((a, b) => calculateSimilarity(b.name || '', queryText) - calculateSimilarity(a.name || '', queryText));
       }
 
-      const initialResults=results.slice(0,3);
-      const remainingResults=results.slice(3);
+      const initialResults = results.slice(0, 3);
+      const remainingResults = results.slice(3);
 
-      initialResults.forEach(product=>{
-        const el=createProductElement(product);
+      initialResults.forEach(product => {
+        const el = createProductElement(product);
         container.appendChild(el);
       });
 
-      if (remainingResults.length>0){
-        const btn=document.createElement('button');
-        btn.textContent='עוד תוצאות';
-        btn.className='show-more-button';
-        btn.onclick=()=> showMoreResults(remainingResults);
+      if (remainingResults.length > 0) {
+        const btn = document.createElement('button');
+        btn.textContent = 'עוד תוצאות';
+        btn.className = 'show-more-button';
+        btn.onclick = () => showMoreResults(remainingResults);
         container.appendChild(btn);
       }
     }
 
-    function createProductElement(product){
-      const productDiv=document.createElement('div');
-      productDiv.className='product';
+    function createProductElement(product) {
+      const productDiv = document.createElement('div');
+      productDiv.className = 'product';
 
       // FIGURE
-      const figure=document.createElement('div');
-      figure.className='product-figure';
-      const img=document.createElement('img');
-      if (product.image){
-        img.src=product.image;
-      }else if (product.url){
+      const figure = document.createElement('div');
+      figure.className = 'product-figure';
+      const img = document.createElement('img');
+      if (product.image) {
+        img.src = product.image;
+      } else if (product.url) {
         const url = product.url;
-        if (url.includes('ksp.co.il')){
+        if (url.includes('ksp.co.il')) {
           const sku = url.match(/item\/(\d+)/)?.[1];
           if (sku) img.src = `https://img.ksp.co.il/item/${sku}/b_1.jpg`;
-        } else if (url.includes('zap.co.il')){
+        } else if (url.includes('zap.co.il')) {
           const sku = url.match(/(\d+)$/)?.[1];
           if (sku) img.src = `https://img.zap.co.il/pics/new/${sku}.gif`;
         }
       }
-      img.alt='תמונת מוצר'; img.loading='lazy';
+      img.alt = 'תמונת מוצר'; img.loading = 'lazy';
       figure.appendChild(img);
 
       // MAIN (ללא שם אתר)
-      const main=document.createElement('div');
-      main.className='product-main';
-      const title=document.createElement('h3');
-      title.className='product-title';
+      const main = document.createElement('div');
+      main.className = 'product-main';
+      const title = document.createElement('h3');
+      title.className = 'product-title';
       title.textContent = product.name || 'מוצר';
       main.appendChild(title);
 
       // PRICE
-      const priceCol=document.createElement('div');
-      priceCol.className='price-col';
-      const pricePill=document.createElement('div');
-      pricePill.className='price-pill';
+      const priceCol = document.createElement('div');
+      priceCol.className = 'price-col';
+      const pricePill = document.createElement('div');
+      pricePill.className = 'price-pill';
       pricePill.textContent = `מחיר משוער: ${formatPrice(product.price)}`;
       priceCol.appendChild(pricePill);
 
@@ -652,13 +995,13 @@
       productDiv.appendChild(main);
       productDiv.appendChild(priceCol);
 
-      productDiv.onclick=()=>{ logClick(product); handleProductClick(product); };
+      productDiv.onclick = () => { logClick(product); handleProductClick(product); };
 
       return productDiv;
     }
 
     // ===== Sticky Back toolbar =====
-    function renderOffersToolbar(onBack){
+    function renderOffersToolbar(onBack) {
       const mount = document.getElementById('offersToolbarMount');
       mount.innerHTML = `
         <div class="offers-toolbar">
@@ -672,16 +1015,16 @@
     }
 
     // ===== Minimal Offers Hero (image + name + original price) =====
-    function renderOffersHero(product, numericPrice){
-      const topContainer=document.getElementById('productHeader');
+    function renderOffersHero(product, numericPrice) {
+      const topContainer = document.getElementById('productHeader');
 
       let heroImg = product?.image || '';
-      if (!heroImg && product?.url){
+      if (!heroImg && product?.url) {
         const url = product.url;
-        if (url.includes('ksp.co.il')){
+        if (url.includes('ksp.co.il')) {
           const sku = url.match(/item\/(\d+)/)?.[1];
           if (sku) heroImg = `https://img.ksp.co.il/item/${sku}/b_1.jpg`;
-        } else if (url.includes('zap.co.il')){
+        } else if (url.includes('zap.co.il')) {
           const sku = url.match(/(\d+)$/)?.[1];
           if (sku) heroImg = `https://img.zap.co.il/pics/new/${sku}.gif`;
         }
@@ -694,71 +1037,71 @@
           </div>
           <div class="offers-hero-main">
             <h1 class="offers-hero-title">${product?.name || 'מוצר'}</h1>
-            <p class="offers-hero-price">מחיר מקורי: ₪${Number(numericPrice||0).toFixed(2)}</p>
+            <p class="offers-hero-price">מחיר מקורי: ₪${Number(numericPrice || 0).toFixed(2)}</p>
           </div>
         </section>
       `;
     }
 
     // ===== מעבר למסך ההצעות =====
-    async function handleProductClick(product){
+    async function handleProductClick(product) {
       // שמירת מצב לחזרה
       lastResultsSnapshot = [...currentResults];
       lastScrollY = window.scrollY;
       inOffersView = true;
 
-      const resultsContainer=document.getElementById('searchResults');
+      const resultsContainer = document.getElementById('searchResults');
 
       // toolbar חזרה
       renderOffersToolbar(goBackToFirstList);
 
       // skeleton מצב טעינה
-      resultsContainer.style.opacity='0.35';
-      resultsContainer.innerHTML=`
+      resultsContainer.style.opacity = '0.35';
+      resultsContainer.innerHTML = `
         <div class="loading-section">
           <div class="loading-spinner"></div>
           <p style="text-align:center;">מחפש הצעות נוספות עבורך...</p>
         </div>`;
 
-      const priceFromUrl=getUrlParameter('price');
-      const numericPrice=parseFloat((priceFromUrl||'').replace(/[^\d.]/g,'')) || 0;
+      const priceFromUrl = getUrlParameter('price');
+      const numericPrice = parseFloat((priceFromUrl || '').replace(/[^\d.]/g, '')) || 0;
 
       // HERO מינימלי בראש
       renderOffersHero(product, numericPrice);
 
-      const apiUrl=`https://vpfi5d6dw9.execute-api.il-central-1.amazonaws.com/default/getDirectShoppingLink`
-        + `?product_id=${encodeURIComponent(product.LinkParams?.value||'')}`
-        + `&product_token=${encodeURIComponent(product.product_token||'')}`
+      const apiUrl = `https://vpfi5d6dw9.execute-api.il-central-1.amazonaws.com/default/getDirectShoppingLink`
+        + `?product_id=${encodeURIComponent(product.LinkParams?.value || '')}`
+        + `&product_token=${encodeURIComponent(product.product_token || '')}`
         + `&expectedPrice=${encodeURIComponent(numericPrice)}`
-        + `&expectedMerchant=${encodeURIComponent(product.site||'')}`
+        + `&expectedMerchant=${encodeURIComponent(product.site || '')}`
         + `&list=true`;
 
-      try{
-        const res=await fetch(apiUrl);
-        const data=await res.json();
-        if (data.status!=='ok' || !data.offers || data.offers.length===0){
-          resultsContainer.innerHTML='<p style="text-align:center;">לא נמצאו הצעות נוספות.</p>';
-          resultsContainer.style.opacity='1';
+      try {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+        if (data.status !== 'ok' || !data.offers || data.offers.length === 0) {
+          resultsContainer.innerHTML = '<p style="text-align:center;">לא נמצאו הצעות נוספות.</p>';
+          resultsContainer.style.opacity = '1';
           return;
         }
 
         // הצגת הצעות
-        setTimeout(()=>{resultsContainer.style.opacity='1';},120);
-        resultsContainer.innerHTML='';
-        const sorted=[...data.offers].sort((a,b)=>a.price-b.price);
+        setTimeout(() => { resultsContainer.style.opacity = '1'; }, 120);
+        resultsContainer.innerHTML = '';
+        const sorted = [...data.offers].sort((a, b) => a.price - b.price);
 
-        sorted.forEach((offer)=>{
-          const card=document.createElement('div');
+        sorted.forEach((offer) => {
+          const card = document.createElement('div');
           const priceDiff = numericPrice - offer.price;
-          const isCheapest = offer.price===sorted[0].price;
-          const savingsText = priceDiff>0
+          const isCheapest = offer.price === sorted[0].price;
+          const savingsText = priceDiff > 0
             ? `<div class="savings good">חיסכון של ₪${priceDiff.toFixed(2)}</div>`
-            : priceDiff<0
+            : priceDiff < 0
               ? `<div class="savings bad">יקר ב־₪${Math.abs(priceDiff).toFixed(2)}</div>`
               : `<div class="savings neutral">אותו מחיר</div>`;
 
           card.className = `offer-card ${isCheapest ? 'highlight-offer' : ''}`;
-          card.innerHTML=`
+          card.innerHTML = `
             <div class="offer-details">
               <span class="merchant">${offer.merchant}</span>
               <span class="price">₪${offer.price.toFixed(2)}</span>
@@ -767,158 +1110,158 @@
             ${savingsText}
           `;
 
-          card.onclick=()=>{
-            const base_domain = (()=>{ try{ return new URL(offer.link).hostname.replace(/^www\./,''); }catch{ return extractDomainFromUrl(offer.link).replace(/^www\./,''); } })();
-            sendGAEvent('offer_select',{
-              event_category:'offers_list',
-              event_label:`${offer.merchant}_${product.name||'unknown'}`,
-              product_name:product.name||'unknown',
-              product_site:product.site||'unknown',
-              search_query:currentSearchQuery || (new URLSearchParams(window.location.search).get('query')) || 'unknown',
-              reference_price:isNaN(numericPrice)?'none':numericPrice,
-              offer_merchant:offer.merchant,
-              offer_price:offer.price,
-              selected_is_cheapest:isCheapest,
-              target_url:offer.link,
+          card.onclick = () => {
+            const base_domain = (() => { try { return new URL(offer.link).hostname.replace(/^www\./, ''); } catch { return extractDomainFromUrl(offer.link).replace(/^www\./, ''); } })();
+            sendGAEvent('offer_select', {
+              event_category: 'offers_list',
+              event_label: `${offer.merchant}_${product.name || 'unknown'}`,
+              product_name: product.name || 'unknown',
+              product_site: product.site || 'unknown',
+              search_query: currentSearchQuery || (new URLSearchParams(window.location.search).get('query')) || 'unknown',
+              reference_price: isNaN(numericPrice) ? 'none' : numericPrice,
+              offer_merchant: offer.merchant,
+              offer_price: offer.price,
+              selected_is_cheapest: isCheapest,
+              target_url: offer.link,
               base_domain
             });
-            const w=window.open(offer.link,'_blank');
-            if (w) w.opener=null;
+            const w = window.open(offer.link, '_blank');
+            if (w) w.opener = null;
           };
           resultsContainer.appendChild(card);
         });
-      }catch(err){
+      } catch (err) {
         console.error('API Error:', err);
-        resultsContainer.innerHTML='<p style="text-align:center;">אירעה שגיאה בטעינת ההצעות.</p>';
-        resultsContainer.style.opacity='1';
+        resultsContainer.innerHTML = '<p style="text-align:center;">אירעה שגיאה בטעינת ההצעות.</p>';
+        resultsContainer.style.opacity = '1';
       }
     }
 
-    function goBackToFirstList(){
+    function goBackToFirstList() {
       if (!lastResultsSnapshot) return;
-      inOffersView=false;
-      document.getElementById('offersToolbarMount').innerHTML='';   // הסרת toolbar
-      const topContainer=document.getElementById('productHeader');   // הסרת HERO
-      topContainer.innerHTML='';
+      inOffersView = false;
+      document.getElementById('offersToolbarMount').innerHTML = '';   // הסרת toolbar
+      const topContainer = document.getElementById('productHeader');   // הסרת HERO
+      topContainer.innerHTML = '';
       displayProductHeader(); // כותרת ברירת המחדל
       displaySearchResults(lastResultsSnapshot);
-      requestAnimationFrame(()=> window.scrollTo({ top:lastScrollY, behavior:'auto' }));
+      requestAnimationFrame(() => window.scrollTo({ top: lastScrollY, behavior: 'auto' }));
     }
 
-    function showMoreResults(remainingResults){
-      const container=document.getElementById('searchResults');
-      const btn=container.querySelector('.show-more-button');
-      remainingResults.forEach(product=>{
-        const el=createProductElement(product);
+    function showMoreResults(remainingResults) {
+      const container = document.getElementById('searchResults');
+      const btn = container.querySelector('.show-more-button');
+      remainingResults.forEach(product => {
+        const el = createProductElement(product);
         container.insertBefore(el, btn);
       });
       btn.remove();
     }
 
     // קליק על מוצר = איפוס מונה
-    function logClick(product){
+    function logClick(product) {
       if (!product) return;
       resetAutoloads();
 
-      const urlParams=new URLSearchParams(window.location.search);
-      const clickData={
-        searchParams:{
-          query:urlParams.get('query') || currentSearchQuery || 'unknown',
-          referencePrice:urlParams.get('price') || 'none',
-          referrerUrl:urlParams.get('url') || 'none',
-          originalDomain:urlParams.get('url') ? new URL(urlParams.get('url')).hostname : 'unknown'
+      const urlParams = new URLSearchParams(window.location.search);
+      const clickData = {
+        searchParams: {
+          query: urlParams.get('query') || currentSearchQuery || 'unknown',
+          referencePrice: urlParams.get('price') || 'none',
+          referrerUrl: urlParams.get('url') || 'none',
+          originalDomain: urlParams.get('url') ? new URL(urlParams.get('url')).hostname : 'unknown'
         },
-        productInfo:{...product},
-        productName:product.name||'unknown',
-        productPrice:product.price||'unknown',
-        numericPrice:parseFloat(String(product.price||'0').replace(/[^\d.]/g,'')) || 0,
-        targetSite:product.site||'unknown',
-        targetUrl:product.urlAff || product.url || 'unknown',
-        timestamp:new Date().toISOString(),
-        deviceInfo:{screenWidth:window.innerWidth, screenHeight:window.innerHeight, userAgent:navigator.userAgent}
+        productInfo: { ...product },
+        productName: product.name || 'unknown',
+        productPrice: product.price || 'unknown',
+        numericPrice: parseFloat(String(product.price || '0').replace(/[^\d.]/g, '')) || 0,
+        targetSite: product.site || 'unknown',
+        targetUrl: product.urlAff || product.url || 'unknown',
+        timestamp: new Date().toISOString(),
+        deviceInfo: { screenWidth: window.innerWidth, screenHeight: window.innerHeight, userAgent: navigator.userAgent }
       };
 
-      sendGAEvent('product_click',{
-        product_name:clickData.productName,
-        product_site:clickData.targetSite,
-        product_price:clickData.numericPrice,
-        search_query:clickData.searchParams.query,
-        reference_price:clickData.searchParams.referencePrice,
-        original_site:clickData.searchParams.originalDomain,
-        click_timestamp:clickData.timestamp,
-        target_url:clickData.targetUrl,
-        price_difference: clickData.searchParams.referencePrice!=='none'
-          ? (clickData.numericPrice - parseFloat(clickData.searchParams.referencePrice.replace(/[^\d.]/g,'')||'0')).toFixed(2)
+      sendGAEvent('product_click', {
+        product_name: clickData.productName,
+        product_site: clickData.targetSite,
+        product_price: clickData.numericPrice,
+        search_query: clickData.searchParams.query,
+        reference_price: clickData.searchParams.referencePrice,
+        original_site: clickData.searchParams.originalDomain,
+        click_timestamp: clickData.timestamp,
+        target_url: clickData.targetUrl,
+        price_difference: clickData.searchParams.referencePrice !== 'none'
+          ? (clickData.numericPrice - parseFloat(clickData.searchParams.referencePrice.replace(/[^\d.]/g, '') || '0')).toFixed(2)
           : 'none',
-        event_category:'search_results',
-        event_label:`${clickData.targetSite}_${clickData.searchParams.query}`
+        event_category: 'search_results',
+        event_label: `${clickData.targetSite}_${clickData.searchParams.query}`
       });
 
-      try{
-        let localClicks=JSON.parse(localStorage.getItem('productClicks')||'[]');
-        if (localClicks.length>=50) localClicks=localClicks.slice(-49);
+      try {
+        let localClicks = JSON.parse(localStorage.getItem('productClicks') || '[]');
+        if (localClicks.length >= 50) localClicks = localClicks.slice(-49);
         localClicks.push(clickData);
         localStorage.setItem('productClicks', JSON.stringify(localClicks));
-      }catch(e){}
+      } catch (e) { }
 
-      try{
-        window.parent.postMessage({type:'PRODUCT_CLICK_FROM_IFRAME', data:clickData, timestamp:Date.now()}, '*');
-      }catch(e){}
+      try {
+        window.parent.postMessage({ type: 'PRODUCT_CLICK_FROM_IFRAME', data: clickData, timestamp: Date.now() }, '*');
+      } catch (e) { }
       return clickData;
     }
 
     // ===== Advanced Search state =====
-    const ADVANCED_SEARCH_KEY='advancedSearchEnabled';
-    const ADVANCED_SEARCH_TIMESTAMP_KEY='advancedSearchTimestamp';
-    const ADVANCED_SEARCH_DURATION=20*60*1000;
-    function initializeAdvancedSearch(){
-      const checkbox=document.getElementById('advanced-search-toggle');
-      if (checkbox) checkbox.checked=getAdvancedSearchStatus();
+    const ADVANCED_SEARCH_KEY = 'advancedSearchEnabled';
+    const ADVANCED_SEARCH_TIMESTAMP_KEY = 'advancedSearchTimestamp';
+    const ADVANCED_SEARCH_DURATION = 20 * 60 * 1000;
+    function initializeAdvancedSearch() {
+      const checkbox = document.getElementById('advanced-search-toggle');
+      if (checkbox) checkbox.checked = getAdvancedSearchStatus();
     }
-    function getAdvancedSearchStatus(){
-      try{
-        const stored=localStorage.getItem(ADVANCED_SEARCH_KEY);
-        if (stored===null){
-          localStorage.setItem(ADVANCED_SEARCH_KEY,'true');
+    function getAdvancedSearchStatus() {
+      try {
+        const stored = localStorage.getItem(ADVANCED_SEARCH_KEY);
+        if (stored === null) {
+          localStorage.setItem(ADVANCED_SEARCH_KEY, 'true');
           localStorage.setItem(ADVANCED_SEARCH_TIMESTAMP_KEY, Date.now().toString());
           return true;
         }
-        const enabled = stored==='true';
-        const ts = parseInt(localStorage.getItem(ADVANCED_SEARCH_TIMESTAMP_KEY)||'0',10);
-        const now=Date.now();
-        if (enabled && (now - ts > ADVANCED_SEARCH_DURATION)){
+        const enabled = stored === 'true';
+        const ts = parseInt(localStorage.getItem(ADVANCED_SEARCH_TIMESTAMP_KEY) || '0', 10);
+        const now = Date.now();
+        if (enabled && (now - ts > ADVANCED_SEARCH_DURATION)) {
           localStorage.removeItem(ADVANCED_SEARCH_KEY);
           localStorage.removeItem(ADVANCED_SEARCH_TIMESTAMP_KEY);
-          const checkbox=document.getElementById('advanced-search-toggle');
-          if (checkbox) checkbox.checked=false;
+          const checkbox = document.getElementById('advanced-search-toggle');
+          if (checkbox) checkbox.checked = false;
           return false;
         }
         return enabled;
-      }catch(e){ return false; }
+      } catch (e) { return false; }
     }
-    function setAdvancedSearchStatus(enabled){
-      try{
-        if (enabled){
-          localStorage.setItem(ADVANCED_SEARCH_KEY,'true');
+    function setAdvancedSearchStatus(enabled) {
+      try {
+        if (enabled) {
+          localStorage.setItem(ADVANCED_SEARCH_KEY, 'true');
           localStorage.setItem(ADVANCED_SEARCH_TIMESTAMP_KEY, Date.now().toString());
-        }else{
+        } else {
           localStorage.removeItem(ADVANCED_SEARCH_KEY);
           localStorage.removeItem(ADVANCED_SEARCH_TIMESTAMP_KEY);
         }
-      }catch(e){}
+      } catch (e) { }
     }
 
     // ===== DOMContentLoaded =====
     const urlParams = new URLSearchParams(window.location.search);
-    document.addEventListener('DOMContentLoaded', ()=>{
+    document.addEventListener('DOMContentLoaded', () => {
       displayProductHeader();
       initializeAdvancedSearch();
 
       const queryParam = urlParams.get('query');
-      if (queryParam){
-        if (shouldAutoSearch()){
+      if (queryParam) {
+        if (shouldAutoSearch()) {
           incAutoloadsCount();
-          search(queryParam).catch(err=>console.error('Initial search failed:', err));
+          search(queryParam).catch(err => console.error('Initial search failed:', err));
         } else {
           renderBlurredPreviewWithCTA();
         }
@@ -926,4 +1269,5 @@
     });
   </script>
 </body>
+
 </html>
