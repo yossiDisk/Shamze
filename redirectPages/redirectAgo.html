@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecting...</title>
+  <script>
+    window.onload = function () {
+      const params = new URLSearchParams(window.location.search);
+      const targetUrl = params.get("url");
+
+      if (!targetUrl) {
+        document.body.innerHTML = "<h2>❌ חסר פרמטר url</h2>";
+        return;
+      }
+
+      try {
+        // ממיר את הכתובת לאובייקט URL כדי לעבוד עליה
+        const urlObj = new URL(targetUrl);
+
+        // מוסיף את הפרמטר cid=1945409
+        urlObj.searchParams.set("cid", "1945409");
+
+        // מפנה את המשתמש
+        window.location.href = urlObj.toString();
+
+      } catch (e) {
+        document.body.innerHTML = "<h2>❌ כתובת URL לא תקינה</h2>";
+      }
+    };
+  </script>
+</head>
+<body>
+  <p>מעביר אותך...</p>
+</body>
+</html>
