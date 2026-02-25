@@ -5,180 +5,495 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>מדיניות פרטיות – שם זה זול יותר</title>
   <meta name="description" content="מדיניות הפרטיות של האתר והתוסף 'שם זה זול יותר'" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&display=swap" rel="stylesheet" />
   <style>
-    :root{
-      --bg:#0f172a;          /* slate-900 */
-      --panel:#0b1229;       /* deep panel */
-      --text:#e5e7eb;        /* gray-200 */
-      --muted:#94a3b8;       /* slate-400 */
-      --primary:#22c55e;     /* green-500 */
-      --accent:#16a34a;      /* green-600 */
-      --border:#1f2937;      /* gray-800 */
+    :root {
+      --bg: #0b1120;
+      --surface: #111827;
+      --surface2: #0f172a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --primary: #22c55e;
+      --primary-dim: rgba(34,197,94,.12);
+      --primary-glow: rgba(34,197,94,.25);
+      --border: rgba(255,255,255,.07);
+      --border-strong: rgba(255,255,255,.12);
+      --radius: 14px;
     }
-    html,body{height:100%}
-    body{
-      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-      background: radial-gradient(1200px 800px at 80% -10%, rgba(34,197,94,.12), transparent 60%),
-                  radial-gradient(900px 600px at 10% 110%, rgba(34,197,94,.08), transparent 60%),
-                  var(--bg);
-      color:var(--text); line-height:1.65;
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Heebo', system-ui, sans-serif;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse 1100px 700px at 85% -5%, rgba(34,197,94,.13) 0%, transparent 65%),
+        radial-gradient(ellipse 800px 600px at 5% 105%, rgba(34,197,94,.08) 0%, transparent 60%),
+        radial-gradient(ellipse 600px 400px at 50% 50%, rgba(15,23,42,.9) 0%, transparent 100%);
+      color: var(--text);
+      line-height: 1.7;
     }
-    a{color:var(--primary); text-decoration:none}
-    a:hover{text-decoration:underline}
-    .wrap{max-width:900px; margin:0 auto; padding:24px}
-    header{position:sticky; top:0; backdrop-filter: blur(8px); background:color-mix(in oklab, var(--bg) 80%, transparent); border-bottom:1px solid var(--border);}
-    header .wrap{display:flex; gap:16px; align-items:center;}
-    .logo{display:inline-flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px; color:#fff}
-    .badge{font-size:12px; color:var(--muted)}
-    .container{max-width:900px; margin:32px auto; padding:0 24px}
-    .panel{ background: linear-gradient(180deg, rgba(15,23,42,.65), rgba(2,6,23,.65)); border:1px solid var(--border); border-radius:16px; padding:24px}
-    h1{font-size:clamp(28px, 3.5vw, 42px); margin:12px 0 4px}
-    h2{font-size:clamp(20px, 2.5vw, 28px); margin:28px 0 12px}
-    p, li{font-size:18px}
-    .muted{color:var(--muted)}
-    .hero{display:grid; grid-template-columns:1fr; gap:18px; margin-top:18px}
-    .notice{border:1px solid var(--border); background:rgba(34,197,94,.05); padding:14px; border-radius:12px}
-    ol, ul{margin:0; padding-inline-start:20px}
-    li{margin:10px 0}
-    .foot{margin-top:28px; padding-top:16px; border-top:1px dashed var(--border); font-size:16px}
-    .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:8px}
-    .chip{border:1px solid var(--border); border-radius:999px; padding:6px 12px; font-size:14px; color:var(--muted)}
-    @media (prefers-color-scheme: light){
-      :root{ --bg:#f8fafc; --panel:#ffffff; --text:#0f172a; --muted:#475569; --border:#e2e8f0 }
-      body{background:var(--bg)} a:hover{color:var(--accent)}
-      header{background:#ffffffd0}
-      .panel{background:#fff}
+
+    a { color: var(--primary); text-decoration: none; transition: opacity .15s; }
+    a:hover { opacity: .8; text-decoration: underline; }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(12px) saturate(1.5);
+      background: rgba(11,17,32,.8);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      max-width: 960px; margin: 0 auto;
+      padding: 14px 24px;
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    }
+    .logo {
+      display: inline-flex; align-items: center; gap: 9px;
+      font-weight: 900; font-size: 17px; color: #fff; letter-spacing: .2px;
+    }
+    .logo-icon {
+      width: 30px; height: 30px; background: var(--primary);
+      border-radius: 8px; display: grid; place-items: center; flex-shrink: 0;
+    }
+    .header-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-right: auto; }
+    .badge {
+      font-size: 12px; color: var(--muted); background: rgba(255,255,255,.05);
+      border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px;
+    }
+    .badge.green { color: var(--primary); border-color: rgba(34,197,94,.3); background: var(--primary-dim); }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    /* ── HERO ── */
+    .hero {
+      margin-bottom: 40px;
+      padding: 40px;
+      background: linear-gradient(135deg, rgba(17,24,39,.9), rgba(11,17,32,.95));
+      border: 1px solid var(--border-strong);
+      border-radius: 20px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 500px 300px at 90% 0%, var(--primary-dim), transparent 70%);
+      pointer-events: none;
+    }
+    .hero h1 { font-size: clamp(28px, 4vw, 44px); font-weight: 900; margin-bottom: 12px; color: #fff; }
+    .hero .sub { color: var(--muted); font-size: 17px; max-width: 640px; line-height: 1.65; }
+    .hero .notice {
+      margin-top: 20px;
+      padding: 14px 18px;
+      background: var(--primary-dim);
+      border: 1px solid rgba(34,197,94,.25);
+      border-radius: 10px;
+      font-size: 15px;
+      color: #d1fae5;
+    }
+    .hero .notice strong { color: var(--primary); }
+
+    /* ── SECTION GRID ── */
+    .grid { display: grid; gap: 16px; }
+
+    /* ── PANEL ── */
+    .panel {
+      background: linear-gradient(160deg, rgba(17,24,39,.85), rgba(11,17,32,.9));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      transition: border-color .2s;
+    }
+    .panel:hover { border-color: var(--border-strong); }
+
+    .panel-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    }
+    .panel-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: var(--primary-dim); border: 1px solid rgba(34,197,94,.2);
+      display: grid; place-items: center; flex-shrink: 0;
+    }
+    .panel-icon svg { color: var(--primary); }
+
+    h2 {
+      font-size: clamp(17px, 2vw, 20px); font-weight: 700; color: #fff;
+    }
+
+    p { font-size: 16px; color: var(--text); margin-bottom: 10px; }
+    p:last-child { margin-bottom: 0; }
+
+    ul, ol { padding-inline-start: 22px; }
+    li {
+      font-size: 16px; color: var(--text); margin: 8px 0; line-height: 1.65;
+    }
+    li strong { color: #e2e8f0; }
+
+    /* ── HIGHLIGHT BOX ── */
+    .highlight-box {
+      background: rgba(34,197,94,.07);
+      border: 1px solid rgba(34,197,94,.2);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-top: 14px;
+      font-size: 15px;
+      color: #bbf7d0;
+    }
+    .highlight-box strong { color: var(--primary); }
+
+    /* ── TAG ROW ── */
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .tag {
+      background: rgba(255,255,255,.05); border: 1px solid var(--border);
+      border-radius: 999px; padding: 4px 12px; font-size: 13px; color: var(--muted);
+    }
+
+    /* ── NOT COLLECTED TABLE ── */
+    .not-collected {
+      display: grid; gap: 8px; margin-top: 12px;
+    }
+    .not-collected-item {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,.03); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 14px; font-size: 15px; color: var(--muted);
+    }
+    .not-collected-item .x {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: rgba(239,68,68,.15); border: 1px solid rgba(239,68,68,.3);
+      display: grid; place-items: center; flex-shrink: 0;
+    }
+    .not-collected-item .x svg { color: #f87171; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; margin-top: 60px; padding-top: 24px;
+      border-top: 1px dashed var(--border); color: var(--muted); font-size: 14px;
+    }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--primary); }
+
+    @media (max-width: 600px) {
+      .panel { padding: 20px 18px; }
+      .hero { padding: 28px 20px; }
     }
   </style>
 </head>
 <body>
+
   <header>
-    <div class="wrap">
-      <div class="logo" aria-label="שם זה זול יותר">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M5 12.5 10 18 20 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12.5 10 18 20 6"/>
+          </svg>
+        </div>
         שם זה זול יותר
       </div>
-      <span class="badge">מדיניות פרטיות</span>
-      <span class="chips">
-        <span class="chip">עודכן לאחרונה: 18.08.2025</span>
-      </span>
+      <div class="header-badges">
+        <span class="badge green">מדיניות פרטיות</span>
+        <span class="badge">עודכן: פברואר 2026</span>
+      </div>
     </div>
   </header>
 
   <main class="container">
-    <section class="panel hero" aria-labelledby="title">
-      <div>
-        <h1 id="title">מדיניות פרטיות</h1>
-        <p class="muted">מסמך זה מסביר כיצד אנו אוספים, משתמשים, שומרים ומשתפים מידע בעת שימוש באתר ובתוסף "שם זה זול יותר".</p>
-        <p class="notice"><strong>תמצית:</strong> אנו שואפים לאסוף מינימום מידע הנדרש להפעלת השירות, לא מוכרים מידע אישי, ומאפשרים שליטה בהגדרות פרטיות.</p>
+
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="title">
+      <h1 id="title">מדיניות פרטיות</h1>
+      <p class="sub">מסמך זה מסביר בצורה מלאה ושקופה כיצד אנו אוספים, משתמשים, שומרים ומשתפים מידע בעת שימוש באתר ובתוסף "שם זה זול יותר". המדיניות עומדת בדרישות חנות האינטרנט של Chrome ובחוקי הגנת הפרטיות הרלוונטיים.</p>
+      <div class="notice">
+        <strong>תמצית:</strong> אנו שואפים לאסוף מינימום מידע הנדרש להפעלת השירות בלבד, לא מוכרים מידע אישי, לא שומרים מסד נתונים עם פרטי משתמשים, ומאפשרים שליטה מלאה בהגדרות הפרטיות.
       </div>
     </section>
 
-    <section class="panel" aria-labelledby="scope">
-      <h2 id="scope">למי המדיניות חלה</h2>
-      <p>מדיניות זו חלה על מבקרי האתר <a href="https://shamze.com" target="_blank" rel="noopener">shamze.com</a> ועל משתמשי תוסף הדפדפן "שם זה זול יותר".</p>
-    </section>
+    <div class="grid">
 
-    <section class="panel" aria-labelledby="data-we-collect">
-      <h2 id="data-we-collect">איזה מידע נאסף</h2>
-      <ul>
-        <li><strong>מידע שימוש טכני:</strong> למשל דפדפן, דגם מכשיר, כתובות עמודים, זמני טעינה, אירועי קליקים על קישורים (לצרכי ניתוח אנונימי).</li>
-        <li><strong>מידע שמוסר המשתמש מרצונו:</strong> למשל פנייה לתמיכה במייל, הרשמה לקבלת תזכורות/התראות, או שליחת מייל הזמנה לשירותי מעקב מחיר.</li>
-        <li><strong>מידע תוסף:</strong> התוסף קורא מידע מדפי מוצר לצורך הצגת השוואת מחירים/קופונים, ומציג תוצאות לצד האתר. אלא אם הוצהר אחרת, מידע זה מעובד מקומית בדפדפן ונשלח לשרתים רק ככל שנדרש לביצוע החיפוש/השוואה.</li>
-        <li><strong>קבצי Cookie וטכנולוגיות דומות:</strong> משמשים לתפעול בסיסי, למדידת שימוש ולזיהוי הונאות. ניתן לנהל העדפות בדפדפן.</li>
-      </ul>
-    </section>
+      <!-- SCOPE -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <h2 id="scope">למי המדיניות חלה</h2>
+        </div>
+        <p>מדיניות זו חלה על:</p>
+        <ul>
+          <li>מבקרי האתר <a href="https://shamze.com" target="_blank" rel="noopener">shamze.com</a></li>
+          <li>משתמשי תוסף הדפדפן "שם זה זול יותר" לכרום</li>
+        </ul>
+        <p style="margin-top:12px">שימוש בשירות מהווה הסכמה למדיניות זו. אם אינך מסכים לתנאים, אנא הסר את התוסף ו/או הפסק להשתמש באתר.</p>
+      </div>
 
-    <section class="panel" aria-labelledby="purposes">
-      <h2 id="purposes">מטרות השימוש במידע</h2>
-      <ul>
-        <li>מתן השירות: הצגת קופונים, תוצאות השוואת מחירים והתראות רלוונטיות.</li>
-        <li>שיפור ובקרת איכות: איתור תקלות, מדידת ביצועים ושיפור חווית המשתמש.</li>
-        <li>מניעת שימוש לרעה והונאות.</li>
-        <li>עמידה בהוראות דין ובהתחייבויות חוזיות.</li>
-      </ul>
-    </section>
+      <!-- DATA COLLECTED -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg>
+          </div>
+          <h2 id="data">איזה מידע נאסף</h2>
+        </div>
 
-    <section class="panel" aria-labelledby="analytics">
-      <h2 id="analytics">מדידות ואנליטיקות</h2>
-      <p>אנו עשויים להשתמש בכלי אנליטיקה (למשל Google Analytics 4) למדידת שימוש מצטבר ואנונימי ככל הניתן. כלי אלו עשויים להציב Cookies בדפדפן. ניתן לחסום או למחוק Cookies דרך הגדרות הדפדפן. אם ברצונכם להגביל מדידות, תוכלו להשתמש בתוספים לחסימת מעקב או בהגדרות "אל תעקוב" (Do Not Track) בדפדפן.</p>
-    </section>
+        <ul>
+          <li>
+            <strong>פרמטרי מוצר / חיפוש (תוסף):</strong> שם מוצר, מחיר מוצג, תאריכי טיסה/שהות, יעד, מספר נוסעים, קוד מלון וכד׳ — לצורך ביצוע השוואת מחירים בלבד.
+          </li>
+          <li>
+            <strong>כתובת URL של הדף הנוכחי:</strong> לזיהוי האתר הרלוונטי ושליחת הפרמטרים לשירות ההשוואה.
+          </li>
+          <li>
+            <strong>מידע שימוש טכני (אתר):</strong> דפדפן, גרסה, מערכת הפעלה, רזולוציית מסך, כתובות עמודים, זמני טעינה, אירועי קליקים — לצרכי ניתוח אנונימי.
+          </li>
+          <li>
+            <strong>נתוני אנליטיקה אנונימיים (Google Analytics — מזהה: G‑JC5YTMVXRQ):</strong> אירועי שימוש (לחיצות, פתיחת תוצאות, הפניות), סוג דפדפן, מדינה כללית. כתובת ה-IP מקוצרת לפני האחסון ואינה מזהה אישית.
+          </li>
+          <li>
+            <strong>מידע שמוסר המשתמש מרצונו:</strong> פנייה לתמיכה במייל, הרשמה לתזכורות/התראות.
+          </li>
+          <li>
+            <strong>הגדרות מקומיות (localStorage):</strong> נשמרות על מכשיר המשתמש בלבד ואינן מועברות לשום שרת.
+          </li>
+        </ul>
 
-    <section class="panel" aria-labelledby="affiliates">
-      <h2 id="affiliates">קישורים שיווקיים וקישורי שותפים</h2>
-      <p>חלק מהקישורים לתוצאות/חנויות עשויים להיות קישורי שותפים (Affiliate). קליקים/רכישות דרך קישורים אלה יכולים להניב לנו עמלה ללא תוספת תשלום עבורכם.</p>
-    </section>
+        <div class="highlight-box">
+          <strong>חשוב:</strong> התוסף לא קורא תכנים אישיים אחרים מהדף — לא מיילים, לא תשלומים, לא סיסמאות ולא נתוני טפסים.
+        </div>
+      </div>
 
-    <section class="panel" aria-labelledby="legal-basis">
-      <h2 id="legal-basis">בסיס משפטי לעיבוד מידע (אם רלוונטי)</h2>
-      <ul>
-        <li><strong>ביצוע הסכם ושירות:</strong> לשם הפעלת הפונקציות שביקשתם.</li>
-        <li><strong>אינטרס לגיטימי:</strong> לשיפור השירות, אבטחה ומניעת הונאות.</li>
-        <li><strong>הסכמה:</strong> כאשר נדרשת הרשאה מפורשת (למשל קבלת התראות/ניוזלטר).</li>
-        <li><strong>עמידה בדין:</strong> עיבוד מידע כנדרש לפי חוק.</li>
-      </ul>
-    </section>
+      <!-- NOT COLLECTED -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+          </div>
+          <h2>מה אנחנו לא אוספים</h2>
+        </div>
+        <p>התוסף והאתר לא אוספים ולא מעבדים:</p>
+        <div class="not-collected">
+          <div class="not-collected-item"><div class="x"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>שם, כתובת מייל, מספר טלפון או כל מידע מזהה אישי אחר</div>
+          <div class="not-collected-item"><div class="x"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>פרטי כרטיס אשראי או תשלום</div>
+          <div class="not-collected-item"><div class="x"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>היסטוריית גלישה מלאה</div>
+          <div class="not-collected-item"><div class="x"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>סיסמאות או נתוני טפסים</div>
+          <div class="not-collected-item"><div class="x"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>מיקום גיאוגרפי מדויק</div>
+        </div>
+        <p style="margin-top:14px; color:var(--muted); font-size:15px">אין הרשמה לתוסף ואין יצירת חשבון משתמש — ולכן לא נשמר שום פרופיל אישי.</p>
+      </div>
 
-    <section class="panel" aria-labelledby="sharing">
-      <h2 id="sharing">שיתוף מידע</h2>
-      <ul>
-        <li>ספקי תשתית ושירות (אחסון, אנליטיקה, אבטחה) לפי הצורך ובכפוף להתחייבויות סודיות ועיבוד נתונים.</li>
-        <li>העברה מכוח דין, צו בית משפט או בקשת רשות מוסמכת.</li>
-        <li>במקרה של מיזוג/אקזיט – בכפוף להמשך הגנה על פרטיותכם.</li>
-        <li>לא נמכור מידע אישי לזרים.</li>
-      </ul>
-    </section>
+      <!-- PURPOSES -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h2 id="purposes">מטרות השימוש במידע</h2>
+        </div>
+        <ul>
+          <li><strong>השוואת מחירים:</strong> פרמטרי המוצר/חיפוש משמשים לאיתור הצעות מחיר חלופיות והצגתן למשתמש בזמן אמת.</li>
+          <li><strong>שיפור השירות ובקרת איכות:</strong> נתונים סטטיסטיים אנונימיים לאיתור תקלות ושיפור ביצועים וחוויית משתמש.</li>
+          <li><strong>מניעת שימוש לרעה והונאות.</strong></li>
+          <li><strong>עמידה בהוראות דין והתחייבויות חוזיות.</strong></li>
+        </ul>
+        <div class="highlight-box" style="margin-top:14px">
+          הנתונים <strong>לא משמשים</strong> לפרסום ממוקד, לפרופילינג, למכירה לצדדים שלישיים או לכל מטרה אחרת.
+        </div>
+      </div>
 
-    <section class="panel" aria-labelledby="retention">
-      <h2 id="retention">שמירת מידע</h2>
-      <p>נשמור מידע רק כל עוד הוא נחוץ למטרות המפורטות במדיניות זו, ובהתאם לדרישות הדין. מידע מצטבר/אנונימי עשוי להישמר לתקופה ארוכה יותר לצרכי סטטיסטיקה ושיפור.</p>
-    </section>
+      <!-- ANALYTICS -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <h2 id="analytics">מדידות ואנליטיקות</h2>
+        </div>
+        <p>אנו משתמשים ב-Google Analytics 4 (מזהה: <strong>G‑JC5YTMVXRQ</strong>) למדידת שימוש מצטבר ואנונימי. נתונים אלה הם אנונימיים לחלוטין ואינם מאפשרים זיהוי של המשתמש.</p>
+        <p>ניתן להגביל מדידות על-ידי:</p>
+        <ul>
+          <li>שימוש בתוסף חסימת מעקב או הגדרת "אל תעקוב" (Do Not Track) בדפדפן.</li>
+          <li>ביטול Google Analytics ישירות: <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">tools.google.com/dlpage/gaoptout</a></li>
+          <li>מחיקה וניהול Cookies דרך הגדרות הדפדפן.</li>
+        </ul>
+        <p style="margin-top:10px">למדיניות הפרטיות של Google: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></p>
+      </div>
 
-    <section class="panel" aria-labelledby="security">
-      <h2 id="security">אבטחת מידע</h2>
-      <p>אנו מיישמים אמצעי אבטחה סבירים כדי להגן על מידע, אך אין אבטחה מוחלטת. שימושכם בשירות נעשה על אחריותכם.</p>
-    </section>
+      <!-- AFFILIATES -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </div>
+          <h2 id="affiliates">קישורים שיווקיים וקישורי שותפים</h2>
+        </div>
+        <p>חלק מהקישורים לתוצאות/חנויות/קופונים עשויים להיות קישורי שותפים (Affiliate). קליקים ורכישות דרך קישורים אלה יכולים להניב לנו עמלה ללא תוספת תשלום עבורכם.</p>
 
-    <section class="panel" aria-labelledby="user-rights">
-      <h2 id="user-rights">זכויות המשתמש</h2>
-      <ul>
-        <li>זכות עיון/תיקון/מחיקה של מידע אישי לפי דין החל.</li>
-        <li>זכות להתנגד לעיבוד מסוים או לבקש הגבלה.</li>
-        <li>זכות לניידות מידע, מקום שהדבר ישים.</li>
-      </ul>
-      <p>למימוש זכויות – פנו אלינו במייל: <a href="mailto:Shamzezolyoter@gmail.com">Shamzezolyoter@gmail.com</a>.</p>
-    </section>
+      </div>
 
-    <section class="panel" aria-labelledby="children">
-      <h2 id="children">קטינים</h2>
-      <p>השירות לא מיועד לילדים מתחת לגיל הקבוע בדין הרלוונטי ללא הסכמת הורה/אפוטרופוס במקום שנדרש.</p>
-    </section>
+      <!-- SHARING -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </div>
+          <h2 id="sharing">שיתוף מידע עם צדדים שלישיים</h2>
+        </div>
+        <p>התוסף לא מוכר, לא משכיר ולא מעביר נתוני משתמש לצדדים שלישיים לצרכי שיווק. שיתוף הנתונים מוגבל בלבד לאלה:</p>
+        <ul>
+          <li><strong>Google Analytics</strong> — נתונים אנונימיים על אירועי שימוש בהתאם למדיניות Google.</li>
+          <li><strong>אתרי ההשוואה (Booking.com, Skyscanner, Kayak וכד׳)</strong> — כאשר המשתמש לוחץ על קישור השוואה, פרמטרי החיפוש עוברים לאתר היעד בדרך הרגילה של גלישה, בדיוק כמו כל חיפוש שהמשתמש היה מבצע בעצמו.</li>
+          <li><strong>AWS Lambda (שרת Backend)</strong> — מקבל את פרמטרי החיפוש ללא זיהוי משתמש לצורך ביצוע קריאות API לשירותי ההשוואה. לא נשמר מידע במסד נתונים.</li>
+          <li><strong>ספקי תשתית ושירות</strong> (אחסון, אנליטיקה, אבטחה) — בכפוף להתחייבויות סודיות ועיבוד נתונים.</li>
+          <li><strong>לפי דין:</strong> העברה מכוח צו בית משפט או בקשת רשות מוסמכת.</li>
+          <li><strong>מיזוג/אקזיט:</strong> בכפוף להמשך הגנה על פרטיותכם.</li>
+        </ul>
+      </div>
 
-    <section class="panel" aria-labelledby="international">
-      <h2 id="international">העברות בינלאומיות</h2>
-      <p>ייתכן שמידע יעובד על-ידי ספקים מחוץ לישראל. במקרים אלו נוודא קיום הגנות מתאימות לפי דין.</p>
-    </section>
+      <!-- LEGAL BASIS -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h2 id="legal-basis">בסיס משפטי לעיבוד מידע</h2>
+        </div>
+        <ul>
+          <li><strong>ביצוע הסכם ושירות:</strong> לשם הפעלת הפונקציות שביקשתם.</li>
+          <li><strong>אינטרס לגיטימי:</strong> שיפור השירות, אבטחה ומניעת הונאות.</li>
+          <li><strong>הסכמה:</strong> כאשר נדרשת הרשאה מפורשת (למשל קבלת התראות/ניוזלטר).</li>
+          <li><strong>עמידה בדין:</strong> עיבוד מידע כנדרש לפי חוק.</li>
+        </ul>
+      </div>
 
-    <section class="panel" aria-labelledby="changes">
-      <h2 id="changes">שינויים במדיניות</h2>
-      <p>אנו רשאים לעדכן מדיניות זו מעת לעת. תאריך העדכון מופיע בראש העמוד. המשך שימוש לאחר שינוי מהווה הסכמה לנוסח המעודכן.</p>
-    </section>
+      <!-- RETENTION -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <h2 id="retention">שמירת מידע</h2>
+        </div>
+        <ul>
+          <li>התוסף <strong>לא שומר מסד נתונים</strong> כלשהו עם מידע על משתמשים.</li>
+          <li>נתוני חיפוש ומוצר עוברים עיבוד בזמן אמת (in-memory) בשרת ה-Lambda ולא נשמרים לאחר מכן.</li>
+          <li>Google Analytics שומר נתונים סטטיסטיים אנונימיים כ-26 חודשים כברירת מחדל.</li>
+          <li>הגדרות מקומיות (localStorage) נשמרות על מכשיר המשתמש בלבד.</li>
+          <li>מידע מצטבר/אנונימי עשוי להישמר לתקופה ארוכה יותר לצרכי סטטיסטיקה ושיפור.</li>
+        </ul>
+      </div>
 
-    <section class="panel" aria-labelledby="contact">
-      <h2 id="contact">צור קשר</h2>
-      <p>לשאלות, בקשות או תלונות בנוגע לפרטיות – כתבו לנו: <a href="mailto:Shamzezolyoter@gmail.com">Shamzezolyoter@gmail.com</a>.</p>
-      <p class="muted">מסמך זה אינו ייעוץ משפטי. מומלץ להתייעץ עם עו"ד כדי לוודא התאמה מלאה לדין החל (למשל חוק הגנת הפרטיות, תקנות הגנת הפרטיות, GDPR וכד').</p>
-    </section>
+      <!-- SECURITY -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h2 id="security">אבטחת מידע</h2>
+        </div>
+        <ul>
+          <li>תקשורת מוצפנת (HTTPS/TLS) בין התוסף לשרתי ה-Backend.</li>
+          <li>שרתי AWS Lambda מאובטחים בהתאם לתקני האבטחה של Amazon Web Services.</li>
+          <li>מאחר ואין אחסון של נתונים אישיים — הסיכון לדליפת מידע אישי מינימלי.</li>
+        </ul>
+        <p style="margin-top:10px; color:var(--muted); font-size:15px">יובהר כי אין אבטחה מוחלטת. שימושכם בשירות נעשה על אחריותכם.</p>
+      </div>
 
-    <footer class="wrap" style="text-align:center; color:var(--muted); margin-bottom:32px">
-      © <span id="year"></span> שם זה זול יותר · <a href="/legal/terms.html">תנאי שימוש</a>
+      <!-- COOKIES -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <h2 id="cookies">עוגיות (Cookies)</h2>
+        </div>
+        <p>התוסף עצמו <strong>לא מגדיר עוגיות</strong>. עם זאת:</p>
+        <ul>
+          <li>האתר עשוי להשתמש בעוגיות לתפעול בסיסי ומדידת שימוש.</li>
+          <li>Google Analytics משתמש ב-cookies לזיהוי סשנים באופן אנונימי.</li>
+          <li>אתרים חיצוניים אליהם התוסף מפנה (Booking.com, Skyscanner וכד׳) עשויים להשתמש בעוגיות משלהם, בהתאם למדיניות הפרטיות שלהם.</li>
+        </ul>
+        <p style="margin-top:10px">ניתן לנהל ולמחוק עוגיות דרך הגדרות הדפדפן.</p>
+      </div>
+
+      <!-- USER RIGHTS -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <h2 id="user-rights">זכויות המשתמש</h2>
+        </div>
+        <p>מאחר והתוסף לא שומר מידע אישי מזהה, אין "פרופיל משתמש" למחוק או לתקן. עם זאת, זכויותיכם לפי דין כוללות:</p>
+        <ul>
+          <li>זכות עיון, תיקון ומחיקה של מידע אישי לפי דין החל.</li>
+          <li>זכות להתנגד לעיבוד מסוים או לבקש הגבלה.</li>
+          <li>זכות לניידות מידע, מקום שהדבר ישים.</li>
+          <li>מחיקת נתונים מקומיים של התוסף: הגדרות הדפדפן ← תוספים ← ניהול הנתונים של התוסף.</li>
+          <li>הסרת התוסף בכל עת דרך: <code style="font-size:13px; background:rgba(255,255,255,.06); padding:2px 6px; border-radius:4px">chrome://extensions</code></li>
+        </ul>
+        <p style="margin-top:12px">למימוש זכויות — פנו אלינו במייל: <a href="mailto:Shamzezolyoter@gmail.com">Shamzezolyoter@gmail.com</a></p>
+      </div>
+
+      <!-- CHILDREN -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h2 id="children">קטינים</h2>
+        </div>
+        <p>השירות לא מיועד לילדים מתחת לגיל הקבוע בדין הרלוונטי ללא הסכמת הורה/אפוטרופוס במקום שנדרש.</p>
+      </div>
+
+      <!-- INTERNATIONAL -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <h2 id="international">העברות בינלאומיות</h2>
+        </div>
+        <p>ייתכן שמידע יעובד על-ידי ספקים מחוץ לישראל (כגון Google, AWS). במקרים אלו נוודא קיום הגנות מתאימות לפי דין, כולל GDPR ותקנות הגנת הפרטיות הישראליות.</p>
+      </div>
+
+      <!-- CHANGES -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.12"/></svg>
+          </div>
+          <h2 id="changes">שינויים במדיניות</h2>
+        </div>
+        <p>אנו רשאים לעדכן מדיניות זו מעת לעת. שינויים מהותיים יובאו לידיעת המשתמשים. תאריך העדכון האחרון מופיע בראש העמוד. המשך שימוש לאחר פרסום עדכון מהווה הסכמה לנוסח המעודכן.</p>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <h2 id="contact">צור קשר</h2>
+        </div>
+        <p>לשאלות, בקשות או תלונות בנוגע לפרטיות — כתבו לנו:</p>
+        <p><a href="mailto:Shamzezolyoter@gmail.com">Shamzezolyoter@gmail.com</a></p>
+        <p>תוסף Chrome: <a href="https://chromewebstore.google.com/detail/neigoggljhfnodeneidndcflnclldnpm" target="_blank" rel="noopener">חנות Chrome Web Store</a></p>
+        <p style="margin-top:14px; color:var(--muted); font-size:14px">מסמך זה אינו ייעוץ משפטי. מומלץ להתייעץ עם עו"ד לוודא התאמה מלאה לדין החל (חוק הגנת הפרטיות, תקנות הגנת הפרטיות, GDPR וכד'). מדיניות זו מנוסחת בלשון זכר מטעמי נוחות בלבד וחלה על כל המינים.</p>
+      </div>
+
+    </div><!-- /grid -->
+
+    <footer>
+      <p>© <span id="year"></span> שם זה זול יותר &nbsp;·&nbsp; <a href="/legal/terms.html">תנאי שימוש</a></p>
     </footer>
+
   </main>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
