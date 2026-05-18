@@ -1030,17 +1030,21 @@
         }
       }
 
-      topContainer.innerHTML = `
-        <section class="offers-hero" id="offersHero">
-          <div class="offers-hero-figure" title="הצעות מתייחסות למוצר שבתמונה">
-            <img src="${heroImg || ''}" alt="תמונת מוצר" />
-          </div>
-          <div class="offers-hero-main">
-            <h1 class="offers-hero-title">${product?.name || 'מוצר'}</h1>
-            <p class="offers-hero-price">מחיר מקורי: ₪${Number(numericPrice || 0).toFixed(2)}</p>
-          </div>
-        </section>
-      `;
+      const priceLine = numericPrice > 0
+              ? `<p class="offers-hero-price">מחיר מקורי: ₪${Number(numericPrice).toFixed(2)}</p>`
+              : '';
+      
+            topContainer.innerHTML = `
+              <section class="offers-hero" id="offersHero">
+                <div class="offers-hero-figure" title="הצעות מתייחסות למוצר שבתמונה">
+                  <img src="${heroImg || ''}" alt="תמונת מוצר" />
+                </div>
+                <div class="offers-hero-main">
+                  <h1 class="offers-hero-title">${product?.name || 'מוצר'}</h1>
+                  ${priceLine}
+                </div>
+              </section>
+            `;
     }
 
     // ===== מעבר למסך ההצעות =====
@@ -1094,11 +1098,13 @@
           const card = document.createElement('div');
           const priceDiff = numericPrice - offer.price;
           const isCheapest = offer.price === sorted[0].price;
-          const savingsText = priceDiff > 0
-            ? `<div class="savings good">חיסכון של ₪${priceDiff.toFixed(2)}</div>`
-            : priceDiff < 0
-              ? `<div class="savings bad">יקר ב־₪${Math.abs(priceDiff).toFixed(2)}</div>`
-              : `<div class="savings neutral">אותו מחיר</div>`;
+const savingsText = numericPrice <= 0
+            ? ''
+            : priceDiff > 0
+              ? `<div class="savings good">חיסכון של ₪${priceDiff.toFixed(2)}</div>`
+              : priceDiff < 0
+                ? `<div class="savings bad">יקר ב־₪${Math.abs(priceDiff).toFixed(2)}</div>`
+                : `<div class="savings neutral">אותו מחיר</div>`;
 
           card.className = `offer-card ${isCheapest ? 'highlight-offer' : ''}`;
           card.innerHTML = `
