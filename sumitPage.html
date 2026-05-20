@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>המעבר לדיגיטל — מדריך מהיר לבעלי עסקים</title>
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "wtzmfobjdt");
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet">
@@ -1326,6 +1334,11 @@ function goToScreen(n){
     target.classList.add('active');
     current = n;
     updateProgress();
+    // Clarity tracking: which screen the user reached
+    if(window.clarity){
+      window.clarity("event", "reached_screen_" + n);
+      window.clarity("set", "screen", String(n) + "_" + (labels[n] || ''));
+    }
     // restart stagger
     const stagger = target.querySelector('.stagger');
     if(stagger){
@@ -1347,6 +1360,11 @@ function goToScreen(n){
 function nextScreen(){ goToScreen(current + 1) }
 function prevScreen(){ goToScreen(current - 1) }
 function markVisited(){
+  // Clarity tracking: the most important event - user clicked the SUMIT signup link
+  if(window.clarity){
+    window.clarity("event", "clicked_sumit_signup");
+    window.clarity("set", "converted", "yes");
+  }
   // tiny visual nudge if user comes back
   setTimeout(()=>{
     const btn = document.querySelector('.screen[data-screen="3"] .btn-primary');
@@ -1360,6 +1378,17 @@ function markVisited(){
     }
   }, 500);
 }
+
+// Track final-screen SUMIT entry click (separate from signup link on screen 3)
+document.addEventListener('click', e => {
+  const link = e.target.closest('a[href*="sumit.co.il"]');
+  if(link && window.clarity){
+    const onFinalScreen = !!link.closest('.screen[data-screen="8"]');
+    if(onFinalScreen){
+      window.clarity("event", "clicked_sumit_final_entry");
+    }
+  }
+});
 
 // keyboard navigation
 document.addEventListener('keydown', e => {
