@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>המעבר לדיגיטל — מדריך מהיר לבעלי עסקים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F5EFE4;
+  --cream-soft:#FBF7EE;
+  --ink:#0E1F26;
+  --ink-soft:#3A4A52;
+  --petrol:#0F4C5C;
+  --petrol-deep:#093642;
+  --coral:#E76F51;
+  --gold:#D4A574;
+  --green:#7A9E7E;
+  --line:rgba(14,31,38,0.12);
+  --shadow:0 30px 60px -30px rgba(9,54,66,0.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Heebo',-apple-system,sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  font-weight:400;
+  line-height:1.55;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(circle at 90% -10%, rgba(231,111,81,0.08), transparent 40%),
+    radial-gradient(circle at 5% 95%, rgba(15,76,92,0.07), transparent 45%);
+}
+.serif{font-family:'Frank Ruhl Libre',serif;font-weight:700;letter-spacing:-0.01em}
+.app{min-height:100vh;display:flex;flex-direction:column;position:relative}
+
+/* ======= TOP BAR / PROGRESS ======= */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(245,239,228,0.85);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+  padding:14px 20px;
+}
+.topbar-inner{
+  max-width:980px;margin:0 auto;
+  display:flex;align-items:center;gap:16px;
+}
+.brand{
+  display:flex;align-items:center;gap:10px;
+  font-family:'Frank Ruhl Libre',serif;font-weight:900;
+  font-size:18px;color:var(--petrol-deep);
+  white-space:nowrap;
+}
+.brand-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--coral);
+  box-shadow:0 0 0 4px rgba(231,111,81,0.18);
+}
+.progress-wrap{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0}
+.progress-track{
+  height:6px;border-radius:99px;
+  background:rgba(15,76,92,0.12);
+  position:relative;overflow:hidden;
+}
+.progress-fill{
+  position:absolute;inset:0 auto 0 0;
+  background:linear-gradient(90deg,var(--petrol),var(--coral));
+  border-radius:99px;
+  width:0%;
+  transition:width 0.7s cubic-bezier(0.65,0,0.35,1);
+}
+.progress-meta{
+  display:flex;justify-content:space-between;
+  font-size:11px;color:var(--ink-soft);
+  font-weight:500;letter-spacing:0.02em;
+}
+.progress-meta strong{color:var(--petrol-deep);font-weight:700}
+
+/* ======= SCREEN STAGE ======= */
+.stage{
+  flex:1;
+  display:flex;align-items:center;justify-content:center;
+  padding:40px 20px 120px;
+  position:relative;
+}
+.screen{
+  display:none;
+  width:100%;max-width:760px;
+  animation:none;
+}
+.screen.active{
+  display:block;
+  animation:slideIn 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes slideIn{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.stagger > *{opacity:0;animation:fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) forwards}
+.stagger > *:nth-child(1){animation-delay:0.05s}
+.stagger > *:nth-child(2){animation-delay:0.15s}
+.stagger > *:nth-child(3){animation-delay:0.25s}
+.stagger > *:nth-child(4){animation-delay:0.35s}
+.stagger > *:nth-child(5){animation-delay:0.45s}
+.stagger > *:nth-child(6){animation-delay:0.55s}
+.stagger > *:nth-child(7){animation-delay:0.65s}
+.stagger > *:nth-child(8){animation-delay:0.75s}
+@keyframes fadeUp{
+  to{opacity:1;transform:translateY(0)}
+  from{opacity:0;transform:translateY(20px)}
+}
+
+/* ======= TYPOGRAPHY ======= */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12px;font-weight:700;
+  letter-spacing:0.12em;
+  color:var(--coral);
+  text-transform:uppercase;
+  padding:6px 14px;
+  background:rgba(231,111,81,0.1);
+  border:1px solid rgba(231,111,81,0.25);
+  border-radius:99px;
+  margin-bottom:24px;
+}
+.eyebrow::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--coral);
+  box-shadow:0 0 0 3px rgba(231,111,81,0.2);
+}
+h1.title{
+  font-family:'Frank Ruhl Libre',serif;
+  font-weight:900;
+  font-size:clamp(34px,6.2vw,58px);
+  line-height:1.05;
+  letter-spacing:-0.02em;
+  color:var(--ink);
+  margin-bottom:20px;
+}
+h1.title .accent{color:var(--coral);font-style:italic;font-weight:700}
+h1.title .underline{
+  background-image:linear-gradient(transparent 70%, rgba(231,111,81,0.4) 70%);
+  background-size:100% 100%;
+  background-repeat:no-repeat;
+  padding:0 4px;
+}
+h2.section{
+  font-family:'Frank Ruhl Libre',serif;
+  font-size:24px;font-weight:700;
+  margin:36px 0 16px;
+  color:var(--petrol-deep);
+}
+.lead{
+  font-size:clamp(17px,2.2vw,20px);
+  line-height:1.6;
+  color:var(--ink-soft);
+  max-width:600px;
+  margin-bottom:32px;
+}
+.lead strong{color:var(--ink);font-weight:700}
+
+/* ======= CARDS ======= */
+.card{
+  background:var(--cream-soft);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:22px;
+  margin-bottom:14px;
+  position:relative;
+  transition:transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow);
+  border-color:rgba(15,76,92,0.3);
+}
+.card-icon{
+  width:44px;height:44px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--petrol);
+  color:var(--cream-soft);
+  border-radius:12px;
+  font-size:20px;font-weight:700;
+  margin-bottom:14px;
+  font-family:'Frank Ruhl Libre',serif;
+}
+.card-icon.coral{background:var(--coral)}
+.card-icon.gold{background:var(--gold);color:var(--petrol-deep)}
+.card-icon.green{background:var(--green)}
+.card h3{
+  font-family:'Frank Ruhl Libre',serif;
+  font-size:20px;font-weight:700;
+  color:var(--ink);
+  margin-bottom:8px;
+}
+.card p{color:var(--ink-soft);font-size:15px;line-height:1.6}
+
+/* ======= STEPS / NUMBERED ======= */
+.steps{counter-reset:step;display:flex;flex-direction:column;gap:14px;margin:24px 0}
+.step{
+  display:flex;gap:18px;align-items:flex-start;
+  background:var(--cream-soft);
+  border:1px solid var(--line);
+  border-right:4px solid var(--coral);
+  border-radius:14px;
+  padding:18px 20px;
+  position:relative;
+  transition:transform 0.3s ease, border-color 0.3s ease;
+}
+.step:hover{border-right-color:var(--petrol);transform:translateX(-3px)}
+.step-num{
+  flex-shrink:0;
+  font-family:'Frank Ruhl Libre',serif;
+  font-weight:900;
+  font-size:32px;
+  color:var(--coral);
+  line-height:1;
+  min-width:36px;
+}
+.step-body h4{
+  font-family:'Frank Ruhl Libre',serif;
+  font-size:18px;font-weight:700;
+  color:var(--ink);margin-bottom:4px;
+}
+.step-body p{color:var(--ink-soft);font-size:15px}
+.step-body code{
+  display:inline-block;
+  background:rgba(15,76,92,0.08);
+  color:var(--petrol-deep);
+  padding:2px 8px;border-radius:6px;
+  font-family:'Heebo',monospace;
+  font-size:13px;font-weight:500;
+  direction:ltr;unicode-bidi:bidi-override;
+  margin:0 2px;
+}
+.step-body .path{
+  display:inline-block;
+  background:linear-gradient(180deg,rgba(212,165,116,0.18),rgba(212,165,116,0.08));
+  color:var(--petrol-deep);
+  padding:3px 10px;border-radius:6px;
+  font-size:13px;font-weight:600;
+  border:1px solid rgba(212,165,116,0.3);
+}
+
+/* ======= URGENCY BOX ======= */
+.urgency{
+  background:linear-gradient(135deg,var(--petrol-deep) 0%, var(--petrol) 100%);
+  color:var(--cream);
+  border-radius:20px;
+  padding:28px 26px;
+  margin:24px 0;
+  position:relative;
+  overflow:hidden;
+}
+.urgency::before{
+  content:'';position:absolute;top:-50px;right:-50px;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(231,111,81,0.3),transparent 70%);
+}
+.urgency .badge{
+  display:inline-block;
+  background:var(--coral);color:white;
+  font-size:11px;font-weight:700;letter-spacing:0.1em;
+  padding:5px 12px;border-radius:99px;
+  margin-bottom:12px;
+  text-transform:uppercase;
+}
+.urgency h3{
+  font-family:'Frank Ruhl Libre',serif;
+  font-size:22px;font-weight:700;
+  margin-bottom:10px;
+  position:relative;
+}
+.urgency p{color:rgba(245,239,228,0.85);font-size:15px;position:relative}
+.urgency strong{color:var(--gold);font-weight:700}
+
+/* ======= TIP CALLOUT ======= */
+.tip{
+  display:flex;gap:14px;
+  background:rgba(122,158,126,0.12);
+  border:1px solid rgba(122,158,126,0.3);
+  border-radius:14px;
+  padding:16px 18px;
+  margin:18px 0;
+}
+.tip-icon{
+  flex-shrink:0;
+  width:32px;height:32px;
+  background:var(--green);color:white;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:16px;
+}
+.tip-text{font-size:14px;color:var(--ink);line-height:1.55}
+.tip-text strong{color:var(--petrol-deep)}
+
+/* ======= STAT GRID ======= */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;margin:24px 0;
+}
+.stat{
+  background:var(--cream-soft);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:18px;
+}
+.stat-num{
+  font-family:'Frank Ruhl Libre',serif;
+  font-size:36px;font-weight:900;
+  color:var(--petrol);
+  line-height:1;letter-spacing:-0.02em;
+}
+.stat-label{
+  color:var(--ink-soft);
+  font-size:13px;margin-top:4px;
+}
+
+/* ======= NAV BUTTONS ======= */
+.nav{
+  display:flex;gap:12px;margin-top:36px;
+  flex-wrap:wrap;
+}
+.btn{
+  font-family:'Heebo',sans-serif;
+  font-weight:700;
+  font-size:16px;
+  padding:14px 26px;
+  border-radius:99px;
+  border:none;
+  cursor:pointer;
+  display:inline-flex;align-items:center;gap:10px;
+  text-decoration:none;
+  transition:transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  white-space:nowrap;
+}
+.btn-primary{
+  background:var(--ink);color:var(--cream);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow);background:var(--petrol-deep)}
+.btn-coral{
+  background:var(--coral);color:white;
+  box-shadow:0 10px 30px -10px rgba(231,111,81,0.6);
+}
+.btn-coral:hover{transform:translateY(-2px);box-shadow:0 16px 40px -10px rgba(231,111,81,0.7);background:#d65d40}
+.btn-ghost{
+  background:transparent;
+  color:var(--ink-soft);
+  border:1.5px solid var(--line);
+}
+.btn-ghost:hover{border-color:var(--ink);color:var(--ink)}
+.btn .arrow{
+  display:inline-block;
+  transition:transform 0.3s ease;
+}
+.btn:hover .arrow{transform:translateX(-4px)}
+.btn-big{font-size:18px;padding:18px 34px}
+
+/* ======= HERO ILLUSTRATION ======= */
+.hero-illu{
+  position:relative;
+  margin:20px 0 32px;
+  display:flex;justify-content:center;
+}
+.hero-illu svg{max-width:100%;height:auto}
+
+/* ======= FEATURE LIST ======= */
+.features{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  margin:24px 0;
+}
+@media (min-width:640px){
+  .features{grid-template-columns:repeat(2,1fr)}
+}
+.feature{
+  display:flex;gap:14px;align-items:flex-start;
+  background:var(--cream-soft);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:18px;
+  transition:transform 0.3s ease, border-color 0.3s ease;
+}
+.feature:hover{transform:translateY(-2px);border-color:var(--petrol)}
+.feature-check{
+  flex-shrink:0;
+  width:28px;height:28px;
+  background:var(--petrol);color:white;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;
+}
+.feature h4{
+  font-family:'Frank Ruhl Libre',serif;
+  font-size:17px;font-weight:700;
+  color:var(--ink);margin-bottom:4px;
+}
+.feature p{color:var(--ink-soft);font-size:14px;line-height:1.5}
+
+/* ======= CHECKLIST DONE ======= */
+.checklist{
+  background:var(--cream-soft);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:24px;
+  margin:24px 0;
+}
+.check-item{
+  display:flex;gap:14px;align-items:center;
+  padding:12px 0;
+  border-bottom:1px dashed var(--line);
+}
+.check-item:last-child{border-bottom:none}
+.check-mark{
+  width:32px;height:32px;
+  background:var(--green);color:white;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;
+  flex-shrink:0;
+}
+.check-text{
+  flex:1;
+  color:var(--ink);
+  font-weight:500;
+}
+.check-text small{
+  display:block;color:var(--ink-soft);font-weight:400;font-size:13px;
+}
+
+/* ======= WHATSAPP MOCKUP ======= */
+.wa-mock{
+  background:#ECE5DD;
+  border-radius:18px;
+  padding:18px;
+  margin:20px 0;
+  max-width:380px;
+  margin-right:0;
+  position:relative;
+}
+.wa-bubble{
+  background:white;
+  border-radius:12px;
+  padding:10px 14px;
+  margin-bottom:8px;
+  max-width:80%;
+  font-size:14px;
+  color:#111;
+  position:relative;
+}
+.wa-bubble.me{
+  background:#D9FDD3;
+  margin-right:auto;margin-left:0;
+}
+.wa-bubble.bot{
+  margin-right:0;margin-left:auto;
+}
+.wa-time{
+  font-size:10px;color:#777;
+  text-align:left;margin-top:2px;
+}
+.wa-img{
+  background:linear-gradient(135deg,#9aa,#667);
+  border-radius:8px;
+  height:80px;
+  display:flex;align-items:center;justify-content:center;
+  color:white;font-size:12px;
+  margin-bottom:6px;
+}
+
+/* ======= LINK INLINE ======= */
+.inline-link{
+  color:var(--petrol);font-weight:700;
+  text-decoration:underline;
+  text-decoration-color:rgba(15,76,92,0.3);
+  text-underline-offset:3px;
+  transition:color 0.2s ease;
+}
+.inline-link:hover{color:var(--coral)}
+
+/* ======= MOBILE TUNING ======= */
+@media (max-width:640px){
+  .stage{padding:24px 16px 100px}
+  .topbar{padding:10px 14px}
+  .brand{font-size:15px}
+  h1.title{font-size:32px}
+  .urgency{padding:22px 20px}
+  .urgency h3{font-size:18px}
+  .step{padding:14px 16px;gap:12px}
+  .step-num{font-size:26px;min-width:28px}
+  .nav{flex-direction:column-reverse}
+  .nav .btn{width:100%;justify-content:center}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat-num{font-size:28px}
+  .card{padding:18px}
+  .checklist{padding:18px}
+}
+
+/* ======= DECORATIVE PAPER STACK FOR SCREEN 1 ======= */
+.paper-stack{
+  position:relative;
+  width:100%;max-width:340px;
+  aspect-ratio:1.4;
+  margin:10px auto 0;
+}
+.paper{
+  position:absolute;inset:0;
+  background:white;
+  border:1px solid rgba(14,31,38,0.15);
+  border-radius:6px;
+  box-shadow:0 20px 40px -20px rgba(9,54,66,0.3);
+  padding:20px;
+  font-family:'Frank Ruhl Libre',serif;
+}
+.paper:nth-child(1){
+  transform:rotate(-6deg) translate(-8%,-3%);
+  background:#FAF4E8;
+  z-index:1;
+}
+.paper:nth-child(2){
+  transform:rotate(3deg) translate(4%,2%);
+  background:#FFFEFB;
+  z-index:2;
+}
+.paper:nth-child(3){
+  transform:rotate(-1deg);
+  background:white;
+  z-index:3;
+}
+.paper-line{
+  height:1px;background:rgba(14,31,38,0.15);
+  margin:7px 0;
+}
+.paper-title{
+  font-size:13px;color:var(--petrol-deep);
+  font-weight:700;margin-bottom:8px;
+  border-bottom:2px solid var(--coral);
+  padding-bottom:4px;
+  display:inline-block;
+}
+.paper-tear{
+  position:absolute;
+  bottom:-2px;left:0;right:0;
+  height:14px;
+  background:
+    radial-gradient(circle at 5px 0, transparent 6px, white 6px) 0 0/12px 14px;
+  z-index:4;
+  pointer-events:none;
+}
+
+/* ======= SPECIAL: highlight key info ======= */
+.highlight-box{
+  background:linear-gradient(180deg,rgba(212,165,116,0.18),rgba(212,165,116,0.06));
+  border:1px solid rgba(212,165,116,0.4);
+  border-radius:14px;
+  padding:18px 20px;
+  margin:18px 0;
+}
+.highlight-box .label{
+  font-size:11px;font-weight:700;
+  letter-spacing:0.1em;color:var(--coral);
+  text-transform:uppercase;margin-bottom:6px;
+}
+.highlight-box .value{
+  font-family:'Frank Ruhl Libre',serif;
+  font-size:20px;font-weight:700;color:var(--petrol-deep);
+}
+
+/* ======= screen 8 final ======= */
+.celebrate{
+  text-align:center;padding:20px 0 10px;
+}
+.celebrate-emoji{
+  font-size:64px;
+  display:inline-block;
+  animation:bounce 1.5s ease-in-out infinite;
+}
+@keyframes bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-12px)}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        מנייר לדיגיטל
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-meta">
+          <span>שלב <strong id="stepNum">1</strong> מתוך <strong>8</strong></span>
+          <span id="stepLabel">פתיחה</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- STAGE -->
+  <main class="stage">
+
+    <!-- ============ SCREEN 1: WELCOME ============ -->
+    <section class="screen active" data-screen="1">
+      <div class="stagger">
+        <span class="eyebrow">⏰ דדליין: 1 ביוני 2026</span>
+        <h1 class="title">הזמן לעבור<br>מ<span class="underline">חשבוניות נייר</span><br>ל<span class="accent">דיגיטל</span>.</h1>
+        <p class="lead">
+          אם אתם עוסקים פטורים, עוסקים מורשים או חברה — <strong>זה הרגע לעבור.</strong>
+          מה-1 ביוני 2026 כל חשבונית מעל 5,000 ש"ח לפני מע"מ חייבת לשאת מספר הקצאה מרשות המיסים. בלי זה — הלקוח שלכם לא יוכל לקזז מע"מ.
+        </p>
+
+        <div class="paper-stack">
+          <div class="paper">
+            <div class="paper-title">חשבונית 156</div>
+            <div class="paper-line"></div>
+            <div class="paper-line" style="width:80%"></div>
+            <div class="paper-line" style="width:60%"></div>
+            <div class="paper-tear"></div>
+          </div>
+          <div class="paper">
+            <div class="paper-title">חשבונית 157</div>
+            <div class="paper-line"></div>
+            <div class="paper-line" style="width:70%"></div>
+            <div class="paper-line" style="width:55%"></div>
+            <div class="paper-tear"></div>
+          </div>
+          <div class="paper">
+            <div class="paper-title">חשבונית 158</div>
+            <div class="paper-line"></div>
+            <div class="paper-line" style="width:85%"></div>
+            <div class="paper-line" style="width:65%"></div>
+            <div class="paper-tear"></div>
+          </div>
+        </div>
+
+        <div class="urgency">
+          <span class="badge">חשוב לדעת</span>
+          <h3>מה זה אומר בפועל?</h3>
+          <p>
+            מיוני 2026, אם תוציאו חשבונית מעל <strong>5,000 ש"ח</strong> ללא מספר הקצאה — הלקוח לא יוכל לקזז את המע"מ.
+            הוא ייאלץ לבקש מכם להוציא מחדש, ובמקרים מסוימים פשוט יבחר לעבוד עם מישהו אחר. זה לא מצב שאתם רוצים להגיע אליו.
+          </p>
+        </div>
+
+        <p class="lead" style="margin-top:8px">
+          המדריך הזה ילווה אתכם <strong>צעד אחר צעד</strong> — מההבנה למה צריך לעבור, דרך פתיחת חשבון, ועד הפקת החשבונית הראשונה שלכם. בלי כאב ראש.
+        </p>
+
+        <div class="nav">
+          <button class="btn btn-coral btn-big" onclick="nextScreen()">
+            יאללה, מתחילים
+            <span class="arrow">←</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 2: WHY DIGITAL ============ -->
+    <section class="screen" data-screen="2">
+      <div class="stagger">
+        <span class="eyebrow">📄 → 💻 השלב הראשון</span>
+        <h1 class="title">למה בכלל<br>לעבור ל<span class="accent">דיגיטל</span>?</h1>
+        <p class="lead">
+          אנחנו יודעים — פנקס הנייר עבד מצוין שנים. אבל החוק השתנה, והעולם השתנה.
+          הנה כל מה שתרוויחו (ותפסיקו להפסיד) מהרגע שתעברו:
+        </p>
+
+        <div class="features">
+          <div class="feature">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>חוקי וכשר</h4>
+              <p>חשבוניות עם מספר הקצאה אוטומטי מרשות המיסים, בלי שתצטרכו לזכור או לטפל בזה ידנית.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>אין יותר אובדן</h4>
+              <p>הכל מאוחסן בענן ומגובה. נגמר העידן של "איפה החשבונית מלפני שנה?".</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>חשבונית בשניות</h4>
+              <p>מהנייד, מהמחשב, מכל מקום. שולחים ללקוח בוואטסאפ או במייל בלחיצה אחת.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>הלקוחות מרוצים</h4>
+              <p>הם מקבלים PDF מסודר במייל במקום צילום מטושטש של פנקס. הם יזכרו את זה.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>סוף חודש קל</h4>
+              <p>הרו"ח שלכם נכנס ישר לחשבון ולוקח מה שצריך. לא יותר קלסרים, צילומים ומיילים.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>גישה מכל מקום</h4>
+              <p>מהבית, מהאוטו, מהפגישה — תוציאו חשבונית ברגע שסגרתם עסקה. אפס דחיינות.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="urgency">
+          <span class="badge">החשש הכי נפוץ</span>
+          <h3>"אבל המספור שלי באמצע פנקס..."</h3>
+          <p>
+            אנחנו שומעים את זה הרבה. ההפתעה? <strong>זה לא נושא בכלל.</strong>
+            המערכת שנמליץ עליה מאפשרת לכם לבחור בדיוק מאיזה מספר להתחיל — תמשיכו בדיוק אחרי החשבונית הפיזית האחרונה שלכם, בלי קפיצה, בלי כפילות, בלי לבלבל את רואה החשבון.
+          </p>
+        </div>
+
+        <div class="nav">
+          <button class="btn btn-ghost" onclick="prevScreen()">→ חזרה</button>
+          <button class="btn btn-coral" onclick="nextScreen()">
+            איזו מערכת תתאים לי?
+            <span class="arrow">←</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 3: WHY SUMIT ============ -->
+    <section class="screen" data-screen="3">
+      <div class="stagger">
+        <span class="eyebrow">🎯 ההמלצה שלנו</span>
+        <h1 class="title">אנחנו ממליצים<br>על <span class="accent">SUMIT</span>.</h1>
+        <p class="lead">
+          בדקנו את המערכות בשוק. SUMIT היא <strong>הבחירה הכי משתלמת, הכי פשוטה והכי בטוחה</strong>
+          לעסק שמתחיל את המעבר לדיגיטל — וגם לעסק שגדל איתה.
+        </p>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-num">35,000+</div>
+            <div class="stat-label">עסקים בישראל כבר משתמשים</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">10</div>
+            <div class="stat-label">מסמכים בחודש בחינם, ללא הגבלת זמן</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">99.9%</div>
+            <div class="stat-label">זמינות — המערכת כמעט אף פעם לא יורדת</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">₪0</div>
+            <div class="stat-label">עלות פתיחה — אין צורך בכרטיס אשראי</div>
+          </div>
+        </div>
+
+        <h2 class="section">למה דווקא SUMIT?</h2>
+
+        <div class="card">
+          <div class="card-icon coral">1</div>
+          <h3>חינמי באמת — בלי אותיות קטנות</h3>
+          <p>עד 10 מסמכים בחודש בחינם, לתמיד. מושלם לעסק קטן או למי שמתחיל. גם בלי כרטיס אשראי — נרשמים ומתחילים.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">2</div>
+          <h3>מעבר חלק מפנקסי נייר</h3>
+          <p>בוחרים בדיוק מאיזה מספר להתחיל את הספירה. הפנקס נגמר ב-247? תתחילו את 248 במערכת. בלי קפיצות, בלי כפילויות.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon gold">3</div>
+          <h3>חיבור אוטומטי לרשות המיסים</h3>
+          <p>הממשק הכי נוח בשוק להתממשקות עם חשבוניות ישראל. בלי להעתיק טוקנים ידנית. כל חשבונית מעל הסף מקבלת מספר הקצאה אוטומטית.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon green">4</div>
+          <h3>בוט הוצאות בוואטסאפ</h3>
+          <p>צילמתם קבלה מהמונית? קיבלתם חשבון PDF במייל? פשוט שולחים לבוט בוואטסאפ — וזה מופיע כטיוטת הוצאה בחשבון שלכם. אפס ניירות אבודים.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon coral">5</div>
+          <h3>הרו"ח שלכם בחינם בפנים</h3>
+          <p>נותנים גישה ישירה למייצג שלכם (רו"ח / יועץ מס) ללא עלות. הוא יכול למשוך את הקובץ האחיד, לראות הוצאות, ולעבוד בלי שתצטרכו לאסוף ניירות.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">6</div>
+          <h3>מחירים שלא עולים</h3>
+          <p>בניגוד לרוב המתחרים, SUMIT לא העלתה מחירים בשנים האחרונות. גם אם תגדלו ותעברו לחבילה בתשלום — תדעו בדיוק כמה זה עולה ולתמיד.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon gold">7</div>
+          <h3>שירות לקוחות אנושי ומקצועי</h3>
+          <p>צ'אט, וואטסאפ, מייל — תמיד יש עם מי לדבר. בעיקר חשוב בשלב המעבר הראשוני: יש מי שיעזור לכם להתחבר לרשות המיסים בלי לאבד שפיות.</p>
+        </div>
+
+        <div class="urgency">
+          <span class="badge">הצעד הבא</span>
+          <h3>איך פותחים חשבון?</h3>
+          <p>
+            לוחצים על הכפתור הגדול למטה. נפתחת לכם <strong>SUMIT בלשונית חדשה</strong>.
+            תהליך הרישום לוקח 2 דקות — מזינים שם, מייל וסיסמה. <strong>לא צריך כרטיס אשראי.</strong>
+            כשסיימתם, חוזרים לכאן ולוחצים על הכפתור התחתון כדי להמשיך.
+          </p>
+        </div>
+
+        <div class="nav">
+          <button class="btn btn-ghost" onclick="prevScreen()">→ חזרה</button>
+          <a class="btn btn-coral btn-big" href="https://www.sumit.co.il/?r=P-1OLTTM" target="_blank" rel="noopener" onclick="markVisited()">
+            פתיחת חשבון ב-SUMIT (חינם)
+            <span class="arrow">↗</span>
+          </a>
+        </div>
+        <div class="nav" style="margin-top:14px">
+          <button class="btn btn-primary" onclick="nextScreen()">
+            פתחתי חשבון ב-SUMIT — מה עכשיו?
+            <span class="arrow">←</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 4: FIRST INVOICE ============ -->
+    <section class="screen" data-screen="4">
+      <div class="stagger">
+        <span class="eyebrow">📋 שלב 1 אחרי הפתיחה</span>
+        <h1 class="title">החשבונית הראשונה<br>שלכם, <span class="accent">בהמשך לפנקס</span>.</h1>
+        <p class="lead">
+          לפני שאתם מוציאים את החשבונית הראשונה במערכת — צריך לוודא שהמספור <strong>ממשיך בדיוק מאיפה שהפסקתם בפנקס הנייר.</strong>
+          זה לוקח דקה. הנה איך:
+        </p>
+
+        <div class="highlight-box">
+          <div class="label">דוגמה מהחיים</div>
+          <div class="value">החשבונית האחרונה בפנקס שלכם הייתה 156 → במערכת תתחילו מ-157.</div>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h4>היכנסו להגדרות במערכת</h4>
+              <p>אחרי שנכנסתם ל-SUMIT, לוחצים על <span class="path">⚙️ הגדרות</span> בתפריט הצדדי, ואז על <span class="path">מסמכים</span>.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h4>מוצאים את "מספור מסמכים"</h4>
+              <p>בתוך עמוד המסמכים, יש סעיף בשם "מספור מסמכים" או "סדרות מספור". שם תראו את כל סוגי המסמכים: חשבונית מס, חשבונית מס-קבלה, קבלה, חשבון עסקה ועוד.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h4>בוחרים את סוג המסמך ומזינים מספר התחלתי</h4>
+              <p>לוחצים על "חשבונית מס" (או על סוג המסמך שאתם רוצים להמשיך ממנו), ומזינים את המספר הבא ברצף. אם החשבונית האחרונה הייתה <code>156</code>, מזינים <code>157</code>.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <h4>שומרים — וזהו</h4>
+              <p>לוחצים על "שמירה". מהרגע הזה, כל חשבונית מס שתפיקו במערכת תקבל מספר עוקב, בדיוק כמו שהיה בפנקס.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip">
+          <div class="tip-icon">!</div>
+          <div class="tip-text">
+            <strong>חשוב:</strong> חוזרים על הפעולה הזו עבור כל סוג מסמך שהשתמשתם בו בפנקס — חשבונית מס, חשבונית מס-קבלה, קבלה. כל סוג ממוספר בנפרד.
+          </div>
+        </div>
+
+        <div class="tip">
+          <div class="tip-icon">✓</div>
+          <div class="tip-text">
+            <strong>אפשר גם להתחיל מחדש:</strong> אם אתם מעדיפים פתיחה חדשה (למשל מ-1001), זה לגיטימי. רק שימו לב שהרו"ח שלכם ידע — והוא בטח יעדיף את האופציה הראשונה (המשך הרצף).
+          </div>
+        </div>
+
+        <p class="lead" style="margin-top:24px">
+          זהו. <strong>הצעד הכי מפחיד בכל המעבר כבר מאחוריכם.</strong> עכשיו נחבר את המערכת לרשות המיסים כדי שתקבלו מספרי הקצאה אוטומטית.
+        </p>
+
+        <div class="nav">
+          <button class="btn btn-ghost" onclick="prevScreen()">→ חזרה</button>
+          <button class="btn btn-coral" onclick="nextScreen()">
+            עכשיו: חיבור לרשות המיסים
+            <span class="arrow">←</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 5: TAX AUTHORITY ============ -->
+    <section class="screen" data-screen="5">
+      <div class="stagger">
+        <span class="eyebrow">🏛️ שלב 2: חשבוניות ישראל</span>
+        <h1 class="title">חיבור ל<span class="accent">רשות המיסים</span>.<br>אוטומטי, לעד.</h1>
+        <p class="lead">
+          זה החיבור שיגרום למספרי ההקצאה <strong>להופיע אוטומטית</strong> על כל חשבונית שמחייבת אותם.
+          ב-SUMIT זה לא קשה — בניגוד לתחושה הראשונית שזה משהו מורכב.
+        </p>
+
+        <div class="urgency">
+          <span class="badge">תזכורת מהירה</span>
+          <h3>מי חייב במספר הקצאה?</h3>
+          <p>
+            <strong>מ-1.1.2026:</strong> חשבוניות מעל 10,000 ש"ח לפני מע"מ.<br>
+            <strong>מ-1.6.2026:</strong> חשבוניות מעל 5,000 ש"ח לפני מע"מ.<br>
+            עוסקים פטורים — לא חייבים אבל אם יצא לכם להוציא חשבונית עם מע"מ זה כן רלוונטי.
+          </p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h4>רישום כ"מורשה" אצל רשות המיסים</h4>
+              <p>לפני החיבור עצמו — צריך להירשם פעם אחת כ"מורשה" באזור האישי שלכם ברשות המיסים. <strong>עוסק יחיד פטור/מורשה</strong> — אתם אוטומטית מורשים, רק צריכים לקבל קוד משתמש. <strong>חברה</strong> — דירקטור/מורשה חתימה מגיש.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h4>נכנסים להגדרות ב-SUMIT</h4>
+              <p>בתוך SUMIT: <span class="path">⚙️ הגדרות</span> ← <span class="path">חיבור לרשות המיסים</span> ← לוחצים על "התחברות לרשות המיסים".</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h4>מזינים מספר זהות וקוד משתמש</h4>
+              <p>מסך ההזדהות של רשות המיסים נפתח. מזינים את מספר הזהות (תעודת זהות / ח.פ.) ואת קוד המשתמש שקיבלתם בשלב הקודם.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <h4>מאשרים את ההרשאה</h4>
+              <p>רשות המיסים תבקש אישור שלכם לתת ל-SUMIT לקבל מספרי הקצאה בשמכם. מאשרים. <strong>זהו.</strong> מעכשיו, כל חשבונית מעל הסף תקבל מספר הקצאה אוטומטית, בלי שום פעולה נוספת מצידכם.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip">
+          <div class="tip-icon">✓</div>
+          <div class="tip-text">
+            <strong>פעם בשלושה חודשים</strong> צריך לחדש את ההרשאה (זו דרישה של רשות המיסים, לא של SUMIT). המערכת מתריעה לכם מראש ולוקח 30 שניות לחדש.
+          </div>
+        </div>
+
+        <div class="tip">
+          <div class="tip-icon">!</div>
+          <div class="tip-text">
+            <strong>תקועים?</strong> זה השלב היחיד שלפעמים דורש סיוע. אם אין לכם קוד משתמש מרשות המיסים, אפשר לפנות לתמיכה של SUMIT בצ'אט / וואטסאפ — הם רגילים לסייע בזה בלי בעיה.
+          </div>
+        </div>
+
+        <div class="nav">
+          <button class="btn btn-ghost" onclick="prevScreen()">→ חזרה</button>
+          <button class="btn btn-coral" onclick="nextScreen()">
+            הלאה: חיבור הרו"ח
+            <span class="arrow">←</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 6: ACCOUNTANT ============ -->
+    <section class="screen" data-screen="6">
+      <div class="stagger">
+        <span class="eyebrow">👤 שלב 3: הנהלת חשבונות</span>
+        <h1 class="title">הרו"ח שלכם<br><span class="accent">בפנים</span> — בלי עלות.</h1>
+        <p class="lead">
+          זה אולי השדרוג הכי משמעותי לעסק שלכם.
+          במקום לשלוח לרו"ח שלכם תיקיות עם צילומים בכל סוף חודש, <strong>הוא נכנס למערכת ומושך לעצמו את הקובץ האחיד.</strong>
+          חוסך לכם שעה-שעתיים בחודש, וחוסך לו טעויות.
+        </p>
+
+        <div class="card">
+          <div class="card-icon coral">★</div>
+          <h3>מה הרו"ח שלכם מקבל?</h3>
+          <p>
+            גישה ישירה ומאובטחת לחשבון שלכם, ללא עלות מצידו (זה השיווק של SUMIT, וזה עובד). הוא רואה את ההכנסות, ההוצאות, יכול למשוך דוחות וקבצים — ואפילו לעבוד מולכם בזמן אמת אם יש שאלה.
+          </p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h4>היכנסו להגדרות הרשאות</h4>
+              <p><span class="path">⚙️ הגדרות</span> ← <span class="path">משתמשים והרשאות</span>. לוחצים על "הוספת משתמש חדש" או "הוספת מייצג".</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h4>מזינים את המייל של הרו"ח</h4>
+              <p>פשוט מזינים את כתובת המייל של רואה החשבון / יועץ המס / מנהל החשבונות שלכם.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h4>בוחרים בסוג ההרשאה "מייצג"</h4>
+              <p>במערכת יש כמה סוגי הרשאות. בוחרים <strong>"מייצג"</strong> — זה נותן לו גישה לכל המידע החשבונאי שהוא צריך, בלי לשנות שום דבר במערכת שלכם.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <h4>לחיצה על "שליחת הזמנה"</h4>
+              <p>הרו"ח מקבל מייל עם קישור להתחברות. כשהוא נכנס בפעם הראשונה — הוא יוצר משתמש משלו ומחובר. מהרגע הזה, יש לו גישה תמידית לחשבון שלכם.</p>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="section">מה הרו"ח יכול לעשות עכשיו?</h2>
+        <div class="features">
+          <div class="feature">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>למשוך את הקובץ האחיד (במ"א)</h4>
+              <p>הוא מוריד את הקובץ ישירות לתוכנת ההנה"ח שלו, פעם בחודש. בלי לבקש מכם.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>לראות הוצאות בזמן אמת</h4>
+              <p>כולל אלה ששלחתם בוואטסאפ. לא עוד "שלח לי את הקבלה ההיא".</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>להפיק דוחות</h4>
+              <p>דו"ח רווח והפסד, מע"מ, הוצאות לפי קטגוריה — הכל בכמה לחיצות.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>לסווג הוצאות</h4>
+              <p>אם יש הוצאה לא ברורה, הוא יכול לסווג אותה לחשבון הנכון. בלי לחזור אליכם.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip">
+          <div class="tip-icon">i</div>
+          <div class="tip-text">
+            <strong>הרו"ח שלכם לא מכיר את SUMIT?</strong> שלחו לו את הקישור הבא: <a class="inline-link" href="https://www.sumit.co.il/books" target="_blank" rel="noopener">sumit.co.il/books</a>. שם יש דף ייעודי למייצגים. רוב הרו"חים בארץ כבר מכירים את SUMIT — אבל אם זה חדש לו, יש לו את כל המידע במקום אחד.
+          </div>
+        </div>
+
+        <div class="nav">
+          <button class="btn btn-ghost" onclick="prevScreen()">→ חזרה</button>
+          <button class="btn btn-coral" onclick="nextScreen()">
+            הטריק הכי שווה: וואטסאפ
+            <span class="arrow">←</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 7: WHATSAPP ============ -->
+    <section class="screen" data-screen="7">
+      <div class="stagger">
+        <span class="eyebrow">💬 שלב 4: סוף לערימת קבלות</span>
+        <h1 class="title">קבלות?<br>פשוט שלחו ב<span class="accent">וואטסאפ</span>.</h1>
+        <p class="lead">
+          זה הפיצ'ר שכל לקוח של SUMIT מתאהב בו תוך שבוע. <strong>במקום לאסוף קבלות בארנק או בתיק כל החודש</strong> —
+          מצלמים את הקבלה ברגע שמקבלים אותה, שולחים לבוט בוואטסאפ, וזהו. היא בחשבון, מסווגת ומוכנה לרו"ח.
+        </p>
+
+        <div class="wa-mock">
+          <div class="wa-bubble me">
+            <div class="wa-img">📷 קבלה מסופר</div>
+            ₪247 על קניות לעסק
+            <div class="wa-time">14:23 ✓✓</div>
+          </div>
+          <div class="wa-bubble bot">
+            ✅ הוצאה נקלטה במערכת!<br>
+            <small style="color:#666">סופר השכונה · 247 ₪ · ממתינה לסיווג</small>
+            <div class="wa-time" style="text-align:right">14:23</div>
+          </div>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h4>הגדרות העברת חומרים</h4>
+              <p><span class="path">⚙️ הגדרות</span> ← <span class="path">העברת חומרים</span> ← <span class="path">בוט וואטסאפ</span>. תראו שם מספר טלפון של הבוט וקוד אישי קצר.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h4>שומרים את הבוט באנשי הקשר</h4>
+              <p>מוסיפים את מספר הבוט באנשי הקשר בנייד (שם מוצע: "SUMIT הוצאות"). שולחים לו את הקוד האישי פעם אחת — והוא מזהה אתכם.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h4>שולחים קבלות</h4>
+              <p>צילום מהמצלמה? תמונה מהגלריה? קובץ PDF שקיבלתם במייל? פשוט שולחים לבוט. אפשר גם <strong>להעביר (Forward)</strong> הודעות עם קבלות מצ'אטים אחרים.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <h4>הקבלה מופיעה בחשבון</h4>
+              <p>תוך שניות. אתם רואים אותה ב-SUMIT כטיוטת הוצאה, מוכנה לסיווג סופי. הרו"ח שלכם רואה אותה גם — וסוגר את הסיווג בסוף החודש.</p>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="section">דוגמאות מהחיים</h2>
+        <div class="features">
+          <div class="feature">
+            <div class="feature-check">→</div>
+            <div>
+              <h4>הסעדה בפגישה</h4>
+              <p>סיימת ארוחת עסקים — לפני שהמלצר אסף את הקבלה, צילמת ושלחת.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">→</div>
+            <div>
+              <h4>חשבון תקשורת</h4>
+              <p>מגיע אליך כל חודש במייל? תעשה Forward לוואטסאפ של הבוט. בלי לפתוח את המייל.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">→</div>
+            <div>
+              <h4>דלק וחניה</h4>
+              <p>קבלה מהפעם הזו שמילאת לרכב העסק — סקופ, שלח, נשכח.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">→</div>
+            <div>
+              <h4>קניות באמזון</h4>
+              <p>הזמנת ציוד? תעביר את מייל האישור לבוט. הוא יחלץ את הסכומים.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip">
+          <div class="tip-icon">★</div>
+          <div class="tip-text">
+            <strong>הטיפ הכי חשוב:</strong> תקבלו על עצמכם הרגל אחד — לשלוח קבלה לבוט <em>מיד</em> כשמקבלים אותה. תוך חודש כבר לא תזכרו איך חייתם לפני זה.
+          </div>
+        </div>
+
+        <div class="nav">
+          <button class="btn btn-ghost" onclick="prevScreen()">→ חזרה</button>
+          <button class="btn btn-coral" onclick="nextScreen()">
+            סיימנו! בואו נסכם
+            <span class="arrow">←</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 8: DONE ============ -->
+    <section class="screen" data-screen="8">
+      <div class="stagger">
+        <div class="celebrate">
+          <span class="celebrate-emoji">🎉</span>
+        </div>
+        <span class="eyebrow">✓ סיימתם</span>
+        <h1 class="title">מזל טוב!<br>העסק שלכם<br><span class="accent">דיגיטלי</span>.</h1>
+        <p class="lead">
+          זהו. ביצעתם את המעבר הכי חשוב שעסק קטן עושה השנה.
+          <strong>אתם מוגנים מהדדליין של יוני 2026</strong>, חסכתם שעות עבודה בחודש, והרו"ח שלכם עכשיו עובד הרבה יותר ביעילות.
+        </p>
+
+        <h2 class="section">מה השגתם?</h2>
+
+        <div class="checklist">
+          <div class="check-item">
+            <div class="check-mark">✓</div>
+            <div class="check-text">
+              פתחתם חשבון ב-SUMIT
+              <small>חינמי, ללא הגבלת זמן, עד 10 מסמכים בחודש</small>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-mark">✓</div>
+            <div class="check-text">
+              הגדרתם מספור עוקב לפנקס הנייר
+              <small>הרו"ח שלכם יודה לכם שלא קפצתם במספור</small>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-mark">✓</div>
+            <div class="check-text">
+              חיברתם את המערכת לרשות המיסים
+              <small>מספרי הקצאה אוטומטיים — עומדים בחוק יוני 2026</small>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-mark">✓</div>
+            <div class="check-text">
+              נתתם גישה לרו"ח שלכם
+              <small>סוף סוף סוף חודש פשוט, לכם ולו</small>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-mark">✓</div>
+            <div class="check-text">
+              הגדרתם בוט הוצאות בוואטסאפ
+              <small>סוף לערימות הקבלות בארנק</small>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="section">מה הלאה?</h2>
+
+        <div class="card">
+          <div class="card-icon coral">!</div>
+          <h3>תוציאו חשבונית ראשונה</h3>
+          <p>הצעד הכי חשוב עכשיו — להוציא חשבונית ראשונה דיגיטלית ולהרגיש את ההבדל. גם אם זו חשבונית קטנה, גם אם זו חשבונית "ניסיון" ללקוח קבוע. תרגישו מהר מאוד למה דיגיטל זה חוויה אחרת לגמרי.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">?</div>
+          <h3>שאלות?</h3>
+          <p>
+            המרכז המידע של SUMIT עשיר וברור: <a class="inline-link" href="https://help.sumit.co.il/he/" target="_blank" rel="noopener">help.sumit.co.il</a>.
+            אם משהו לא ברור — צ'אט / וואטסאפ ישיר עם התמיכה זמין מהמערכת.
+          </p>
+        </div>
+
+        <div class="urgency">
+          <span class="badge">תזכורת אחרונה</span>
+          <h3>בלי לחץ. גם אם לא הספקתם הכל היום.</h3>
+          <p>
+            לא חייבים לעשות הכל בבת אחת. גם פתיחת חשבון + חשבונית ראשונה זה כבר התחלה מצוינת. את שאר השלבים אפשר לעשות בקצב שלכם — אבל <strong>עד יוני 2026 כדאי שהחיבור לרשות המיסים יהיה מסודר.</strong>
+          </p>
+        </div>
+
+        <div class="nav" style="justify-content:center">
+          <a class="btn btn-coral btn-big" href="https://www.sumit.co.il/?r=P-1OLTTM" target="_blank" rel="noopener">
+            כניסה ל-SUMIT
+            <span class="arrow">↗</span>
+          </a>
+          <button class="btn btn-ghost" onclick="goToScreen(1)">
+            התחלה מחדש
+            <span class="arrow">⟲</span>
+          </button>
+        </div>
+
+        <p style="text-align:center;color:var(--ink-soft);font-size:13px;margin-top:32px">
+          המדריך הזה הוכן באהבה לבעלי עסקים בישראל ✦ ההמלצה על SUMIT אישית ומקצועית.
+        </p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+const screens = document.querySelectorAll('.screen');
+const total = screens.length;
+let current = 1;
+const labels = {
+  1:'פתיחה',
+  2:'למה דיגיטל',
+  3:'למה SUMIT',
+  4:'מספור עוקב',
+  5:'רשות המיסים',
+  6:'הרו"ח',
+  7:'וואטסאפ',
+  8:'סיכום'
+};
+
+function updateProgress(){
+  const pct = (current / total) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('stepNum').textContent = current;
+  document.getElementById('stepLabel').textContent = labels[current] || '';
+}
+
+function goToScreen(n){
+  if(n < 1 || n > total) return;
+  screens.forEach(s => s.classList.remove('active'));
+  const target = document.querySelector('.screen[data-screen="' + n + '"]');
+  if(target){
+    target.classList.add('active');
+    current = n;
+    updateProgress();
+    // restart stagger
+    const stagger = target.querySelector('.stagger');
+    if(stagger){
+      stagger.style.animation = 'none';
+      stagger.offsetHeight;
+      stagger.style.animation = null;
+      // restart child animations
+      const children = stagger.children;
+      for(let c of children){
+        c.style.animation = 'none';
+        c.offsetHeight;
+        c.style.animation = null;
+      }
+    }
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+function nextScreen(){ goToScreen(current + 1) }
+function prevScreen(){ goToScreen(current - 1) }
+function markVisited(){
+  // tiny visual nudge if user comes back
+  setTimeout(()=>{
+    const btn = document.querySelector('.screen[data-screen="3"] .btn-primary');
+    if(btn){
+      btn.style.boxShadow = '0 0 0 4px rgba(231,111,81,0.25)';
+      btn.style.transform = 'scale(1.02)';
+      setTimeout(()=>{
+        btn.style.boxShadow = '';
+        btn.style.transform = '';
+      }, 3000);
+    }
+  }, 500);
+}
+
+// keyboard navigation
+document.addEventListener('keydown', e => {
+  if(e.key === 'ArrowRight') prevScreen(); // RTL: right = back
+  if(e.key === 'ArrowLeft') nextScreen();  // RTL: left = forward
+});
+
+updateProgress();
+</script>
+</body>
+</html>
