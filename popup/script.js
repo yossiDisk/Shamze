@@ -249,6 +249,9 @@ function handleCurrentUrlMode(url, sitesData) {
             case "CouponContentJson":
                 features.push('קופונים');
                 break;
+            case "modalHotelComparison":
+                features.push('השוואת מלונות');
+                break;
             case "modalFlightComparison":
                 features.push('השוואת מחירי טיסות');
                 break;
