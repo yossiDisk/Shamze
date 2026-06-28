@@ -61,6 +61,30 @@
       color: #666;
       border-bottom: 3px solid transparent;
       transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    /* התאמת טאבים למובייל - חלוקה שווה עם מקום לטאב נוסף */
+    @media (max-width: 768px) {
+      .tabs-container {
+        gap: 4px;
+        padding: 8px 6px;
+      }
+
+      .tab-button {
+        flex: 1 1 0;
+        min-width: 0;
+        padding: 10px 6px;
+        font-size: 14px;
+        border-bottom-width: 2px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .tab-button {
+        font-size: 13px;
+        padding: 9px 4px;
+      }
     }
 
     .tab-button:hover {
