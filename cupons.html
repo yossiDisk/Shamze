@@ -105,6 +105,286 @@
       display: block;
     }
 
+    /* חלונית קידום חשמל */
+    .elec-promo {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: linear-gradient(135deg, #047857 0%, #059669 55%, #10b981 100%);
+      color: #fff;
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+      cursor: pointer;
+      box-shadow: 0 12px 28px -14px rgba(5, 150, 105, 0.7);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .elec-promo:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 34px -16px rgba(5, 150, 105, 0.8);
+    }
+
+    .elec-promo-icon {
+      flex-shrink: 0;
+      font-size: 34px;
+      line-height: 1;
+    }
+
+    .elec-promo-text {
+      flex: 1;
+      padding-left: 24px;
+    }
+
+    .elec-promo-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+
+    .elec-promo-desc {
+      font-size: 14px;
+      opacity: 0.92;
+    }
+
+    .elec-promo-arrow {
+      flex-shrink: 0;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .elec-promo-close {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .elec-promo-close:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    @media (max-width: 768px) {
+      .elec-promo {
+        padding: 16px 18px;
+        gap: 12px;
+      }
+
+      .elec-promo-icon {
+        font-size: 28px;
+      }
+
+      .elec-promo-title {
+        font-size: 16px;
+      }
+
+      .elec-promo-desc {
+        font-size: 13px;
+      }
+
+      .elec-promo-arrow {
+        display: none;
+      }
+    }
+
+    /* סגנון דף השוואת חשמל */
+    .elec-hero {
+      background: linear-gradient(135deg, #047857 0%, #059669 55%, #10b981 100%);
+      border-radius: 20px;
+      padding: 48px 24px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 20px 40px -20px rgba(5, 150, 105, 0.6);
+    }
+
+    .elec-savings {
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin: 8px 0;
+    }
+
+    .elec-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: #047857;
+      font-weight: 800;
+      font-size: 18px;
+      padding: 16px 36px;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.35);
+    }
+
+    .elec-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 30px -10px rgba(0, 0, 0, 0.4);
+    }
+
+    .elec-cta--green {
+      background: #059669;
+      color: #fff;
+    }
+
+    .elec-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .elec-stat {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 24px 12px;
+      text-align: center;
+    }
+
+    .elec-stat-num {
+      font-size: 32px;
+      font-weight: 800;
+      color: #059669;
+    }
+
+    .elec-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .elec-step-num {
+      width: 48px;
+      height: 48px;
+      border-radius: 9999px;
+      background: #059669;
+      color: #fff;
+      font-size: 22px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .elec-suppliers {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .elec-supplier-pill {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+      border-radius: 9999px;
+      padding: 8px 18px;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    @media (max-width: 768px) {
+      /* כותרת הטאב */
+      #electricity-tab > h2 {
+        font-size: 22px;
+        line-height: 1.3;
+        margin-bottom: 16px;
+      }
+
+      /* ריווח קומפקטי בין המקטעים */
+      #electricity-tab .mt-8 {
+        margin-top: 20px;
+      }
+
+      #electricity-tab .elec-card,
+      #electricity-tab .bg-white {
+        padding: 18px;
+      }
+
+      /* Hero */
+      .elec-hero {
+        padding: 26px 18px;
+      }
+
+      .elec-hero .text-lg {
+        font-size: 14px;
+      }
+
+      .elec-hero .text-2xl {
+        font-size: 19px;
+        margin-bottom: 12px !important;
+      }
+
+      .elec-savings {
+        font-size: 34px;
+        margin: 4px 0;
+      }
+
+      .elec-savings .text-2xl {
+        font-size: 16px;
+      }
+
+      .elec-hero p {
+        margin-bottom: 8px;
+      }
+
+      .elec-hero .mb-6 {
+        margin-bottom: 18px !important;
+      }
+
+      /* מספרים — שורה אחת קומפקטית במקום שלוש שורות */
+      .elec-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .elec-stat {
+        padding: 14px 6px;
+      }
+
+      .elec-stat-num {
+        font-size: 18px;
+      }
+
+      .elec-stat .text-gray-600 {
+        font-size: 12px;
+      }
+
+      /* כותרות משנה */
+      #electricity-tab h3.text-2xl {
+        font-size: 19px;
+      }
+
+      #electricity-tab h3.text-xl {
+        font-size: 17px;
+      }
+
+      .elec-cta {
+        width: 100%;
+        justify-content: center;
+        font-size: 16px;
+        padding: 15px 22px;
+      }
+    }
+
     /* סגנון חיפושים אחרונים */
     .recent-searches-container {
       background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -1035,11 +1315,25 @@
       <div class="tabs-container">
         <button class="tab-button active" data-tab="products">השוואת מחירים</button>
         <button class="tab-button" data-tab="flights">השוואת טיסות</button>
+        <button class="tab-button" data-tab="electricity">השוואה בחשמל</button>
       </div>
 
       <!-- תוכן טאב מוצרים -->
       <div id="products-tab" class="tab-content active">
         <h2 class="text-3xl font-bold text-center mb-8">חיפוש קופונים והשוואת מחירים</h2>
+
+        <!-- חלונית קידום: השוואה בחשמל -->
+        <div id="elecPromo" class="elec-promo" role="button" tabindex="0"
+          aria-label="מעבר לטאב השוואה בחשמל">
+          <button id="elecPromoClose" class="elec-promo-close" type="button"
+            aria-label="סגירת החלונית">✕</button>
+          <span class="elec-promo-icon">⚡</span>
+          <div class="elec-promo-text">
+            <div class="elec-promo-title">השוו וחסכו בחשבון החשמל בקלות!</div>
+            <div class="elec-promo-desc">בדיקה חינמית לפי הצריכה שלכם — מוצאים את הספק הזול ביותר וחוסכים בממוצע ₪457 בשנה. לחצו כאן ›</div>
+          </div>
+          <span class="elec-promo-arrow">›</span>
+        </div>
 
         <div class="bg-white p-6 rounded-lg shadow-md">
           <div class="max-w-md mx-auto">
@@ -1211,6 +1505,115 @@
         <div id="flightSearchStatus" class="text-center text-sm text-gray-600 mt-4" style="display: none;"></div>
 
         <div id="flightResultsContainer" class="flight-results-container mt-8"></div>
+      </div>
+
+      <!-- תוכן טאב השוואה בחשמל -->
+      <div id="electricity-tab" class="tab-content">
+        <h2 class="text-3xl font-bold text-center mb-8">משווים בקלות בין ספקי חשמל</h2>
+
+        <!-- Hero -->
+        <div class="elec-hero">
+          <p class="text-lg font-semibold opacity-90 mb-1">כמה כסף תחסכו בחשבון החשמל שלכם?</p>
+          <p class="text-2xl font-bold mb-4">אותו חשמל. אותה תשתית. מחיר נמוך יותר.</p>
+          <p class="opacity-90">החיסכון השנתי הממוצע למשק בית בישראל</p>
+          <div class="elec-savings">₪457 <span class="text-2xl font-semibold">בשנה</span></div>
+          <p class="opacity-90 mb-6">בדיקה חינמית · לפי נתוני הצריכה שלכם · 30 שניות</p>
+          <a href="https://easyswitch.co.il/check?utm_source=shamze&utm_medium=affiliate&utm_campaign=CAMPAIGN&utm_content=site"
+            target="_blank" rel="noopener" class="elec-cta">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+            הציגו לי את החיסכון שלי
+          </a>
+        </div>
+
+        <!-- מספרים -->
+        <div class="elec-stats mt-8">
+          <div class="elec-stat">
+            <div class="elec-stat-num">18</div>
+            <div class="text-gray-600 mt-1">מסלולים נבדקים</div>
+          </div>
+          <div class="elec-stat">
+            <div class="elec-stat-num">30 שניות</div>
+            <div class="text-gray-600 mt-1">לבדיקה מלאה</div>
+          </div>
+          <div class="elec-stat">
+            <div class="elec-stat-num">₪457</div>
+            <div class="text-gray-600 mt-1">חיסכון ממוצע בשנה</div>
+          </div>
+        </div>
+
+        <!-- הסבר רפורמה -->
+        <div class="bg-white p-6 rounded-2xl shadow-md mt-8 border border-gray-100">
+          <h3 class="text-2xl font-bold text-center mb-3">רפורמת החשמל פתחה תחרות על המחיר</h3>
+          <p class="text-gray-600 text-center max-w-2xl mx-auto mb-6">
+            חברת החשמל ממשיכה להיות אחראית לתשתית ולתקלות. מה שהשתנה הוא שאפשר לבחור ספק פרטי
+            שנותן הנחה על צריכת החשמל — אותו חשמל, אותה תשתית, מחיר נמוך יותר.
+          </p>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="elec-card">
+              <div class="text-3xl mb-2">🔌</div>
+              <div class="font-bold mb-1">אותה תשתית</div>
+              <p class="text-gray-600 text-sm">החשמל מגיע לבית בדיוק כמו היום</p>
+            </div>
+            <div class="elec-card">
+              <div class="text-3xl mb-2">🛠️</div>
+              <div class="font-bold mb-1">אותה אחריות</div>
+              <p class="text-gray-600 text-sm">חברת החשמל ממשיכה לטפל בתקלות</p>
+            </div>
+            <div class="elec-card">
+              <div class="text-3xl mb-2">💰</div>
+              <div class="font-bold mb-1">זול יותר</div>
+              <p class="text-gray-600 text-sm">הספק הפרטי נותן הנחה על הצריכה</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- איך זה עובד -->
+        <div class="mt-8">
+          <h3 class="text-2xl font-bold text-center mb-2">איך בודקים את החיסכון?</h3>
+          <p class="text-gray-600 text-center mb-6">שלושה צעדים קצרים — בלי לחפש חשבוניות ובלי להשוות טבלאות לבד</p>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="elec-card">
+              <div class="elec-step-num">1</div>
+              <div class="font-bold mb-1">מתחברים לנתוני הצריכה</div>
+              <p class="text-gray-600 text-sm">הבדיקה מקבלת את נתוני הצריכה הדרושים ומשווה בשבילכם</p>
+            </div>
+            <div class="elec-card">
+              <div class="elec-step-num">2</div>
+              <div class="font-bold mb-1">משווים בין כל הספקים</div>
+              <p class="text-gray-600 text-sm">הנתונים מושווים לכל המסלולים הזמינים לפי סוג המונה והצריכה השנתית</p>
+            </div>
+            <div class="elec-card">
+              <div class="elec-step-num">3</div>
+              <div class="font-bold mb-1">מקבלים ניתוח אישי</div>
+              <p class="text-gray-600 text-sm">מספר ברור, ספק מומלץ והצעדים הבאים למימוש החיסכון — בוואטסאפ</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ספקים -->
+        <div class="bg-white p-6 rounded-2xl shadow-md mt-8 border border-gray-100">
+          <h3 class="text-xl font-bold text-center mb-4">משווים בין כל ספקי החשמל בארץ</h3>
+          <div class="elec-suppliers">
+            <span class="elec-supplier-pill">אלקטרה פאוור</span>
+            <span class="elec-supplier-pill">סלקום אנרג׳י</span>
+            <span class="elec-supplier-pill">הוט אנרג׳י</span>
+            <span class="elec-supplier-pill">בזק אנרג׳י</span>
+            <span class="elec-supplier-pill">פרטנר פאוור</span>
+            <span class="elec-supplier-pill">פזגז חשמל</span>
+            <span class="elec-supplier-pill">אמישראגז אנרגיה</span>
+          </div>
+        </div>
+
+        <!-- CTA תחתון -->
+        <div class="text-center mt-8 mb-4">
+          <a href="https://easyswitch.co.il/check?utm_source=shamze&utm_medium=affiliate&utm_campaign=CAMPAIGN&utm_content=site"
+            target="_blank" rel="noopener" class="elec-cta elec-cta--green">
+            כן, בדקו לי חיסכון עכשיו
+          </a>
+          <p class="text-gray-500 text-sm mt-3">הבדיקה חינמית לחלוטין ולוקחת כ־30 שניות</p>
+        </div>
       </div>
     </main>
 
@@ -1645,6 +2048,30 @@
           }
         });
       });
+
+      // חלונית קידום חשמל
+      const elecPromo = document.getElementById('elecPromo');
+      const elecPromoClose = document.getElementById('elecPromoClose');
+      if (elecPromo) {
+        const goToElectricity = () => {
+          const btn = document.querySelector('[data-tab="electricity"]');
+          if (btn) {
+            btn.click();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        };
+        elecPromo.addEventListener('click', goToElectricity);
+        elecPromo.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            goToElectricity();
+          }
+        });
+        elecPromoClose.addEventListener('click', (e) => {
+          e.stopPropagation();
+          elecPromo.style.display = 'none';
+        });
+      }
 
       // פונקציות טיסות
       async function loadCitiesData() {
