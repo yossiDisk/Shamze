@@ -105,22 +105,37 @@
     button[type="submit"]:hover:not(:disabled){background:#0062d1;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,123,255,.3)}
     button[type="submit"]:disabled{background:#6c757d;cursor:not-allowed;transform:none;box-shadow:none}
 
-    /* שכבת טעינה */
-    #loader{position:fixed;inset:0;background:#ffffff;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:9999;gap:1.4rem;padding:2rem}
-    .sky{position:relative;width:100%;height:140px;overflow:hidden}
-    .plane{position:absolute;font-size:3rem;animation:fly 6s linear infinite}
-    .cloud{position:absolute;font-size:2.2rem;color:#b0c4de;opacity:.8;animation:cloud 14s linear infinite}
-    @keyframes fly{0%{left:-20%;top:90%;transform:rotate(0)}100%{left:110%;top:10%;transform:rotate(-25deg)}}
-    @keyframes cloud{0%{left:110%}100%{left:-30%}}
-    #loaderMain{font-weight:600;font-size:1.15rem}
-    #loaderTip{font-size:.95rem;color:#555}
+    /* שכבת טעינה מותאמת */
+    #loader{position:fixed;inset:0;background:#ffffff;display:none;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;z-index:9999;gap:1.4rem;padding:4rem 1.5rem 2rem;overflow-y:auto;overflow-x:hidden}
+    
+    #loaderMain{font-weight:600;font-size:1.15rem;margin-top:0.5rem}
 
-    /* פס-התקדמות */
-    #progressWrap{width:70%;max-width:420px;height:8px;background:#e0e0e0;border-radius:5px;overflow:hidden;margin-top:.2rem}
+    /* עיצוב תמונת הפרסומת */
+    #promoImage{width:100%;max-width:420px;height:auto;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.1);margin:0 auto;display:block;cursor:pointer;transition:transform .2s ease}
+    #promoImage:hover{transform:scale(1.01)}
+
+    /* פס-התקדמות העליון ואנימציית המטוס */
+    #progressWrap{position:fixed;top:0;left:0;width:100%;height:8px;background:#e0e0e0;border-radius:0;margin:0;z-index:10000}
     #progressBar{height:100%;width:0;background:#007bff;transition:width .25s linear}
     
+    .plane {
+      position: absolute;
+      top: -12px;
+      left: -50px;
+      font-size: 24px;
+      z-index: 10001;
+      animation: flyAndDrive 5s ease-in-out infinite;
+    }
+
+    @keyframes flyAndDrive {
+      0% { transform: translate(0, -30px) rotate(20deg); opacity: 0; }
+      15% { transform: translate(50px, 0) rotate(0deg); opacity: 1; }
+      85% { transform: translate(calc(100vw - 20px), 0) rotate(0deg); opacity: 1; }
+      100% { transform: translate(calc(100vw + 50px), -40px) rotate(-35deg); opacity: 0; }
+    }
+
     /* כרטיס ביטוח נסיעות */
-    #insuranceSection{display:none;margin-top:1.8rem;width:90%;max-width:600px;background:#f8f9fa;border:2px solid #dee2e6;border-radius:12px;padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+    #insuranceSection{display:none;margin-top:0.5rem;width:90%;max-width:600px;background:#f8f9fa;border:2px solid #dee2e6;border-radius:12px;padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.08)}
     #insuranceHeader{text-align:center;margin-bottom:1.2rem}
     #insuranceHeader h3{color:#495057;margin:0 0 .5rem 0;font-size:1.1rem;font-weight:600}
     #insuranceHeader p{margin:0;font-size:.9rem;color:#6c757d}
@@ -193,18 +208,16 @@
 
   <!-- overlay loader -->
   <div id="loader">
-     <div class="sky">
-      <div class="plane">🛫</div>
-       <div class="cloud" style="top:20%;animation-delay:0s">☁️</div>
-       <div class="cloud" style="top:60%;font-size:3rem;animation-delay:4s">☁️</div>
-       <div class="cloud" style="top:35%;font-size:2.6rem;animation-delay:8s">☁️</div>
+     <!-- פס ההתקדמות והמטוס -->
+     <div id="progressWrap">
+       <div id="progressBar"></div>
+       <div class="plane">🛫</div>
      </div>
+     
      <div id="loaderMain">מכינים עבורך את הדיל הטוב ביותר…</div>
-     <div id="loaderTip">טיפ: תמיד כדאי לבדוק ביטוח נסיעות מראש!</div>
-     <div id="progressWrap"><div id="progressBar"></div></div>
 
-     <div id="loadingGame" style="width:70%;max-width:420px;margin-top:.6rem"></div>
-
+     <!-- תמונת הפרסומת (בלחיצה: פותח בחלון חדש בדסקטופ / מעביר ללינק במובייל) -->
+     <img id="promoImage" src="https://pricing-data-bucket-dev.s3.il-central-1.amazonaws.com/assets/layaPromo/ragilvslaya.png" alt="פרסומת לאשראי ללא עמלות מט״ח">
 
      <!-- כרטיס ביטוח נסיעות -->
      <div id="insuranceSection">
@@ -253,165 +266,6 @@
        <div id="interactionStatus">לחיצה על הכפתור תפתח בטאב חדש - החיפוש ימשיך כרגיל</div>
      </div>
   </div>
-<script>
-/* Guess the Flag – embed API (Shadow DOM) */
-(function(){
-  const COUNTRIES = [
-    { name: 'France',    flag: { type: 'tri-vertical', colors: ['#0055A4','#FFFFFF','#EF4135'] } },
-    { name: 'Germany',   flag: { type: 'tri-horizontal', colors: ['#000000','#DD0000','#FFCE00'] } },
-    { name: 'Italy',     flag: { type: 'tri-vertical', colors: ['#009246','#FFFFFF','#CE2B37'] } },
-    { name: 'Netherlands', flag: { type: 'tri-horizontal', colors: ['#AE1C28','#FFFFFF','#21468B'] } },
-    { name: 'Belgium',   flag: { type: 'tri-vertical', colors: ['#000000','#FDDA24','#EF3340'] } },
-    { name: 'Ireland',   flag: { type: 'tri-vertical', colors: ['#169B62','#FFFFFF','#FF883E'] } },
-    { name: 'Russia',    flag: { type: 'tri-horizontal', colors: ['#FFFFFF','#0039A6','#D52B1E'] } },
-    { name: 'Austria',   flag: { type: 'tri-horizontal', colors: ['#ED2939','#FFFFFF','#ED2939'] } },
-    { name: 'Poland',    flag: { type: 'bi-horizontal', colors: ['#FFFFFF','#DC143C'] } },
-    { name: 'Ukraine',   flag: { type: 'bi-horizontal', colors: ['#0057B7','#FFD700'] } },
-    { name: 'Japan',     flag: { type: 'japan' } },
-    { name: 'Sweden',    flag: { type: 'nordic', base: '#006AA7', cross: '#FECC00' } },
-    { name: 'Denmark',   flag: { type: 'nordic', base: '#C60C30', cross: '#FFFFFF' } },
-    { name: 'Finland',   flag: { type: 'nordic', base: '#FFFFFF', cross: '#003580' } },
-    { name: 'Norway',    flag: { type: 'nordic-3', base: '#BA0C2F', mid: '#FFFFFF', cross: '#00205B' } },
-  ];
-
-  function styleSheet(compact){
-    return `
-    :root{ --text:#e6eefc; --muted:#9bb0d3; --accent:#4f8cff; --right:#2fd46b; --wrong:#ff5d6c; }
-    *{ box-sizing:border-box; }
-    .game{ width:100%; background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0)); border:1px solid rgba(255,255,255,.06); border-radius:14px; overflow:hidden; color:var(--text); font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; }
-    .bar{ display:flex; align-items:center; justify-content:space-between; padding:${compact? '8px 10px':'12px 14px'}; background:rgba(255,255,255,.04); border-bottom:1px solid rgba(255,255,255,.08); }
-    .title{ font-weight:700; font-size:${compact? '13px':'15px'}; }
-    .score{ color:var(--muted); font-weight:600; }
-    .flag-wrap{ padding:${compact? '10px 10px 4px':'16px 16px 8px'}; }
-    .flag{ width:100%; aspect-ratio:4/3; background:#fff; border-radius:12px; border:2px solid rgba(0,0,0,.15); position:relative; display:grid; place-items:center; }
-    .choices{ padding:${compact? '6px 8px 10px':'8px 12px 14px'}; display:grid; gap:${compact? '6px':'8px'}; }
-    .choice{ background:#fffff; border:1px solid rgba(255,255,255,.08); color:var(--text); border-radius:10px; padding:${compact? '8px':'10px'}; cursor:pointer; text-align:left; transition:.18s ease; font-size:${compact? '13px':'14px'} }
-    .choice:hover{ transform:translateY(-1px); border-color:rgba(255,255,255,.18); }
-    .choice[disabled]{ opacity:.75; cursor:not-allowed; }
-    .choice.correct{ outline:2px solid var(--right); }
-    .choice.wrong{ outline:2px solid var(--wrong); }
-    .footer{ display:flex; align-items:center; gap:8px; padding:${compact? '6px 8px 10px':'10px 12px 12px'}; }
-    .btn{ background:var(--accent); color:#fff; border:none; border-radius:999px; padding:${compact? '6px 10px':'8px 12px'}; font-weight:700; cursor:pointer; }
-    .pill{ margin-inline-start:auto; font-size:${compact? '11px':'12px'}; color:var(--muted); padding:6px 10px; border:1px solid rgba(255,255,255,.08); border-radius:999px; }
-    .toast{ position:absolute; inset-inline:0; top:8px; display:grid; place-items:center; pointer-events:none; }
-    .toast>div{ background:rgba(15,24,44,.9); color:var(--text); padding:8px 12px; border-radius:999px; font-weight:700; border:1px solid rgba(255,255,255,.1); }
-    .stripe-row,.stripe-col{ display:grid; width:100%; height:100%; }
-    .stripe-row{ grid-auto-rows:1fr; }
-    .stripe-col{ grid-auto-flow:column; grid-auto-columns:1fr; }
-    .block{ width:100%; height:100%; }
-    .center-circle{ width:45%; aspect-ratio:1/1; border-radius:50%; }
-    .layer{ position:absolute; inset:0; }
-    `;
-  }
-
-  function renderFlag(node, def) {
-    node.innerHTML = '';
-    node.style.background = '#fff';
-    node.style.position = 'relative';
-    const el = (t,c) => { const n=document.createElement(t); if(c) n.className=c; return n; };
-    if (def.type === 'tri-horizontal' || def.type === 'bi-horizontal') {
-      const wrap = el('div','stripe-row');
-      def.colors.forEach(c=>{ const b=el('div','block'); b.style.background=c; wrap.appendChild(b); });
-      node.appendChild(wrap); return;
-    }
-    if (def.type === 'tri-vertical') {
-      const wrap = el('div','stripe-col');
-      def.colors.forEach(c=>{ const b=el('div','block'); b.style.background=c; wrap.appendChild(b); });
-      node.appendChild(wrap); return;
-    }
-    if (def.type === 'japan') {
-      node.style.background = '#ffffff';
-      const dot = el('div','center-circle'); dot.style.background = '#bc002d'; node.appendChild(dot); return;
-    }
-    if (def.type === 'nordic') {
-      const base = el('div','layer'); base.style.background = def.base; node.appendChild(base);
-      const hBar = el('div'); Object.assign(hBar.style,{position:'absolute',left:0,right:0,top:'42%',height:'16%',background:def.cross}); node.appendChild(hBar);
-      const vBar = el('div'); Object.assign(vBar.style,{position:'absolute',top:0,bottom:0,left:'30%',width:'16%',background:def.cross}); node.appendChild(vBar); return;
-    }
-    if (def.type === 'nordic-3') {
-      const base = el('div','layer'); base.style.background = def.base; node.appendChild(base);
-      const wh = el('div'); Object.assign(wh.style,{position:'absolute',left:0,right:0,top:'40%',height:'20%',background:def.mid}); node.appendChild(wh);
-      const wv = el('div'); Object.assign(wv.style,{position:'absolute',top:0,bottom:0,left:'28%',width:'20%',background:def.mid}); node.appendChild(wv);
-      const bh = el('div'); Object.assign(bh.style,{position:'absolute',left:0,right:0,top:'42.5%',height:'15%',background:def.cross}); node.appendChild(bh);
-      const bv = el('div'); Object.assign(bv.style,{position:'absolute',top:0,bottom:0,left:'30.5%',width:'15%',background:def.cross}); node.appendChild(bv); return;
-    }
-  }
-
-  function createGuessTheFlag(container, opts={}){
-    if (!container) throw new Error('container <div> is required');
-    const { compact=true, durationMs=null, onFinish=null } = opts;
-    const root = container.attachShadow({ mode: 'open' });
-
-    const wrap = document.createElement('div'); wrap.className='game';
-    wrap.innerHTML = `
-      <div class="bar"><div class="title">Guess the Flag ✈️</div><div class="score" id="score">Score: 0</div></div>
-      <div class="flag-wrap"><div class="flag" id="flag" aria-label="Flag to guess"></div></div>
-      <div class="choices" id="choices" aria-live="polite"></div>
-      <div class="footer"><button class="btn" id="newGame">New</button><span class="pill" id="streak">Streak: 0</span></div>
-      <div class="toast" id="toast" hidden><div id="toastText"></div></div>
-    `;
-    const style = document.createElement('style'); style.textContent = styleSheet(compact);
-    root.appendChild(style); root.appendChild(wrap);
-
-    let score = 0, streak = 0, current = null, options = [];
-    let timer = null, endAt = null, stopped = false;
-
-    const $ = sel => root.querySelector(sel);
-    const elc = (t,c,txt)=>{ const n=root.ownerDocument.createElement(t); if(c) n.className=c; if(txt) n.textContent=txt; return n; };
-    const shuffle = arr => arr.map(v => [Math.random(), v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
-    const pick = (arr, n) => shuffle(arr).slice(0, n);
-    function toast(text){ const t=$('#toast'), tt=$('#toastText'); tt.textContent=text; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>t.hidden=true, 850); }
-
-    function newRound(){
-      const pool = COUNTRIES.slice();
-      const correct = pool[Math.floor(Math.random()*pool.length)];
-      const distractors = pick(pool.filter(c=>c!==correct), 2);
-      options = shuffle([correct, ...distractors]);
-      current = correct; render();
-    }
-
-    function render(){
-      renderFlag($('#flag'), current.flag);
-      const box = $('#choices'); box.innerHTML='';
-      options.forEach(opt=>{
-        const btn = elc('button','choice', opt.name);
-        btn.addEventListener('click',()=>choose(opt, btn));
-        box.appendChild(btn);
-      });
-      $('#score').textContent = `Score: ${score}`;
-      $('#streak').textContent = `Streak: ${streak}`;
-    }
-
-    function choose(opt, btn){
-      const btns = [...root.querySelectorAll('.choice')]; btns.forEach(b=> b.disabled=true);
-      const right = (opt===current);
-      if (right){ score += 10; streak += 1; btn.classList.add('correct'); toast('✔ Correct!'); }
-      else { streak = 0; btn.classList.add('wrong'); const i=options.indexOf(current); if(i>=0) btns[i].classList.add('correct'); toast('✖ Oops!'); }
-      $('#score').textContent=`Score: ${score}`; $('#streak').textContent=`Streak: ${streak}`;
-      setTimeout(()=>{ if(!stopped) newRound(); }, 800);
-    }
-
-    function start(){
-      stopped = false; score=0; streak=0; newRound();
-      if (durationMs){
-        endAt = Date.now() + durationMs;
-        clearInterval(timer);
-        timer = setInterval(()=>{ if (Date.now() >= endAt){ stop(true); } }, 100);
-      }
-    }
-    function stop(triggerFinish=false){
-      stopped = true; clearInterval(timer); timer=null; endAt=null;
-      if (triggerFinish && typeof onFinish === 'function') onFinish({ score, streak });
-    }
-
-    $('#newGame').addEventListener('click', ()=>{ score=0; streak=0; newRound(); });
-    return { start, stop, root };
-  }
-
-  window.createGuessTheFlag = createGuessTheFlag;
-})();
-</script>
-
 
 <script>
 (function(){
@@ -465,16 +319,11 @@
   const passengerCounter = document.getElementById('passengerCounter');
   const passengersDescription = document.getElementById('passengersDescription');
 
-  /* --- mini game wiring --- */
-const loadingGameContainer = document.getElementById('loadingGame');
-const flagGame = createGuessTheFlag(loadingGameContainer, { compact: true });
-
-
   /* overlay */
   const loader       = document.getElementById('loader');
   const loadMain     = document.getElementById('loaderMain');
-  const loadTip      = document.getElementById('loaderTip');
   const progress     = document.getElementById('progressBar');
+  const promoImage   = document.getElementById('promoImage');
   
   /* רכיבי כרטיס ביטוח */
   const compareBtn   = document.getElementById('compareBtn');
@@ -482,6 +331,18 @@ const flagGame = createGuessTheFlag(loadingGameContainer, { compact: true });
   const tripDest     = document.getElementById('tripDestination');
   const tripPass     = document.getElementById('tripPassengers');
   const tripDaysEl   = document.getElementById('tripDays');
+
+  /* ----- טיפול בלחיצה על תמונת הפרסומת ----- */
+  if (promoImage) {
+    promoImage.addEventListener('click', function() {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 640;
+      if (isMobile) {
+        window.location.href = 'https://laya.onelink.me/5Liq/00vfzv9o?af_qr=c';
+      } else {
+        window.open(this.src, '_blank');
+      }
+    });
+  }
 
   /* ----- משתנים לניהול נוסעים ----- */
   let passengerIdCounter = 2; // מתחילים מ-2 כי יש כבר נוסע אחד
@@ -526,12 +387,11 @@ const flagGame = createGuessTheFlag(loadingGameContainer, { compact: true });
     setTimeout(() => passengerCounter.classList.remove('show'), 600);
   }
 
-  /* ----- תפריט הוספת נוסע: מעבר ל־click + outside-click ----- */
+  /* ----- תפריט הוספת נוסע ----- */
   function openOptions(){
     passengerOptions.classList.add('show');
     optionsBackdrop.classList.add('show');
     addBtn.setAttribute('aria-expanded','true');
-    // במובייל: למנוע גלילת רקע
     if (window.matchMedia("(max-width: 640px)").matches) {
       document.body.classList.add('no-scroll');
     }
@@ -552,7 +412,6 @@ const flagGame = createGuessTheFlag(loadingGameContainer, { compact: true });
     toggleOptions();
   });
 
-  // סגירה בלחיצה מחוץ לתפריט (כולל על הרקע)
   document.addEventListener('click', (e)=>{
     const withinMenu = passengerOptions.contains(e.target);
     const withinBtn  = addBtn.contains(e.target);
@@ -567,25 +426,21 @@ const flagGame = createGuessTheFlag(loadingGameContainer, { compact: true });
     infant: { icon: '👶', text: 'תינוק (מתחת לגיל 2)', key: 'infants' }
   };
 
-  // כפתורי האפשרויות
   document.querySelectorAll('.option-btn').forEach(btnOpt => {
     btnOpt.addEventListener('click', (e) => {
       e.stopPropagation();
       const type = btnOpt.dataset.type;
       addPassenger(type);
-      // לאפשר פתיחה נוספת מיידית
       closeOptions();
     });
   });
 
   function addPassenger(type, skipAnimation = false) {
-    // בדיקת מגבלות
     if (!validate(type)) return;
 
     const typeInfo = passengerTypes[type];
     passengers[typeInfo.key]++;
 
-    // יצירת אלמנט נוסע חדש
     const pill = document.createElement('div');
     pill.className = 'passenger-pill';
     pill.dataset.type = type;
@@ -597,10 +452,8 @@ const flagGame = createGuessTheFlag(loadingGameContainer, { compact: true });
       <button type="button" class="remove-btn" aria-label="הסר נוסע">✕</button>
     `;
 
-    // אירוע מחיקה
     pill.querySelector('.remove-btn').addEventListener('click', () => removePassenger(pill));
 
-    // הוספה לפני מעטפת כפתור ההוספה
     passengersArea.insertBefore(pill, addBtnWrapper);
     passengersArea.classList.add('has-passengers');
     
@@ -638,10 +491,8 @@ const flagGame = createGuessTheFlag(loadingGameContainer, { compact: true });
     
     if (total === 1) passengersArea.classList.remove('has-passengers');
 
-    // הסתרת כפתור ההוספה אם הגענו למקסימום
     if (total >= 8 || passengers.children + passengers.infants >= 8) {
       addBtnWrapper.style.display = 'none';
-      // אם נסגר, וודא שגם החלונית סגורה
       closeOptions();
     } else {
       addBtnWrapper.style.display = 'inline-block';
@@ -667,7 +518,6 @@ const flagGame = createGuessTheFlag(loadingGameContainer, { compact: true });
     const i = passengers.infants;
     const total = a + c + i;
     
-    // בדיקה לפני הוספה
     if (typeToAdd) {
       const futureTotal = total + 1;
       const futureChildren = c + (typeToAdd === 'child' ? 1 : 0);
@@ -760,74 +610,62 @@ const flagGame = createGuessTheFlag(loadingGameContainer, { compact: true });
     `משווים תעריפים בין חברות תעופה…`,
     `מוצאים עבורך מושבים נוחים…`
   ];
-  const tips = ['טיפ: ארוז אוזניות לטיסה נעימה','טיפ: בקש מושב מעבר אם קמים הרבה','טיפ: הורד סרטים לפני ההמראה','טיפ: שתה מים במהלך הטיסה'];
   let idx = 0, interval;
 
   const total = 30000;   // 30 שניות המתנה
   function rotate(){
     loadMain.textContent = msgs[idx % msgs.length];
-    loadTip.textContent  = tips[idx % tips.length];
     idx++;
   }
 
   /* ----- טעינה מוקדמת ----- */
-function startPreload(finalUrl){
-  loader.style.display = 'flex';
-  rotate();
-  interval = setInterval(rotate, 2500);
+  function startPreload(finalUrl){
+    loader.style.display = 'flex';
+    rotate();
+    interval = setInterval(rotate, 2500);
 
-  /* progress bar */
-  progress.style.width = '0';
-  const start = Date.now();
-  const progInt = setInterval(() => {
-    const pct = Math.min(100, ((Date.now()-start) / total) * 100);
-    progress.style.width = pct + '%';
-    if (pct >= 100) clearInterval(progInt);
-  }, 200);
+    /* progress bar */
+    progress.style.width = '0';
+    const start = Date.now();
+    const progInt = setInterval(() => {
+      const pct = Math.min(100, ((Date.now()-start) / total) * 100);
+      progress.style.width = pct + '%';
+      if (pct >= 100) clearInterval(progInt);
+    }, 200);
 
-  /* 🔸 START GAME when loader opens */
-  try { flagGame.start(); } catch(e) {}
+    /* iframe hidden preload */
+    const hiddenIframe = document.createElement('iframe');
+    hiddenIframe.style.width = hiddenIframe.style.height = '0';
+    hiddenIframe.style.border = '0';
+    document.body.appendChild(hiddenIframe);
 
-  /* iframe hidden preload */
-  const hiddenIframe = document.createElement('iframe');
-  hiddenIframe.style.width = hiddenIframe.style.height = '0';
-  hiddenIframe.style.border = '0';
-  document.body.appendChild(hiddenIframe);
+    let first = true;
+    hiddenIframe.onload = () => {
+      if (first) {
+        first = false;
+      } else {
+        clearInterval(interval);
+        gtag('event', 'process_completed', {
+          event_category: 'passenger_selection', 
+          event_label: 'redirected_to_booking'
+        });
 
-  let first = true;
-  hiddenIframe.onload = () => {
-    if (first) {
-      first = false;
-    } else {
+        setTimeout(() => { location.href = finalUrl; }, 100);
+      }
+    };
+
+    hiddenIframe.src = finalUrl;
+    
+    // backup timeout
+    setTimeout(() => { 
       clearInterval(interval);
-      /* 🔸 STOP GAME on success */
-      try { flagGame.stop(true); } catch(e) {}
-
       gtag('event', 'process_completed', {
         event_category: 'passenger_selection', 
-        event_label: 'redirected_to_booking'
+        event_label: 'redirected_to_booking_timeout'
       });
-
       setTimeout(() => { location.href = finalUrl; }, 100);
-    }
-  };
-
-  hiddenIframe.src = finalUrl;
-  
-  // backup timeout
-  setTimeout(() => { 
-    clearInterval(interval);
-    /* 🔸 STOP GAME on timeout */
-    try { flagGame.stop(true); } catch(e) {}
-
-    gtag('event', 'process_completed', {
-      event_category: 'passenger_selection', 
-      event_label: 'redirected_to_booking_timeout'
-    });
-    setTimeout(() => { location.href = finalUrl; }, 100);
-  }, total);
-}
-
+    }, total);
+  }
 
   validate();
   updatePassengersDescription();
