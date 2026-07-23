@@ -105,22 +105,37 @@
     button[type="submit"]:hover:not(:disabled){background:#0062d1;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,123,255,.3)}
     button[type="submit"]:disabled{background:#6c757d;cursor:not-allowed;transform:none;box-shadow:none}
 
-    /* שכבת טעינה */
-    #loader{position:fixed;inset:0;background:#ffffff;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:9999;gap:1.4rem;padding:2rem}
-    .sky{position:relative;width:100%;height:140px;overflow:hidden}
-    .plane{position:absolute;font-size:3rem;animation:fly 6s linear infinite}
-    .cloud{position:absolute;font-size:2.2rem;color:#b0c4de;opacity:.8;animation:cloud 14s linear infinite}
-    @keyframes fly{0%{left:-20%;top:90%;transform:rotate(0)}100%{left:110%;top:10%;transform:rotate(-25deg)}}
-    @keyframes cloud{0%{left:110%}100%{left:-30%}}
-    #loaderMain{font-weight:600;font-size:1.15rem}
-    #loaderTip{font-size:.95rem;color:#555}
+    /* שכבת טעינה מותאמת */
+    #loader{position:fixed;inset:0;background:#ffffff;display:none;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;z-index:9999;gap:1.4rem;padding:4rem 1.5rem 2rem;overflow-y:auto;overflow-x:hidden}
+    
+    #loaderMain{font-weight:600;font-size:1.15rem;margin-top:0.5rem}
 
-    /* פס-התקדמות */
-    #progressWrap{width:70%;max-width:420px;height:8px;background:#e0e0e0;border-radius:5px;overflow:hidden;margin-top:.2rem}
+    /* עיצוב תמונת הפרסומת */
+    #promoImage{width:100%;max-width:420px;height:auto;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.1);margin:0 auto;display:block;cursor:pointer;transition:transform .2s ease}
+    #promoImage:hover{transform:scale(1.01)}
+
+    /* פס-התקדמות העליון ואנימציית המטוס */
+    #progressWrap{position:fixed;top:0;left:0;width:100%;height:8px;background:#e0e0e0;border-radius:0;margin:0;z-index:10000}
     #progressBar{height:100%;width:0;background:#007bff;transition:width .25s linear}
     
+    .plane {
+      position: absolute;
+      top: -12px;
+      left: -50px;
+      font-size: 24px;
+      z-index: 10001;
+      animation: flyAndDrive 5s ease-in-out infinite;
+    }
+
+    @keyframes flyAndDrive {
+      0% { transform: translate(0, -30px) rotate(20deg); opacity: 0; }
+      15% { transform: translate(50px, 0) rotate(0deg); opacity: 1; }
+      85% { transform: translate(calc(100vw - 20px), 0) rotate(0deg); opacity: 1; }
+      100% { transform: translate(calc(100vw + 50px), -40px) rotate(-35deg); opacity: 0; }
+    }
+
     /* כרטיס ביטוח נסיעות */
-    #insuranceSection{display:none;margin-top:1.8rem;width:90%;max-width:600px;background:#f8f9fa;border:2px solid #dee2e6;border-radius:12px;padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+    #insuranceSection{display:none;margin-top:0.5rem;width:90%;max-width:600px;background:#f8f9fa;border:2px solid #dee2e6;border-radius:12px;padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.08)}
     #insuranceHeader{text-align:center;margin-bottom:1.2rem}
     #insuranceHeader h3{color:#495057;margin:0 0 .5rem 0;font-size:1.1rem;font-weight:600}
     #insuranceHeader p{margin:0;font-size:.9rem;color:#6c757d}
@@ -193,15 +208,16 @@
 
   <!-- overlay loader -->
   <div id="loader">
-     <div class="sky">
-      <div class="plane">🛫</div>
-       <div class="cloud" style="top:20%;animation-delay:0s">☁️</div>
-       <div class="cloud" style="top:60%;font-size:3rem;animation-delay:4s">☁️</div>
-       <div class="cloud" style="top:35%;font-size:2.6rem;animation-delay:8s">☁️</div>
+     <!-- פס ההתקדמות והמטוס -->
+     <div id="progressWrap">
+       <div id="progressBar"></div>
+       <div class="plane">🛫</div>
      </div>
+     
      <div id="loaderMain">מכינים עבורך את הדיל הטוב ביותר…</div>
-     <div id="loaderTip">טיפ: תמיד כדאי לבדוק ביטוח נסיעות מראש!</div>
-     <div id="progressWrap"><div id="progressBar"></div></div>
+
+     <!-- תמונת הפרסומת (בלחיצה: פותח בחלון חדש בדסקטופ / מעביר ללינק במובייל) -->
+     <img id="promoImage" src="https://pricing-data-bucket-dev.s3.il-central-1.amazonaws.com/assets/layaPromo/ragilvslaya.png" alt="פרסומת לאשראי ללא עמלות מט״ח">
 
      <!-- כרטיס ביטוח נסיעות -->
      <div id="insuranceSection">
@@ -306,8 +322,8 @@
   /* overlay */
   const loader       = document.getElementById('loader');
   const loadMain     = document.getElementById('loaderMain');
-  const loadTip      = document.getElementById('loaderTip');
   const progress     = document.getElementById('progressBar');
+  const promoImage   = document.getElementById('promoImage');
   
   /* רכיבי כרטיס ביטוח */
   const compareBtn   = document.getElementById('compareBtn');
@@ -315,6 +331,18 @@
   const tripDest     = document.getElementById('tripDestination');
   const tripPass     = document.getElementById('tripPassengers');
   const tripDaysEl   = document.getElementById('tripDays');
+
+  /* ----- טיפול בלחיצה על תמונת הפרסומת ----- */
+  if (promoImage) {
+    promoImage.addEventListener('click', function() {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 640;
+      if (isMobile) {
+        window.location.href = 'https://laya.onelink.me/5Liq/00vfzv9o?af_qr=c';
+      } else {
+        window.open(this.src, '_blank');
+      }
+    });
+  }
 
   /* ----- משתנים לניהול נוסעים ----- */
   let passengerIdCounter = 2; // מתחילים מ-2 כי יש כבר נוסע אחד
@@ -359,12 +387,11 @@
     setTimeout(() => passengerCounter.classList.remove('show'), 600);
   }
 
-  /* ----- תפריט הוספת נוסע: מעבר ל־click + outside-click ----- */
+  /* ----- תפריט הוספת נוסע ----- */
   function openOptions(){
     passengerOptions.classList.add('show');
     optionsBackdrop.classList.add('show');
     addBtn.setAttribute('aria-expanded','true');
-    // במובייל: למנוע גלילת רקע
     if (window.matchMedia("(max-width: 640px)").matches) {
       document.body.classList.add('no-scroll');
     }
@@ -385,7 +412,6 @@
     toggleOptions();
   });
 
-  // סגירה בלחיצה מחוץ לתפריט (כולל על הרקע)
   document.addEventListener('click', (e)=>{
     const withinMenu = passengerOptions.contains(e.target);
     const withinBtn  = addBtn.contains(e.target);
@@ -400,25 +426,21 @@
     infant: { icon: '👶', text: 'תינוק (מתחת לגיל 2)', key: 'infants' }
   };
 
-  // כפתורי האפשרויות
   document.querySelectorAll('.option-btn').forEach(btnOpt => {
     btnOpt.addEventListener('click', (e) => {
       e.stopPropagation();
       const type = btnOpt.dataset.type;
       addPassenger(type);
-      // לאפשר פתיחה נוספת מיידית
       closeOptions();
     });
   });
 
   function addPassenger(type, skipAnimation = false) {
-    // בדיקת מגבלות
     if (!validate(type)) return;
 
     const typeInfo = passengerTypes[type];
     passengers[typeInfo.key]++;
 
-    // יצירת אלמנט נוסע חדש
     const pill = document.createElement('div');
     pill.className = 'passenger-pill';
     pill.dataset.type = type;
@@ -430,10 +452,8 @@
       <button type="button" class="remove-btn" aria-label="הסר נוסע">✕</button>
     `;
 
-    // אירוע מחיקה
     pill.querySelector('.remove-btn').addEventListener('click', () => removePassenger(pill));
 
-    // הוספה לפני מעטפת כפתור ההוספה
     passengersArea.insertBefore(pill, addBtnWrapper);
     passengersArea.classList.add('has-passengers');
     
@@ -471,10 +491,8 @@
     
     if (total === 1) passengersArea.classList.remove('has-passengers');
 
-    // הסתרת כפתור ההוספה אם הגענו למקסימום
     if (total >= 8 || passengers.children + passengers.infants >= 8) {
       addBtnWrapper.style.display = 'none';
-      // אם נסגר, וודא שגם החלונית סגורה
       closeOptions();
     } else {
       addBtnWrapper.style.display = 'inline-block';
@@ -500,7 +518,6 @@
     const i = passengers.infants;
     const total = a + c + i;
     
-    // בדיקה לפני הוספה
     if (typeToAdd) {
       const futureTotal = total + 1;
       const futureChildren = c + (typeToAdd === 'child' ? 1 : 0);
@@ -593,13 +610,11 @@
     `משווים תעריפים בין חברות תעופה…`,
     `מוצאים עבורך מושבים נוחים…`
   ];
-  const tips = ['טיפ: ארוז אוזניות לטיסה נעימה','טיפ: בקש מושב מעבר אם קמים הרבה','טיפ: הורד סרטים לפני ההמראה','טיפ: שתה מים במהלך הטיסה'];
   let idx = 0, interval;
 
   const total = 30000;   // 30 שניות המתנה
   function rotate(){
     loadMain.textContent = msgs[idx % msgs.length];
-    loadTip.textContent  = tips[idx % tips.length];
     idx++;
   }
 
@@ -630,8 +645,6 @@
         first = false;
       } else {
         clearInterval(interval);
-        
-        // 🔥 מעקב Analytics - השלמת התהליך
         gtag('event', 'process_completed', {
           event_category: 'passenger_selection', 
           event_label: 'redirected_to_booking'
