@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YVES SAINT LAURENT LIBRE INTENSE א.ד.פ לאשה - שם זה זול יותר</title>
+    <style>
+        :root {
+            --primary-color: #e3003b; /* צבע אדום בסגנון פארם */
+            --text-main: #333333;
+            --text-secondary: #666666;
+            --bg-light: #f9f9f9;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            color: var(--text-main);
+            background-color: #ffffff;
+            line-height: 1.5;
+        }
+
+        /* סרגל עליון */
+        header {
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 1000;
+        }
+
+        .top-bar {
+            background-color: #111;
+            color: #fff;
+            text-align: center;
+            font-size: 13px;
+            padding: 8px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .cart-icon {
+            font-size: 16px;
+            background: var(--bg-light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+
+        /* נתיב ניווט (Breadcrumbs) */
+        .breadcrumbs {
+            max-width: 1200px;
+            margin: 15px auto;
+            padding: 0 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .breadcrumbs a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        /* מבנה עמוד המוצר */
+        .product-container {
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .product-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 0 10px;
+            }
+        }
+
+        /* תמונת מוצר */
+        .product-gallery {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            background: var(--bg-light);
+            position: relative;
+        }
+
+        .badge-sale {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        .product-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+        }
+
+        /* פרטי מוצר ורכישה */
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .brand-name {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #111;
+        }
+
+        .product-volume {
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        .price-box {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            margin: 10px 0;
+            background: #fff5f7;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ffd1dc;
+        }
+
+        .current-price {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .old-price {
+            font-size: 18px;
+            text-decoration: line-through;
+            color: var(--text-secondary);
+        }
+
+        .price-per-unit {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* כפתור הוספה לסל */
+        .add-to-cart-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: center;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #c20031;
+        }
+
+        /* תיאור ומאפיינים */
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        .description-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .specs-list {
+            list-style: none;
+            font-size: 14px;
+        }
+
+        .specs-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .specs-list li span:first-child {
+            font-weight: bold;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- סרגל עליון מבצעים -->
+    <div class="top-bar">
+        משלוח חינם בקנייה מעל 199 ₪ או איסוף מהסניפים ללא עלות!
+    </div>
+
+    <!-- כותרת האתר -->
+    <header>
+        <div class="navbar">
+            <a href="#" class="logo">שם זה זול יותר</a>
+            <div class="cart-icon">
+                🛒 עגלת קניות (<span id="cart-count">0</span>)
+            </div>
+        </div>
+    </header>
+
+    <!-- נתיב ניווט -->
+    <div class="breadcrumbs">
+        <a href="#">עמוד הבית</a> &gt; 
+        <a href="#">קוסמטיקה</a> &gt; 
+        <a href="#">בשמים</a> &gt; 
+        <a href="#">בשמים לנשים</a> &gt; 
+        <span>YVES SAINT LAURENT</span>
+    </div>
+
+    <!-- אזור המוצר המרכזי -->
+    <main class="product-container">
+        
+        <!-- גלריית תמונות -->
+        <div class="product-gallery">
+            <div class="badge-sale">מחיר מיוחד!</div>
+            <!-- לצורך הדוגמה נשתמש באייקון או תמונת המחשה -->
+            <img src="https://superpharmstorage.blob.core.windows.net/hybris/products/desktop/medium/3614273069557.jpg" alt="LIBRE INTENSE א.ד.פ לאשה" class="product-image">
+        </div>
+
+        <!-- מידע על המוצר ופעולות רכישה -->
+        <div class="product-details">
+            <div class="brand-name">YVES SAINT LAURENT</div>
+            <h1 class="product-title">LIBRE INTENSE א.ד.פ לאשה</h1>
+            <div class="product-volume">תכולה: 90 מ"ל</div>
+
+            <div class="price-box">
+                <div>
+                    <div class="current-price">₪429</div>
+                    <div class="price-per-unit">₪604.44 ל-100 מ"ל</div>
+                </div>
+                <div class="old-price">₪544</div>
+            </div>
+
+            <button class="add-to-cart-btn" onclick="alert('המוצר נוסף בהצלחה לעגלת הקניות!')">הוספה לסל</button>
+
+            <div style="margin-top: 15px;">
+                <h3 class="section-title">תיאור המוצר</h3>
+                <p class="description-text">
+                    איב סן לורן, מותג הטיפוח, בישום ואיפור הפריזאי משיק בושם חדש מסדרת LIBRE – LIBRE INTENSE. עבור הנשים של היום, החופש הוא התחושה האולטימטיבית של יוקרה. חופש הוא לשחק על-פי החוקים שלך, כי את מי שאת. ללא פשרות וללא סתירות. כעת לחופש יש בושם Libre פרחוני, סקסי ופוסע על הקו הדק בין הגברי לנשי.
+                </p>
+            </div>
+
+            <div style="margin-top: 10px;">
+                <h3 class="section-title">מאפייני המוצר</h3>
+                <ul class="specs-list">
+                    <li><span>סוג בושם:</span> <span>Eau de Parfum</span></li>
+                    <li><span>משפחת ריח:</span> <span>פרחוני, חריף</span></li>
+                    <li><span>תכולה:</span> <span>90 מ"ל</span></li>
+                    <li><span>ברקוד מוצר:</span> <span>3614273069557</span></li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+</body>
+</html>
