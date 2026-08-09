@@ -279,7 +279,7 @@
       direction: ltr;
     }
 
-    .coupon-copy-btn {
+    .coupon-share-btn {
       background: var(--accent-green);
       color: #fff;
       border: none;
@@ -291,9 +291,18 @@
       cursor: pointer;
       transition: background 0.2s ease;
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
 
-    .coupon-copy-btn:hover { background: var(--primary-green); }
+    .coupon-share-btn:hover { background: var(--primary-green); }
+
+    .coupon-share-btn svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
 
     .site-coupon-details {
       font-size: 13px;
@@ -3291,6 +3300,28 @@
         }
       }
 
+      // --- הצגה/הסתרה של אזורי הגלישה (חיפושים אחרונים + קטגוריות) ---
+      // בזמן חיפוש מסתירים אותם כדי שהתוצאות יופיעו מיד מתחת לשורת החיפוש
+      function shouldShowBrowseSections() {
+        return !(searchInput && searchInput.value.trim() !== '');
+      }
+
+      function updateBrowseSectionsVisibility() {
+        const show = shouldShowBrowseSections();
+
+        const recent = document.getElementById('recentProductSearches');
+        const recentChips = document.getElementById('recentProductChips');
+        if (recent) {
+          recent.style.display = (show && recentChips && recentChips.children.length > 0) ? 'block' : 'none';
+        }
+
+        const cats = document.getElementById('categoriesSection');
+        const catChips = document.getElementById('categoryChips');
+        if (cats) {
+          cats.style.display = (show && catChips && catChips.children.length > 0) ? 'block' : 'none';
+        }
+      }
+
       // --- חיפושים אחרונים של מוצרים ---
       const RECENT_PRODUCT_KEY = 'shamze_recent_product_searches';
 
@@ -3340,9 +3371,8 @@
           const container = document.getElementById('recentProductSearches');
           const chips = document.getElementById('recentProductChips');
 
-          if (!list.length) { container.style.display = 'none'; return; }
+          if (!list.length) { chips.innerHTML = ''; container.style.display = 'none'; return; }
 
-          container.style.display = 'block';
           chips.innerHTML = '';
 
           const label = document.createElement('span');
@@ -3364,6 +3394,8 @@
             });
             chips.appendChild(chip);
           });
+
+          updateBrowseSectionsVisibility();
         } catch (e) { }
       }
 
@@ -3388,9 +3420,7 @@
 
         if (!cats.length) return;
 
-        const section = document.getElementById('categoriesSection');
         const chipsRow = document.getElementById('categoryChips');
-        section.style.display = 'block';
         chipsRow.innerHTML = '';
 
         cats.forEach(([cat, count]) => {
@@ -3414,11 +3444,14 @@
           });
           chipsRow.appendChild(chip);
         });
+
+        updateBrowseSectionsVisibility();
       }
 
       function showCategorySites(category) {
         searchInput.value = '';
         if (clearSearch) clearSearch.style.display = 'none';
+        updateBrowseSectionsVisibility();
         currentSearchQuery = '';
         compareButtonContainer.style.display = 'none';
         sortContainer.style.display = 'none';
@@ -3450,10 +3483,14 @@
           hideLoading();
           displayPopularSearches();
           renderRecentProductSearches();
+          updateBrowseSectionsVisibility();
           sortContainer.style.display = 'none';
           return;
         }
 
+        // בזמן חיפוש מסתירים את החיפושים האחרונים והקטגוריות כדי שהתוצאות
+        // יופיעו צמוד לשורת החיפוש
+        updateBrowseSectionsVisibility();
         sortContainer.style.display = 'none';
         scheduleRecentProductSearchSave(query);
 
@@ -3585,7 +3622,7 @@
             ${hasCoupon ? `
               <div class="coupon-code-box">
                 <span>${escapeHtml(site.cupon)}</span>
-                <button class="coupon-copy-btn">📋 העתקה</button>
+                <button class="coupon-share-btn" type="button" aria-label="שיתוף ההטבה">${SHARE_ICON_SVG} שיתוף</button>
               </div>
             ` : (site.cuponDetails ? '' : '<p class="no-coupon-note">מעבר דרך הקישור מפעיל את ההטבה אוטומטית (אם קיימת)</p>')}
             ${site.cuponDetails ? `<p class="site-coupon-details">${escapeHtml(site.cuponDetails)}</p>` : ''}
@@ -3597,13 +3634,16 @@
           card.querySelector('h3').addEventListener('click', goTo);
           card.querySelector('.site-go-btn').addEventListener('click', goTo);
 
-          const copyBtn = card.querySelector('.coupon-copy-btn');
-          if (copyBtn) {
-            copyBtn.addEventListener('click', (e) => {
+          const shareBtn = card.querySelector('.coupon-share-btn');
+          if (shareBtn) {
+            shareBtn.addEventListener('click', (e) => {
               e.stopPropagation();
-              copyCoupon(site.cupon, e);
-              copyBtn.textContent = '✓ הועתק';
-              setTimeout(() => { copyBtn.textContent = '📋 העתקה'; }, 1600);
+              shareCoupon({
+                siteName: site.siteName,
+                coupon: site.cupon,
+                details: site.cuponDetails,
+                url: site.affLink || site.URL
+              }, e);
             });
           }
 
@@ -3637,12 +3677,60 @@
         event.stopPropagation();
       }
 
-      function copyCoupon(coupon, event) {
-        navigator.clipboard.writeText(coupon)
-          .then(() => { })
-          .catch(err => console.error('Failed to copy: ', err));
+      // --- שיתוף קופון ---
+      const SHARE_ICON_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>`;
+
+      function buildCouponShareText({ siteName, coupon, details, url }) {
+        const lines = ['הנה הטבה מאתר ״שם זה זול יותר״', ''];
+        lines.push(`הטבה באתר ${String(siteName || '').trim()}`);
+
+        const code = String(coupon || '').trim();
+        if (code) lines.push(code);
+
+        const info = String(details || '').trim();
+        if (info) {
+          lines.push('_____');
+          lines.push(info);
+        }
+
+        const link = String(url || '').trim();
+        if (link) {
+          lines.push('____');
+          lines.push('לינק לאתר:');
+          lines.push(link);
+        }
+
+        return lines.join('\n');
+      }
+
+      function shareCoupon(info, event) {
         if (event) event.stopPropagation();
-        safeGtag('coupon_copy', { coupon: coupon });
+
+        const text = buildCouponShareText(info);
+        safeGtag('coupon_share', { site: info.siteName, coupon: info.coupon });
+
+        // סרגל השיתוף של הדפדפן (נייד ורוב הדפדפנים המודרניים)
+        if (navigator.share) {
+          navigator.share({ text }).catch(err => {
+            // המשתמש ביטל את השיתוף - לא עושים כלום
+            if (err && (err.name === 'AbortError' || err.name === 'NotAllowedError')) return;
+            copyShareText(text);
+          });
+          return;
+        }
+
+        // אין תמיכה בשיתוף - נופלים להעתקה ללוח
+        copyShareText(text);
+      }
+
+      function copyShareText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text)
+            .then(() => alert('פרטי ההטבה הועתקו - אפשר להדביק ולשתף 🎁'))
+            .catch(() => alert(text));
+        } else {
+          alert(text);
+        }
       }
 
       // --- השוואת מחירים למוצרים ---
@@ -3726,7 +3814,7 @@
             productContent += `
               <div class="coupon-code-box" style="font-size: 13px;">
                 <span>${escapeHtml(siteInfo.cupon)}</span>
-                <button class="coupon-copy-btn comparison-coupon-copy">📋</button>
+                <button class="coupon-share-btn comparison-coupon-share" type="button" aria-label="שיתוף ההטבה">${SHARE_ICON_SVG}</button>
               </div>
               ${siteInfo.cuponDetails ? `<p class="site-coupon-details">${escapeHtml(siteInfo.cuponDetails)}</p>` : ''}
             `;
@@ -3746,13 +3834,16 @@
             goToProduct(productUrl, product.site, product.name);
           });
 
-          const copyBtn = productDiv.querySelector('.comparison-coupon-copy');
-          if (copyBtn && siteInfo) {
-            copyBtn.addEventListener('click', (e) => {
+          const shareBtn = productDiv.querySelector('.comparison-coupon-share');
+          if (shareBtn && siteInfo) {
+            shareBtn.addEventListener('click', (e) => {
               e.stopPropagation();
-              copyCoupon(siteInfo.cupon, e);
-              copyBtn.textContent = '✓';
-              setTimeout(() => { copyBtn.textContent = '📋'; }, 1600);
+              shareCoupon({
+                siteName: siteInfo.siteName || product.site,
+                coupon: siteInfo.cupon,
+                details: siteInfo.cuponDetails,
+                url: productUrl
+              }, e);
             });
           }
 
@@ -3863,6 +3954,7 @@
           resultsContainer.innerHTML = '';
           displayPopularSearches();
           renderRecentProductSearches();
+          updateBrowseSectionsVisibility();
           compareButtonContainer.style.display = 'none';
           if (clearSearch) clearSearch.style.display = 'none';
         } else {
@@ -3935,7 +4027,7 @@
 
       // פונקציות גלובליות
       window.requestCoupon = requestCoupon;
-      window.copyCoupon = copyCoupon;
+      window.shareCoupon = shareCoupon;
       window.goToProduct = goToProduct;
       window.goToSite = goToSite;
       window.copyCurrentPageLink = copyCurrentPageLink;
