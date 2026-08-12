@@ -3790,7 +3790,7 @@
           const productDiv = document.createElement('div');
           productDiv.className = 'comparison-item';
 
-          const siteInfo = (allSites && Array.isArray(allSites)) ? findSiteInfo(product.url) : null;
+          const siteInfo = resolveProductSiteInfo(product);
           const productNumPrice = parsePriceNumber(product.price);
           const isBest = minPrice > 0 && productNumPrice === minPrice;
           const favId = productFavId(product);
@@ -3911,10 +3911,56 @@
         });
       }
 
+      // דומיינים משלנו (עמודי הפניה / דמו) - הם לא מייצגים חנות אמיתית.
+      // כשה-API לא מוצא קישור למוצר הוא מחזיר עמוד הפניה כזה, ובלי החרגה
+      // כל המוצרים היו מקבלים בטעות את הקופון של אתר הדמו.
+      const INTERNAL_HOSTS = ['yossidisk.github.io'];
+
+      function getHostname(url) {
+        try {
+          if (!url || typeof url !== 'string' || url.trim() === '') return '';
+          return new URL(url.trim()).hostname.toLowerCase();
+        } catch (e) {
+          const m = String(url).match(/https?:\/\/([^\/\s?#]+)/i);
+          return m ? m[1].toLowerCase() : '';
+        }
+      }
+
+      function isInternalUrl(url) {
+        const host = getHostname(url).replace(/^www\./, '');
+        return !!host && INTERNAL_HOSTS.some(h => host === h || host.endsWith('.' + h));
+      }
+
+      function normalizeSiteName(name) {
+        return String(name || '').trim().toLowerCase().replace(/\s+/g, ' ');
+      }
+
+      // התאמה לפי שם החנות - נדרשת כשקישור המוצר הוא עמוד הפניה פנימי
+      function findSiteInfoByName(siteName) {
+        const name = normalizeSiteName(siteName);
+        if (!name) return null;
+        if (!allSites || !Array.isArray(allSites)) return null;
+        return allSites.find(site => site && normalizeSiteName(site.siteName) === name) || null;
+      }
+
+      // זיהוי החנות של מוצר בהשוואת מחירים: קודם לפי הדומיין, ואם הקישור
+      // הוא עמוד הפניה פנימי - לפי שם החנות בלבד
+      function resolveProductSiteInfo(product) {
+        if (!product || !allSites || !Array.isArray(allSites)) return null;
+
+        if (!isInternalUrl(product.url)) {
+          const byUrl = findSiteInfo(product.url);
+          if (byUrl) return byUrl;
+        }
+
+        return findSiteInfoByName(product.site);
+      }
+
       function findSiteInfo(url) {
         try {
           if (!url || typeof url !== 'string' || url.trim() === '') return null;
           if (!allSites || !Array.isArray(allSites) || allSites.length === 0) return null;
+          if (isInternalUrl(url)) return null;
 
           const parsedUrl = new URL(url.trim());
 
