@@ -1081,6 +1081,19 @@
             `;
     }
 
+    // ===== חסימת דיווח GA כפול על אותה הצעה (זיכרון בלבד, לא storage) =====
+    // חוסם רק את שליחת ה-GA — לא את פתיחת הקישור ולא את ה-postMessage לתוסף.
+    const GA_OFFER_DEDUP_MS = 60 * 1000;
+    const gaOfferLastSent = new Map();
+    function shouldSendOfferGA(searchKey, merchant) {
+      const k = `${searchKey}__${merchant}`;
+      const now = Date.now();
+      const prev = gaOfferLastSent.get(k);
+      if (prev && (now - prev) < GA_OFFER_DEDUP_MS) return false;
+      gaOfferLastSent.set(k, now);
+      return true;
+    }
+
     // ===== מעבר למסך ההצעות =====
     async function handleProductClick(product) {
       // שמירת מצב לחזרה
@@ -1152,19 +1165,25 @@ const savingsText = numericPrice <= 0
 
           card.onclick = () => {
             const base_domain = (() => { try { return new URL(offer.link).hostname.replace(/^www\./, ''); } catch { return extractDomainFromUrl(offer.link).replace(/^www\./, ''); } })();
-            sendGAEvent('offer_select', {
-              event_category: 'offers_list',
-              event_label: `${offer.merchant}_${product.name || 'unknown'}`,
-              product_name: product.name || 'unknown',
-              product_site: product.site || 'unknown',
-              search_query: currentSearchQuery || (new URLSearchParams(window.location.search).get('query')) || 'unknown',
-              reference_price: isNaN(numericPrice) ? 'none' : numericPrice,
-              offer_merchant: offer.merchant,
-              offer_price: offer.price,
-              selected_is_cheapest: isCheapest,
-              target_url: offer.link,
-              base_domain
-            });
+            if (shouldSendOfferGA(getCurrentSearchKey(), offer.merchant)) {
+              sendGAEvent('offer_select', {
+                event_category: 'offers_list',
+                event_label: `${offer.merchant}_${product.name || 'unknown'}`,
+                product_name: product.name || 'unknown',
+                product_site: product.site || 'unknown',
+                search_query: currentSearchQuery || (new URLSearchParams(window.location.search).get('query')) || 'unknown',
+                reference_price: isNaN(numericPrice) ? 'none' : numericPrice,
+                offer_merchant: offer.merchant,
+                offer_price: offer.price,
+                selected_is_cheapest: isCheapest,
+                target_url: offer.link,
+                base_domain,
+                // חיסכון כערך מטבע מובנה של GA4 — רק כשיש חיסכון אמיתי (חיובי)
+                ...(numericPrice > 0 && priceDiff > 0 ? { value: +priceDiff.toFixed(2), currency: 'ILS' } : {}),
+                // הערך הגולמי — תמיד, כולל שלילי, לניתוח מקרים שבהם נבחרה הצעה יקרה יותר
+                saving_raw: numericPrice > 0 ? +priceDiff.toFixed(2) : 'none'
+              });
+            }
             postToParent('OFFER_CLICK_FROM_IFRAME', {
               searchKey: getCurrentSearchKey(),
               query: currentSearchQuery,
