@@ -701,10 +701,10 @@
       try { return new URL(u).hostname; } catch (e) { return 'unknown'; }
     }
 
-    // מחיר הייחוס מה-URL כמספר, או null
+    // מחיר הייחוס מה-URL כמספר, או null (גם price=0 נחשב "אין מחיר ייחוס", כמו ב-OFFER_CLICK)
     function getReferencePriceNumber() {
       const p = cleanPriceString(getUrlParameter('price'));
-      return (p === null || isNaN(p)) ? null : p;
+      return (!p || isNaN(p)) ? null : p;
     }
 
     function getCurrentSearchKey() {
