@@ -687,6 +687,48 @@
       saveCache(entries);
     }
 
+    // ===== דיווח אירועים לחלון האב (התוסף) =====
+    const REPORTED_COMPARISON_KEY = 'reported_comparison_key_v1';
+
+    function postToParent(type, data) {
+      try { window.parent.postMessage({ type, data }, '*'); } catch (e) { }
+    }
+
+    // hostname מפרמטר url, או 'unknown'
+    function getOriginalDomain() {
+      const u = getUrlParameter('url');
+      if (!u) return 'unknown';
+      try { return new URL(u).hostname; } catch (e) { return 'unknown'; }
+    }
+
+    // מחיר הייחוס מה-URL כמספר, או null
+    function getReferencePriceNumber() {
+      const p = cleanPriceString(getUrlParameter('price'));
+      return (p === null || isNaN(p)) ? null : p;
+    }
+
+    function getCurrentSearchKey() {
+      return buildSearchKey(currentSearchQuery || getUrlParameter('query') || '');
+    }
+
+    // דיווח חד-פעמי לכל searchKey — בכל הצגה של תוצאות בפועל (cache או fetch)
+    function reportComparisonShown(resultsCount) {
+      const query = currentSearchQuery || getUrlParameter('query') || '';
+      const searchKey = buildSearchKey(query);
+      try {
+        if (sessionStorage.getItem(REPORTED_COMPARISON_KEY) === searchKey) return;
+        sessionStorage.setItem(REPORTED_COMPARISON_KEY, searchKey);
+      } catch (e) { }
+      postToParent('COMPARISON_FROM_IFRAME', {
+        searchKey,
+        query,
+        referencePrice: getReferencePriceNumber(),
+        resultsCount,
+        originalDomain: getOriginalDomain(),
+        timestamp: Date.now()
+      });
+    }
+
     // ===== Utilities =====
     function extractDomainFromUrl(url) { try { return new URL(url).hostname.replace(/^www\./, ''); } catch (e) { return 'unknown'; } }
     function cleanDisplayPrice(priceStr) {
@@ -940,6 +982,8 @@
         btn.onclick = () => showMoreResults(remainingResults);
         container.appendChild(btn);
       }
+
+      reportComparisonShown(results.length);
     }
 
     function createProductElement(product) {
@@ -1121,6 +1165,17 @@ const savingsText = numericPrice <= 0
               target_url: offer.link,
               base_domain
             });
+            postToParent('OFFER_CLICK_FROM_IFRAME', {
+              searchKey: getCurrentSearchKey(),
+              query: currentSearchQuery,
+              referencePrice: numericPrice || null,
+              offerMerchant: offer.merchant,
+              offerPrice: offer.price,
+              saving: numericPrice > 0 ? +(numericPrice - offer.price).toFixed(2) : null,
+              selectedIsCheapest: isCheapest,
+              originalDomain: getOriginalDomain(),
+              timestamp: Date.now()
+            });
             const w = window.open(offer.link, '_blank');
             if (w) w.opener = null;
           };
@@ -1161,6 +1216,7 @@ const savingsText = numericPrice <= 0
 
       const urlParams = new URLSearchParams(window.location.search);
       const clickData = {
+        searchKey: buildSearchKey(urlParams.get('query') || currentSearchQuery || ''),
         searchParams: {
           query: urlParams.get('query') || currentSearchQuery || 'unknown',
           referencePrice: urlParams.get('price') || 'none',
