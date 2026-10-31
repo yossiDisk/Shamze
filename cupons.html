@@ -1403,6 +1403,12 @@
     .offer-row .m small { display: block; font-weight: 400; color: #475569; font-size: 12px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .offer-row .p { font-weight: 800; font-size: 16px; flex: none; }
     .offer-row .go { background: var(--primary-green); color: #fff; border-radius: 10px; padding: 8px 12px; font-size: 14px; font-weight: 700; white-space: nowrap; flex: none; }
+    .offer-row .p { display: flex; flex-direction: column; align-items: flex-end; text-align: end; }
+    .ship-line { display: block; font-size: 12px; font-weight: 600; color: #475569; white-space: nowrap; margin-top: 2px; }
+    .ship-total { color: #1f2937; font-weight: 700; }
+    .ship-free { display: inline-block; background: #dcfce7; color: #166534; border-radius: 999px; font-size: 11px; font-weight: 700; padding: 1px 8px; margin-top: 4px; white-space: nowrap; }
+    .ship-note { display: block; font-size: 11px; font-weight: 400; color: #64748b; margin-top: 2px; }
+    .best-offer .ship-line, .best-offer .ship-free { display: inline-block; margin-inline-start: 6px; }
     .offer-tag { display: inline-block; background: #fef3c7; color: #92400e; border-radius: 6px; font-size: 11px; padding: 2px 6px; margin-inline-start: 6px; font-weight: 700; }
     .panel-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
     .btn-secondary.is-done { background: var(--light-green); color: var(--primary-green); }
@@ -3809,6 +3815,56 @@
       let panelReturnFocus = null;
       let pendingPid = null;        // pid מקישור משותף, עד שההתאמות נטענות
 
+      // ===== דמי משלוח (shippingContract: 1) =====
+      // עותק זהה ב-cupons.html, sidesite.html ו-redirectPages/urlNotFound.html — לשנות בשלושתם יחד.
+      // הנרמול נעשה בשרת; כאן רק מציגים וממיינים.
+      function shipStatus(o) {
+        const s = o && o.shipping && o.shipping.status;
+        return s === 'paid' || s === 'free' ? s : 'unknown';
+      }
+
+      function shipKnown(o) {
+        return shipStatus(o) !== 'unknown' && typeof o.totalPrice === 'number' && isFinite(o.totalPrice);
+      }
+
+      // מיון לפי totalPrice ?? price, ובתיקו משלוח ידוע קודם.
+      // התג רק להצעה עם משלוח ידוע; אם אין אף אחת כזו — למחיר הנמוך, כמו קודם.
+      function rankOffers(offers) {
+        const cmp = o => (shipKnown(o) ? o.totalPrice : Number(o.price));
+        const sorted = offers.slice().sort((a, b) => (cmp(a) - cmp(b)) || (shipKnown(b) - shipKnown(a)));
+        if (!sorted.length) return { sorted, cheapest: null, isCheapest: () => false };
+        const known = sorted.filter(shipKnown);
+        const cheapest = known.length ? known[0] : sorted[0];
+        const isCheapest = known.length
+          ? o => shipKnown(o) && o.totalPrice === cheapest.totalPrice
+          : o => Number(o.price) === Number(cheapest.price);
+        return { sorted, cheapest, isCheapest };
+      }
+
+      function shipIls(n) {
+        const v = Number(n);
+        return '₪' + v.toLocaleString('he-IL', { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 });
+      }
+
+      function shipEsc(s) {
+        return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+      }
+
+      // "+₪29 משלוח" + "סה״כ ₪208" / תג "משלוח חינם" / כלום כשלא ידוע
+      function shippingView(o) {
+        const s = shipStatus(o);
+        if (s === 'free') return '<span class="ship-free">משלוח חינם</span>';
+        if (s !== 'paid' || typeof o.shipping.amount !== 'number') return '';
+        let html = `<span class="ship-line"><bdi dir="ltr">+${shipIls(o.shipping.amount)}</bdi> משלוח</span>`;
+        if (shipKnown(o)) html += `<span class="ship-line ship-total">סה״כ <bdi dir="ltr">${shipIls(o.totalPrice)}</bdi></span>`;
+        return html;
+      }
+
+      // משלוח חינם מעל סף (טקסט מהשרת, כבר נקי)
+      function shippingNoteView(o) {
+        return shipStatus(o) === 'paid' && o.shipping.note ? `<span class="ship-note">${shipEsc(o.shipping.note)}</span>` : '';
+      }
+
       function parsePriceNumber(priceStr) {
         return parseFloat(String(priceStr || '').replace(/[^\d.]/g, '')) || 0;
       }
@@ -4084,7 +4140,7 @@
         const card = id && productList.querySelector(`.comparison-item[data-pid="${CSS.escape(id)}"]`);
         if (!card) return;
         const listed = parsePriceNumber(product.price);
-        const min = offers[0].price;
+        const min = Math.min(...offers.map(o => o.price));
         const note = card.querySelector('.price-note');
         if (note && listed && min < listed) note.textContent = `בחנות זו · החל מ-${formatIls(min)}`;
       }
@@ -4164,9 +4220,9 @@
             if (!data || data.status !== 'ok' || !Array.isArray(data.offers)) return [];
             return data.offers
               .map(o => Object.assign({}, o, { price: Number(o.price) }))
-              .filter(o => o.price > 0 && /^https?:\/\//i.test(String(o.link || '')))
-              .sort((a, b) => a.price - b.price);
+              .filter(o => o.price > 0 && /^https?:\/\//i.test(String(o.link || '')));
           })
+          .then(offers => rankOffers(offers).sorted)
           .catch(error => {
             offersCache.delete(id);
             throw error;
@@ -4258,24 +4314,26 @@
           document.getElementById('offersPanelTitle').textContent = product.name;
         }
 
-        const min = offers[0].price;
-        const max = offers[offers.length - 1].price;
+        const { cheapest } = rankOffers(offers);
+        const prices = offers.map(o => o.price);
+        const min = Math.min(...prices);
+        const max = Math.max(...prices);
         const listed = parsePriceNumber(product.price);
         const save = listed > min ? listed - min : (max > min ? max - min : 0);
 
         body.innerHTML = `
           <div class="best-offer">
-            הכי זול: <b>${formatIls(min)}</b> ב-${escapeHtml(offers[0].merchant || '')}
+            הכי זול: <b>${formatIls(cheapest.price)}</b> ב-${escapeHtml(cheapest.merchant || '')}${shippingView(cheapest)}
             ${save ? `<div class="save" style="margin-top:4px">חוסכים עד <b>${formatIls(save)}</b> לעומת ${listed > min ? 'המחיר בתוצאה' : 'החנות היקרה'}</div>` : ''}
           </div>
           <div class="offers-meta">${offers.length} חנויות · ממוין מהזול ליקר</div>
           <ul class="offer-list">${offers.map((o, k) => {
             let host = '';
             try { host = new URL(o.link).hostname.replace(/^www\./, ''); } catch (e) { }
-            return `<li><a class="offer-row ${k === 0 ? 'cheapest' : ''}" href="${escapeHtml(o.link)}" target="_blank" rel="noopener sponsored" data-merchant="${escapeHtml(o.merchant || '')}" data-price="${o.price}">
+            return `<li><a class="offer-row ${o === cheapest ? 'cheapest' : ''}" href="${escapeHtml(o.link)}" target="_blank" rel="noopener sponsored" data-merchant="${escapeHtml(o.merchant || '')}" data-price="${o.price}">
               ${host ? `<img src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}" alt="">` : ''}
-              <span class="m">${escapeHtml(o.merchant || host || 'חנות')}${k === 0 ? '<span class="offer-tag">🔥 הכי זול</span>' : ''}<small>${escapeHtml(o.title || '')}</small></span>
-              <span class="p">${formatIls(o.price)}</span><span class="go">לחנות ›</span></a></li>`;
+              <span class="m">${escapeHtml(o.merchant || host || 'חנות')}${o === cheapest ? '<span class="offer-tag">🔥 הכי זול</span>' : ''}<small>${escapeHtml(o.title || '')}</small>${shippingNoteView(o)}</span>
+              <span class="p">${formatIls(o.price)}${shippingView(o)}</span><span class="go">לחנות ›</span></a></li>`;
           }).join('')}</ul>
           <div class="panel-actions">
             <button type="button" class="btn-secondary" id="offersShare">🔗 שיתוף</button>
@@ -4337,7 +4395,7 @@
         });
         document.getElementById('offersBack').addEventListener('click', () => closeOffersPanel());
 
-        setProductStatus(`${product.name}: ${offers.length} חנויות, הכי זול ${formatIls(min)}`);
+        setProductStatus(`${product.name}: ${offers.length} חנויות, הכי זול ${formatIls(cheapest.price)}`);
         safeGtag('offers_fetch_success', { product_id: id, offers_count: offers.length });
       }
 
