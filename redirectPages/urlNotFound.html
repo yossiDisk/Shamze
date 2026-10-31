@@ -249,30 +249,6 @@
             white-space: nowrap;
         }
 
-        .ship-total {
-            color: #1f2937;
-            font-weight: 800;
-        }
-
-        .ship-free {
-            display: inline-block;
-            background: #dcfce7;
-            color: #166534;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 800;
-            padding: 1px 8px;
-            white-space: nowrap;
-        }
-
-        .ship-note {
-            display: block;
-            font-size: 12px;
-            font-weight: 400;
-            color: #64748b;
-            margin-top: 2px;
-        }
-
         .tag-cheapest {
             display: inline-block;
             margin-top: 8px;
@@ -614,11 +590,15 @@
           return shipStatus(o) !== 'unknown' && typeof o.totalPrice === 'number' && isFinite(o.totalPrice);
         }
 
-        // מיון לפי totalPrice ?? price, ובתיקו משלוח ידוע קודם.
+        // comparablePrice = totalPrice ?? price
+        function shipComparable(o) {
+          return shipKnown(o) ? o.totalPrice : Number(o.price);
+        }
+
+        // מיון לפי comparablePrice, ובתיקו משלוח ידוע קודם.
         // התג רק להצעה עם משלוח ידוע; אם אין אף אחת כזו — למחיר הנמוך, כמו קודם.
         function rankOffers(offers) {
-          const cmp = o => (shipKnown(o) ? o.totalPrice : Number(o.price));
-          const sorted = offers.slice().sort((a, b) => (cmp(a) - cmp(b)) || (shipKnown(b) - shipKnown(a)));
+          const sorted = offers.slice().sort((a, b) => (shipComparable(a) - shipComparable(b)) || (shipKnown(b) - shipKnown(a)));
           if (!sorted.length) return { sorted, cheapest: null, isCheapest: () => false };
           const known = sorted.filter(shipKnown);
           const cheapest = known.length ? known[0] : sorted[0];
@@ -633,23 +613,10 @@
           return '₪' + v.toLocaleString('he-IL', { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 });
         }
 
-        function shipEsc(s) {
-          return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-        }
-
-        // "+₪29 משלוח" + "סה״כ ₪208" / תג "משלוח חינם" / כלום כשלא ידוע
+        // "+₪29 משלוח" רק כשיש דמי משלוח; free ו-unknown לא מציגים כלום (התג עדיין מבחין ביניהם)
         function shippingView(o) {
-          const s = shipStatus(o);
-          if (s === 'free') return '<span class="ship-free">משלוח חינם</span>';
-          if (s !== 'paid' || typeof o.shipping.amount !== 'number') return '';
-          let html = `<span class="ship-line"><bdi dir="ltr">+${shipIls(o.shipping.amount)}</bdi> משלוח</span>`;
-          if (shipKnown(o)) html += `<span class="ship-line ship-total">סה״כ <bdi dir="ltr">${shipIls(o.totalPrice)}</bdi></span>`;
-          return html;
-        }
-
-        // משלוח חינם מעל סף (טקסט מהשרת, כבר נקי)
-        function shippingNoteView(o) {
-          return shipStatus(o) === 'paid' && o.shipping.note ? `<span class="ship-note">${shipEsc(o.shipping.note)}</span>` : '';
+          if (shipStatus(o) !== 'paid' || typeof o.shipping.amount !== 'number') return '';
+          return `<span class="ship-line"><bdi dir="ltr">+${shipIls(o.shipping.amount)}</bdi> משלוח</span>`;
         }
 
         function renderOffersList(offers) {
@@ -684,7 +651,8 @@
             list.className = 'offers-list';
 
             sorted.forEach((o) => {
-                const diff = numericOriginal ? (numericOriginal - o.price) : 0;
+                // לפי המחיר הכולל (כולל משלוח) כשידוע
+                const diff = numericOriginal ? Math.round((numericOriginal - shipComparable(o)) * 100) / 100 : 0;
 
                 const card = document.createElement('a');
                 card.className = 'offer-card';
@@ -724,7 +692,7 @@
                 top.appendChild(price);
                 card.appendChild(top);
 
-                const shipHtml = shippingView(o) + shippingNoteView(o);
+                const shipHtml = shippingView(o);
                 if (shipHtml) {
                     const ship = document.createElement('div');
                     ship.className = 'ship-wrap';
@@ -742,9 +710,9 @@
                 const savings = document.createElement('div');
                 const cls = diff > 0 ? 'good' : diff < 0 ? 'bad' : 'neutral';
                 const text = diff > 0
-                    ? `חיסכון ₪${diff.toFixed(2)}`
+                    ? `חיסכון ${shipIls(diff)}`
                     : diff < 0
-                        ? `יקר ב־₪${Math.abs(diff).toFixed(2)}`
+                        ? `יקר ב־${shipIls(Math.abs(diff))}`
                         : `אותו מחיר`;
                 savings.className = `savings ${cls}`;
                 savings.textContent = text;

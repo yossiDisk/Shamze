@@ -482,30 +482,6 @@
       white-space: nowrap
     }
 
-    .ship-total {
-      color: #1f2937;
-      font-weight: 800
-    }
-
-    .ship-free {
-      display: inline-block;
-      background: #dcfce7;
-      color: #166534;
-      border-radius: 999px;
-      font-size: clamp(11px, 2.8vw, 12px);
-      font-weight: 800;
-      padding: 1px 8px;
-      white-space: nowrap
-    }
-
-    .ship-note {
-      display: block;
-      font-size: clamp(10px, 2.8vw, 12px);
-      font-weight: 400;
-      color: #64748b;
-      margin-top: 2px
-    }
-
     .cheapest-tag {
       margin-top: 6px;
       display: inline-block;
@@ -1150,11 +1126,15 @@
       return shipStatus(o) !== 'unknown' && typeof o.totalPrice === 'number' && isFinite(o.totalPrice);
     }
 
-    // מיון לפי totalPrice ?? price, ובתיקו משלוח ידוע קודם.
+    // comparablePrice = totalPrice ?? price
+    function shipComparable(o) {
+      return shipKnown(o) ? o.totalPrice : Number(o.price);
+    }
+
+    // מיון לפי comparablePrice, ובתיקו משלוח ידוע קודם.
     // התג רק להצעה עם משלוח ידוע; אם אין אף אחת כזו — למחיר הנמוך, כמו קודם.
     function rankOffers(offers) {
-      const cmp = o => (shipKnown(o) ? o.totalPrice : Number(o.price));
-      const sorted = offers.slice().sort((a, b) => (cmp(a) - cmp(b)) || (shipKnown(b) - shipKnown(a)));
+      const sorted = offers.slice().sort((a, b) => (shipComparable(a) - shipComparable(b)) || (shipKnown(b) - shipKnown(a)));
       if (!sorted.length) return { sorted, cheapest: null, isCheapest: () => false };
       const known = sorted.filter(shipKnown);
       const cheapest = known.length ? known[0] : sorted[0];
@@ -1169,23 +1149,10 @@
       return '₪' + v.toLocaleString('he-IL', { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 });
     }
 
-    function shipEsc(s) {
-      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-    }
-
-    // "+₪29 משלוח" + "סה״כ ₪208" / תג "משלוח חינם" / כלום כשלא ידוע
+    // "+₪29 משלוח" רק כשיש דמי משלוח; free ו-unknown לא מציגים כלום (התג עדיין מבחין ביניהם)
     function shippingView(o) {
-      const s = shipStatus(o);
-      if (s === 'free') return '<span class="ship-free">משלוח חינם</span>';
-      if (s !== 'paid' || typeof o.shipping.amount !== 'number') return '';
-      let html = `<span class="ship-line"><bdi dir="ltr">+${shipIls(o.shipping.amount)}</bdi> משלוח</span>`;
-      if (shipKnown(o)) html += `<span class="ship-line ship-total">סה״כ <bdi dir="ltr">${shipIls(o.totalPrice)}</bdi></span>`;
-      return html;
-    }
-
-    // משלוח חינם מעל סף (טקסט מהשרת, כבר נקי)
-    function shippingNoteView(o) {
-      return shipStatus(o) === 'paid' && o.shipping.note ? `<span class="ship-note">${shipEsc(o.shipping.note)}</span>` : '';
+      if (shipStatus(o) !== 'paid' || typeof o.shipping.amount !== 'number') return '';
+      return `<span class="ship-line"><bdi dir="ltr">+${shipIls(o.shipping.amount)}</bdi> משלוח</span>`;
     }
 
     async function handleProductClick(product) {
@@ -1238,13 +1205,15 @@
           const card = document.createElement('div');
           const priceDiff = numericPrice - offer.price;
           const isCheapest = isCheapestOffer(offer);
-          const shipHtml = shippingView(offer) + shippingNoteView(offer);
+          const shipHtml = shippingView(offer);
+          // התצוגה לפי המחיר הכולל (כולל משלוח) כשידוע; GA נשאר לפי priceDiff
+          const shownDiff = Math.round((numericPrice - shipComparable(offer)) * 100) / 100;
 const savingsText = numericPrice <= 0
             ? ''
-            : priceDiff > 0
-              ? `<div class="savings good">חיסכון של ₪${priceDiff.toFixed(2)}</div>`
-              : priceDiff < 0
-                ? `<div class="savings bad">יקר ב־₪${Math.abs(priceDiff).toFixed(2)}</div>`
+            : shownDiff > 0
+              ? `<div class="savings good">חיסכון של ${shipIls(shownDiff)}</div>`
+              : shownDiff < 0
+                ? `<div class="savings bad">יקר ב־${shipIls(Math.abs(shownDiff))}</div>`
                 : `<div class="savings neutral">אותו מחיר</div>`;
 
           card.className = `offer-card ${isCheapest ? 'highlight-offer' : ''}`;
