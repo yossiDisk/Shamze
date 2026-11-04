@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!--ARTIFACT-START-->
+<title>מדריך שם זה זול יותר</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="מדריך קצר ואינטרקטיבי: התוסף קופץ לבד באתרים נתמכים, ובכל אתר אחר מפעילים אותו בלחיצה על האייקון ואז על ״השוואה באתר זה״.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: blue brand band opens the page, the live browser simulator overlaps it, then real screenshots, troubleshooting, FAQ. */
+:root {
+  color-scheme: light;
+  --brand: #1a73e8; --brand-dark: #0f4fa8; --brand-soft: #e8f0fe;
+  --green: #0f9d58; --green-dark: #0b7c45; --green-soft: #e4f6ec;
+  --yellow: #ffd76a;
+  --ink: #101828; --muted: #5b667a; --line: #e4e8ef; --bg: #f6f8fc; --card: #fff;
+  --chrome: #dfe5ee; --chrome-2: #eef1f6;
+  --radius: 18px; --shadow: 0 10px 30px rgba(16,24,40,.08);
+  --font: "Rubik", -apple-system, "Segoe UI", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+img { max-width: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 17px; line-height: 1.6; }
+.site { direction: rtl; text-align: right; overflow-x: clip; }
+.wrap { max-width: 1040px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { line-height: 1.2; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+button { font: inherit; color: inherit; cursor: pointer; background: none; border: 0; padding: 0; text-align: inherit; }
+a { color: var(--brand-dark); }
+:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; border-radius: 6px; }
+main :focus-visible { outline-color: var(--brand-dark); }
+
+/* Hero */
+.hero { background: linear-gradient(160deg, #3574e0, #1b3f8f); color: #fff; padding-block: 28px 150px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; }
+.mark { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: #fff; color: var(--brand-dark); font-weight: 800; font-size: 17px; }
+.hero h1 { font-size: clamp(32px, 6vw, 52px); font-weight: 800; margin-top: 26px; letter-spacing: -.01em; }
+.hero h1 em { font-style: normal; color: var(--yellow); }
+.hero .lead { font-size: clamp(17px, 2.4vw, 20px); margin-top: 14px; max-width: 42em; color: #e7eefc; }
+.q { font-weight: 700; color: #fff; white-space: nowrap; }
+.hero-note { margin-top: 12px; font-size: 15px; color: #c9d8f5; }
+.hero-note a { color: #fff; }
+
+/* Simulator */
+.sim { margin-top: -122px; background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px; display: grid; gap: 12px; position: relative; }
+.sim-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sim-tab { border: 2px solid var(--line); border-radius: 14px; padding: 12px 14px; background: var(--bg); display: grid; gap: 2px; transition: border-color .15s, background .15s; }
+.sim-tab b { font-size: 17px; font-weight: 700; }
+.sim-tab span { font-size: 14px; color: var(--muted); line-height: 1.35; }
+.sim-tab:hover { border-color: #b8cdf3; }
+.sim-tab[aria-selected="true"] { border-color: var(--brand); background: var(--brand-soft); }
+.sim-tab[aria-selected="true"] b { color: var(--brand-dark); }
+
+.guide { display: flex; gap: 12px; align-items: center; background: #fff8e1; border: 1px solid #f4dd98; border-radius: 12px; padding: 12px 14px; min-height: 76px; }
+.guide.done { background: var(--green-soft); border-color: #a9e0c3; }
+.guide-step { flex: none; font-size: 13px; font-weight: 700; background: var(--ink); color: #fff; border-radius: 99px; padding: 3px 11px; white-space: nowrap; }
+.guide.done .guide-step { background: var(--green-dark); }
+.guide-body { min-width: 0; flex: 1; }
+.guide-text { font-weight: 500; line-height: 1.4; }
+.guide-link { font-size: 14px; color: var(--brand-dark); text-decoration: underline; margin-top: 3px; display: inline-block; }
+.guide-next { display: inline-block; margin-top: 7px; background: var(--green-dark); color: #fff; font-weight: 600; font-size: 15px; border-radius: 10px; padding: 6px 14px; }
+@keyframes nudge { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+.guide.nudge { animation: nudge .25s 2; }
+
+/* Pretend browser */
+.browser { border: 1px solid var(--chrome); border-radius: 12px; overflow: hidden; background: #fff; }
+.toolbar { display: flex; align-items: center; gap: 6px; background: var(--chrome-2); padding: 8px 10px; border-bottom: 1px solid var(--chrome); }
+.tb-ico { width: 34px; height: 34px; flex: none; display: grid; place-items: center; border-radius: 50%; color: #4a5568; position: relative; }
+button.tb-ico:hover { background: var(--chrome); }
+.tb-ico svg { width: 19px; height: 19px; }
+.ext-ico { font-weight: 800; }
+.ext-ico i { font-style: normal; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 7px; background: var(--brand); color: #fff; font-size: 14px; }
+.url { flex: 1; min-width: 0; background: #fff; border-radius: 99px; padding: 5px 14px; font-size: 14px; color: #4a5568; direction: ltr; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,170,0,.85); } 70% { box-shadow: 0 0 0 13px rgba(255,170,0,0); } 100% { box-shadow: 0 0 0 0 rgba(255,170,0,0); } }
+.hint { animation: pulse 1.4s infinite; outline: 2px solid #ffaa00; outline-offset: 1px; }
+.tb-ico.hint { border-radius: 50%; }
+
+.viewport { position: relative; height: 400px; overflow: hidden; background: #fff; }
+.shop { height: 100%; overflow: hidden; display: flex; flex-direction: column; transition: padding .35s; }
+.shop.room-right { padding-right: 290px; }
+.shop.room-left { padding-left: 290px; }
+.shop-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 1px solid var(--line); font-weight: 700; }
+.shop-head small { font-weight: 400; color: var(--muted); font-size: 13px; }
+.shop-body { padding: 16px; flex: 1; min-height: 0; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.tile { border: 1px solid var(--line); border-radius: 12px; padding: 10px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; background: #fff; min-width: 0; }
+.tile:hover { border-color: var(--brand); }
+.pic { display: grid; place-items: center; background: var(--chrome-2); border-radius: 10px; font-size: 56px; aspect-ratio: 16 / 9; line-height: 1; }
+.product .pic { aspect-ratio: 4 / 3; }
+.tile b { font-size: 15px; font-weight: 500; line-height: 1.25; }
+.tile .cost { font-weight: 700; }
+.product { display: flex; gap: 18px; max-width: 620px; flex-wrap: wrap; }
+.product .pic { width: 190px; font-size: 80px; flex: none; }
+.product h3 { font-size: 22px; font-weight: 700; }
+.product .price { font-size: 30px; font-weight: 800; margin-block: 6px 10px; }
+.fake-buy { display: inline-block; background: var(--ink); color: #fff; border-radius: 10px; padding: 8px 18px; font-weight: 600; font-size: 15px; }
+
+/* The extension's side panel, drawn after the real one */
+.panel { position: absolute; top: 0; bottom: 0; right: 0; width: min(290px, 76%); background: #fff; box-shadow: 0 0 26px rgba(16,24,40,.22); display: flex; flex-direction: column; transition: transform .35s cubic-bezier(.2,.8,.3,1); z-index: 2; }
+.panel.left { right: auto; left: 0; }
+.panel[hidden] { display: none; }
+.panel.collapsed { bottom: auto; }
+.panel.enter { transform: translateX(105%); }
+.panel.left.enter { transform: translateX(-105%); }
+.panel-head { display: flex; align-items: center; gap: 2px; padding: 8px 10px; background: var(--brand); color: #fff; font-weight: 600; font-size: 15px; }
+.panel-head .t { flex: 1; min-width: 0; }
+.ph-btn { width: 30px; height: 30px; flex: none; display: grid; place-items: center; border-radius: 8px; font-size: 14px; }
+.ph-btn:hover { background: rgba(255,255,255,.2); }
+.panel-body { padding: 10px; display: grid; gap: 8px; overflow: auto; align-content: start; flex: 1; }
+.panel.collapsed .panel-body { display: none; }
+.p-item { display: flex; gap: 10px; align-items: center; background: var(--brand-soft); border-radius: 12px; padding: 8px; font-weight: 600; font-size: 15px; line-height: 1.25; }
+.p-item i { font-style: normal; font-size: 26px; }
+.offer { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; border: 1px solid var(--line); border-radius: 12px; padding: 9px 11px; width: 100%; background: #fff; box-shadow: 0 2px 6px rgba(16,24,40,.06); line-height: 1.3; }
+button.offer:hover { border-color: var(--brand); }
+.offer b { font-weight: 600; }
+.offer .amt { font-weight: 700; }
+.pill { justify-self: start; background: var(--green-dark); color: #fff; font-size: 12px; font-weight: 600; border-radius: 99px; padding: 1px 9px; }
+.save { color: var(--green-dark); font-size: 13px; font-weight: 600; }
+.scan { display: grid; gap: 8px; padding-block: 4px; color: var(--muted); font-size: 15px; }
+.scan-bar { height: 44px; border-radius: 12px; background: linear-gradient(90deg, var(--chrome-2) 25%, #f8fafd 50%, var(--chrome-2) 75%); background-size: 200% 100%; animation: shine 1.1s linear infinite; }
+@keyframes shine { to { background-position: -200% 0; } }
+
+/* Extension popup and Chrome's puzzle menu */
+.pop { position: absolute; top: 8px; left: 56px; width: min(270px, calc(100% - 24px)); background: #fff; border-radius: 14px; box-shadow: 0 12px 36px rgba(16,24,40,.28); padding: 14px; display: grid; gap: 10px; z-index: 3; }
+.pop-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; }
+.pop-brand .mark { background: var(--brand); color: #fff; width: 26px; height: 26px; font-size: 14px; border-radius: 7px; }
+.pop-compare { background: var(--brand); color: #fff; font-weight: 700; border-radius: 11px; padding: 11px; text-align: center; }
+.pop-compare:hover { background: var(--brand-dark); }
+.pop-row { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; }
+.pop-row .n { flex: 1; min-width: 0; }
+.pin { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; flex: none; }
+.pin:hover { background: var(--chrome-2); }
+.pin svg { width: 18px; height: 18px; }
+.pop h4 { margin: 0; font-size: 14px; color: var(--muted); font-weight: 500; }
+
+.sim-foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 14px; color: var(--muted); padding-inline: 2px; }
+.restart { text-decoration: underline; color: var(--brand-dark); font-weight: 500; }
+
+/* Sections */
+section { padding-block: 56px 0; }
+.sec-head { max-width: 44em; display: grid; gap: 8px; margin-bottom: 22px; }
+h2 { font-size: clamp(26px, 4vw, 34px); font-weight: 800; }
+.sec-head p { color: var(--muted); }
+
+/* Real screenshots */
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.pill-tab { border: 1px solid var(--line); background: #fff; border-radius: 99px; padding: 8px 18px; font-weight: 600; }
+.pill-tab:hover { border-color: var(--brand); }
+.pill-tab[aria-selected="true"] { background: var(--brand-dark); border-color: var(--brand-dark); color: #fff; }
+.shot { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 12px; display: grid; gap: 12px; }
+.frame { position: relative; overflow: hidden; border-radius: 10px; background: var(--chrome-2); max-width: 100%; }
+.frame img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; max-width: none; transform-origin: 0 0; transition: transform .55s cubic-bezier(.3,.7,.2,1); display: block; }
+.ring { position: absolute; border: 3px solid #ffaa00; border-radius: 10px; box-shadow: 0 0 0 2000px rgba(16,24,40,.42); transition: all .55s cubic-bezier(.3,.7,.2,1); pointer-events: none; }
+.zoom-out { position: absolute; bottom: 10px; left: 10px; background: rgba(16,24,40,.85); color: #fff; font-size: 14px; font-weight: 500; border-radius: 99px; padding: 5px 14px; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.step { display: flex; gap: 10px; align-items: flex-start; border: 2px solid var(--line); border-radius: 12px; padding: 10px 12px; line-height: 1.35; min-width: 0; }
+.step:hover { border-color: #b8cdf3; }
+.step[aria-pressed="true"] { border-color: #ffaa00; background: #fff8e1; }
+.step i { font-style: normal; flex: none; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; background: var(--ink); color: #fff; font-size: 14px; font-weight: 700; }
+.step b { display: block; font-weight: 700; font-size: 16px; }
+.step span { font-size: 15px; color: var(--muted); display: block; }
+.shot-sum { font-weight: 600; color: var(--green-dark); padding-inline: 2px; }
+
+/* Troubleshooter */
+.helper { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px; display: grid; gap: 14px; max-width: 720px; }
+.helper-q { font-size: 21px; font-weight: 700; line-height: 1.3; }
+.helper-a { color: var(--ink); }
+.helper-opts { display: flex; flex-wrap: wrap; gap: 10px; }
+.opt { border: 2px solid var(--brand); color: var(--brand-dark); border-radius: 12px; padding: 9px 16px; font-weight: 600; }
+.opt:hover { background: var(--brand-soft); }
+.opt.solid { background: var(--brand); color: #fff; }
+.opt.solid:hover { background: var(--brand-dark); }
+.opt.quiet { border-color: var(--line); color: var(--muted); font-weight: 500; }
+
+/* FAQ */
+.faq { display: grid; gap: 8px; max-width: 720px; }
+.faq details { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; }
+.faq summary { font-weight: 600; cursor: pointer; }
+.faq details p { margin-top: 8px; color: #2f3a4d; }
+
+/* Closing */
+.end { margin-top: 64px; background: linear-gradient(160deg, #3574e0, #1b3f8f); color: #fff; padding-block: 44px; }
+.end-in { display: grid; gap: 14px; justify-items: start; }
+.end h2 { color: #fff; }
+.end p { color: #e7eefc; max-width: 40em; }
+.install { display: inline-block; background: var(--green); color: #fff; font-weight: 700; font-size: 18px; border-radius: 14px; padding: 13px 26px; text-decoration: none; }
+.install:hover { background: var(--green-dark); }
+.mail { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 16px; }
+.mail code { font-family: inherit; font-weight: 600; direction: ltr; unicode-bidi: isolate; user-select: all; }
+.copy { border: 1px solid rgba(255,255,255,.5); border-radius: 99px; padding: 2px 12px; font-size: 14px; color: #fff; }
+.copy:hover { background: rgba(255,255,255,.15); }
+footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
+
+@media (max-width: 720px) {
+  body { font-size: 16px; }
+  .hero { padding-block: 22px 140px; }
+  .sim { padding: 10px; }
+  .sim-tab { padding: 9px 10px; }
+  .sim-tab b { font-size: 15px; line-height: 1.25; }
+  .sim-tab span { font-size: 13px; }
+  .guide { flex-direction: column; align-items: flex-start; gap: 6px; min-height: 112px; }
+  .viewport { height: 420px; }
+  .shop.room-right, .shop.room-left { padding: 0; }
+  .shop-body { padding: 10px; }
+  .grid { gap: 7px; }
+  .tile { padding: 6px; }
+  .tile b { font-size: 13px; }
+  .tile .cost { font-size: 14px; }
+  .pic { font-size: 34px; }
+  .zoom-out { font-size: 12px; padding: 3px 10px; bottom: 6px; left: 6px; }
+  .product .pic { width: 110px; font-size: 50px; }
+  .product h3 { font-size: 18px; }
+  .product .price { font-size: 23px; }
+  .tb-ico.deco { display: none; }
+  .pop { left: 8px; }
+  .steps { grid-template-columns: 1fr; }
+  .helper { padding: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+<!--ARTIFACT-HEAD-END-->
+</head>
+<body>
+<!--ARTIFACT-BODY-START-->
+<div class="site" dir="rtl" lang="he">
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brand"><span class="mark" aria-hidden="true">₪</span> שם זה זול יותר</div>
+    <h1>התוסף קופץ לבד.<br><em>ואם לא, שתי לחיצות.</em></h1>
+    <p class="lead">באתרים נתמכים התוסף קופץ לבד. בכל אתר אחר לוחצים על האייקון שלו, ואז על <span class="q">״השוואה באתר זה״</span>. נסו את שתי הדרכים כאן למטה.</p>
+    <p class="hero-note">התוסף עוד לא מותקן אצלכם? <a href="https://chromewebstore.google.com/detail/neigoggljhfnodeneidndcflnclldnpm">להתקנה חינם מחנות Chrome</a></p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="sim" id="sim">
+      <div class="sim-tabs" role="tablist" aria-label="בחירת סוג אתר">
+        <button class="sim-tab" id="tab-auto" role="tab" aria-selected="true" data-act="scen" data-v="auto"><b>אתר נתמך</b><span>התוסף קופץ לבד</span></button>
+        <button class="sim-tab" id="tab-manual" role="tab" aria-selected="false" data-act="scen" data-v="manual"><b>אתר שאינו נתמך</b><span>מפעילים אותו בעצמכם</span></button>
+      </div>
+      <div class="guide" id="guide" aria-live="polite">
+        <span class="guide-step" id="guideStep"></span>
+        <div class="guide-body"><div class="guide-text" id="guideText"></div><div id="guideExtra"></div></div>
+      </div>
+      <div class="browser">
+        <div class="toolbar">
+          <span class="tb-ico deco" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 6.3"/><path d="M20 5v6h-6"/></svg></span>
+          <div class="url" id="url"></div>
+          <button class="tb-ico ext-ico" id="extIco" data-act="icon" aria-label="אייקון התוסף שם זה זול יותר"><i>₪</i></button>
+          <button class="tb-ico" id="puzzle" data-act="puzzle" aria-label="תפריט התוספים של Chrome (חלק הפאזל)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 11H19V7a2 2 0 0 0-2-2h-4V3.5a2.5 2.5 0 0 0-5 0V5H4a2 2 0 0 0-2 2v3.8h1.5a2.7 2.7 0 0 1 0 5.4H2V20a2 2 0 0 0 2 2h3.8v-1.5a2.7 2.7 0 0 1 5.4 0V22H17a2 2 0 0 0 2-2v-4h1.5a2.5 2.5 0 0 0 0-5Z"/></svg></button>
+        </div>
+        <div class="viewport" id="viewport">
+          <div class="shop" id="page"></div>
+          <aside class="panel" id="panel" hidden aria-label="חלונית התוסף"></aside>
+          <div class="pop" id="pop" hidden></div>
+        </div>
+      </div>
+      <div class="sim-foot">
+        <span>זו הדמיה לתרגול. החנויות והמחירים בה לדוגמה.</span>
+        <button class="restart" data-act="restart">להתחיל מחדש</button>
+      </div>
+    </div>
+
+    <section id="real">
+      <div class="sec-head">
+        <h2>ככה זה נראה באתרים אמיתיים</h2>
+        <p>צילומי מסך מהתוסף בפעולה. לחצו על שלב, והתמונה תתקרב בדיוק למקום הנכון.</p>
+      </div>
+      <div class="pills" role="tablist" aria-label="סוגי השוואה" id="pills"></div>
+      <div class="shot">
+        <div class="frame" id="frame"></div>
+        <div class="steps" id="steps"></div>
+        <p class="shot-sum" id="shotSum"></p>
+      </div>
+    </section>
+
+    <section id="help">
+      <div class="sec-head">
+        <h2>התוסף לא קפץ לי</h2>
+        <p>שתי שאלות קצרות, ותדעו מה לעשות.</p>
+      </div>
+      <div class="helper" id="helper" aria-live="polite"></div>
+    </section>
+
+    <section id="faq">
+      <div class="sec-head"><h2>שאלות שחוזרות</h2></div>
+      <div class="faq">
+        <details><summary>כמה זה עולה?</summary><p>התוסף חינם לחלוטין, ולא צריך להירשם כדי להשתמש בו.</p></details>
+        <details><summary>איך אדע אם האתר נתמך?</summary><p>לא צריך לבדוק מראש. אם התוסף קפץ, האתר נתמך. אם הוא לא קפץ, לחצו על האייקון שלו ועל ״השוואה באתר זה״.</p></details>
+        <details><summary>מתי בדיוק הוא קופץ?</summary><p>בעמוד של מוצר הוא משווה מחירים, בעמוד התשלום הוא מציג קופונים, ובחיפוש טיסה או מלון הוא בודק את אותם תאריכים באתרים אחרים.</p></details>
+        <details><summary>החלונית מפריעה לי. איך סוגרים אותה?</summary><p>לחצו על ה-✕ בפינת החלונית. אפשר לנסות את זה בהדמיה למעלה.</p></details>
+        <details><summary>זה עובד גם בטלפון?</summary><p>התוסף מיועד לדפדפן Chrome במחשב. בטלפון אפשר לחפש מחירים וקופונים ב<a href="https://shamze.com/cupons.html">אתר של שם זה זול יותר</a>.</p></details>
+        <details><summary>איך מסירים את התוסף?</summary><p>לחיצה ימנית על אייקון התוסף, ואז ״הסרה מ-Chrome״. אפשר להסיר בכל רגע.</p></details>
+      </div>
+    </section>
+  </div>
+
+  <div class="end">
+    <div class="wrap end-in">
+      <h2>מוכנים לחסוך בקנייה הבאה?</h2>
+      <p>ההתקנה לוקחת כמה שניות, והתוסף עובד ברקע עד שיש לו מה להראות לכם.</p>
+      <a class="install" href="https://chromewebstore.google.com/detail/neigoggljhfnodeneidndcflnclldnpm">התקנה מחנות Chrome</a>
+      <div class="mail">יש שאלה? כתבו לנו: <code id="mailAddr">shamzezolyoter@gmail.com</code> <button class="copy" id="copyMail">העתקה</button></div>
+    </div>
+  </div>
+</main>
+
+<footer><div class="wrap">שם זה זול יותר · השוואת מחירים, קופונים, טיסות ומלונות</div></footer>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var money = function (n) { return n.toLocaleString('he-IL') + ' ₪'; };
+
+  /* ---------- Simulator ---------- */
+  var STORE_ITEMS = [
+    { pic: '🎧', name: 'אוזניות אלחוטיות', price: 499, offers: [['חנות א׳', 379], ['חנות ב׳', 429], ['חנות ג׳', 459]] },
+    { pic: '☕', name: 'מכונת קפה', price: 899, offers: [['חנות ב׳', 749], ['חנות ג׳', 799], ['חנות א׳', 849]] },
+    { pic: '🎒', name: 'תיק גב', price: 219, offers: [['חנות ג׳', 159], ['חנות א׳', 179], ['חנות ב׳', 199]] }
+  ];
+  var SMALL_ITEM = { pic: '💡', name: 'מנורת שולחן', price: 249, offers: [['חנות ב׳', 189], ['חנות א׳', 215], ['חנות ג׳', 239]] };
+
+  var s, timers = [];
+  function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
+  function start(scen, opts) {
+    clearTimers();
+    s = {
+      scen: scen,
+      item: scen === 'manual' ? SMALL_ITEM : null,
+      stage: scen === 'manual' ? 'noPanel' : 'home',
+      pinned: !(opts && opts.unpinned),
+      panelSide: 'right', collapsed: false
+    };
+    if (scen === 'manual' && !s.pinned) s.stage = 'unpinned';
+    draw();
+  }
+
+  function shopHtml() {
+    if (s.scen === 'auto' && !s.item) {
+      return '<div class="shop-head"><span>החנות לדוגמה</span><small>כל המוצרים</small></div><div class="shop-body"><div class="grid">' +
+        STORE_ITEMS.map(function (p, i) {
+          return '<button class="tile' + (i === 0 ? ' hint' : '') + '" data-act="open" data-v="' + i + '"><span class="pic" aria-hidden="true">' + p.pic + '</span><b>' + p.name + '</b><span class="cost">' + money(p.price) + '</span></button>';
+        }).join('') + '</div></div>';
+    }
+    var p = s.item;
+    var shop = s.scen === 'auto' ? 'החנות לדוגמה' : 'החנות הקטנה של השכונה';
+    return '<div class="shop-head"><span>' + shop + '</span></div><div class="shop-body"><div class="product"><span class="pic" aria-hidden="true">' + p.pic + '</span><div><h3>' + p.name + '</h3><div class="price">' + money(p.price) + '</div><span class="fake-buy">הוספה לסל</span></div></div></div>';
+  }
+
+  function panelHtml() {
+    var p = s.item;
+    var arrow = s.panelSide === 'right' ? '←' : '→';
+    var head = '<div class="panel-head"><span class="t">שם זה זול יותר</span>' +
+      '<button class="ph-btn" data-act="collapse" aria-label="' + (s.collapsed ? 'פתיחת החלונית' : 'כיווץ החלונית') + '">' + (s.collapsed ? '▼' : '▲') + '</button>' +
+      '<button class="ph-btn" data-act="side" aria-label="העברת החלונית לצד השני">' + arrow + '</button>' +
+      '<button class="ph-btn" data-act="closePanel" aria-label="סגירת החלונית">✕</button></div>';
+    var item = '<div class="p-item"><i aria-hidden="true">' + p.pic + '</i><span>' + p.name + '</span></div>';
+    if (s.stage === 'scanning') {
+      return head + '<div class="panel-body">' + item + '<div class="scan">מחפש בחנויות אחרות…<div class="scan-bar"></div><div class="scan-bar"></div></div></div>';
+    }
+    var rows = p.offers.map(function (o, i) {
+      var save = p.price - o[1];
+      var inner = '<b>' + o[0] + '</b><span class="amt">' + money(o[1]) + '</span>' +
+        (i === 0 ? '<span class="pill">הכי זול!</span>' : '<span></span>') +
+        '<span class="save">חיסכון של ' + money(save) + '</span>';
+      return i === 0
+        ? '<button class="offer' + (s.stage === 'results' ? ' hint' : '') + '" data-act="buy">' + inner + '</button>'
+        : '<div class="offer">' + inner + '</div>';
+    }).join('');
+    return head + '<div class="panel-body">' + item + rows + '</div>';
+  }
+
+  function guideFor() {
+    var a = s.scen === 'auto';
+    switch (s.stage) {
+      case 'home': return { n: 'שלב 1 מתוך 3', t: 'נכנסתם לחנות נתמכת. בדף הבית עוד אין מה להשוות. לחצו על מוצר כדי להיכנס אליו.' };
+      case 'scanning': return a && s.autoOpen
+        ? { n: 'שלב 2 מתוך 3', t: 'רק נכנסתם לעמוד המוצר, והתוסף כבר קופץ לבד בצד המסך. אין צורך ללחוץ על שום דבר.' }
+        : { n: 'שלב 2 מתוך 3', t: 'התוסף בודק את המוצר הזה בחנויות אחרות.' };
+      case 'results': return { n: 'שלב 3 מתוך 3', t: 'זה אותו מוצר, במחירים של חנויות אחרות. לחצו על המחיר המסומן ״הכי זול״.' };
+      case 'done':
+        var save = s.item.price - s.item.offers[0][1];
+        return { n: 'סיימתם', done: true, t: 'מעולה! עברתם ל' + s.item.offers[0][0] + ' וחסכתם ' + money(save) + '.',
+          next: a ? { act: 'scen', v: 'manual', label: 'ואם האתר לא נתמך? נסו את זה' } : { act: 'goReal', label: 'לצילומי מסך מאתרים אמיתיים' } };
+      case 'closed': return { n: 'החלונית סגורה', t: 'סגרתם את החלונית. רוצים אותה בחזרה? לחצו על אייקון התוסף למעלה.' };
+      case 'noPanel': return { n: 'שלב 1 מתוך 3', t: 'התוסף לא קפץ, וזה תקין: האתר הזה לא נתמך. לחצו על אייקון התוסף, המסומן למעלה.', link: { act: 'unpin', label: 'אצלי לא מופיע אייקון כזה' } };
+      case 'unpinned': return { n: 'איפה האייקון?', t: 'האייקון מוסתר בתוך תפריט התוספים של Chrome. לחצו על חלק הפאזל, המסומן למעלה.' };
+      case 'puzzle': return { n: 'איפה האייקון?', t: 'לחצו על הנעץ שליד ״שם זה זול יותר״. כך האייקון יישאר תמיד ליד שורת הכתובת.' };
+      case 'popup': return { n: 'שלב 2 מתוך 3', t: 'נפתח חלון קטן של התוסף. לחצו על ״השוואה באתר זה״.' };
+    }
+  }
+
+  function draw() {
+    var isHome = s.scen === 'auto' && !s.item;
+    $('tab-auto').setAttribute('aria-selected', s.scen === 'auto');
+    $('tab-manual').setAttribute('aria-selected', s.scen === 'manual');
+    $('url').textContent = s.scen === 'auto'
+      ? 'www.example-store.co.il' + (isHome ? '' : '/product')
+      : 'www.neighborhood-shop.example/lamp';
+    $('page').innerHTML = shopHtml();
+
+    var ext = $('extIco'), puz = $('puzzle');
+    ext.hidden = !s.pinned;
+    ext.classList.toggle('hint', s.stage === 'noPanel' || s.stage === 'closed');
+    puz.classList.toggle('hint', s.stage === 'unpinned');
+
+    var showPanel = s.stage === 'scanning' || s.stage === 'results' || s.stage === 'done';
+    var panel = $('panel');
+    panel.hidden = !showPanel;
+    if (showPanel) {
+      panel.innerHTML = panelHtml();
+      panel.classList.toggle('left', s.panelSide === 'left');
+      panel.classList.toggle('collapsed', s.collapsed);
+    }
+    $('page').classList.toggle('room-right', showPanel && s.panelSide === 'right');
+    $('page').classList.toggle('room-left', showPanel && s.panelSide === 'left');
+
+    var pop = $('pop');
+    if (s.stage === 'popup') {
+      pop.innerHTML = '<div class="pop-brand"><span class="mark" aria-hidden="true">₪</span> שם זה זול יותר</div><button class="pop-compare hint" data-act="compare">השוואה באתר זה</button>';
+      pop.hidden = false;
+    } else if (s.stage === 'puzzle') {
+      pop.innerHTML = '<h4>תוספים</h4><div class="pop-row"><span class="mark" style="background:var(--brand);color:#fff;width:26px;height:26px;font-size:14px;border-radius:7px" aria-hidden="true">₪</span><span class="n">שם זה זול יותר</span><button class="pin hint" data-act="pin" aria-label="הצמדת התוסף לסרגל"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3H8v2l1.5 1.5V12L6 15v2h5.2v5h1.6v-5H18v-2l-3.5-3V6.5L16 5V3Z"/></svg></button></div>';
+      pop.hidden = false;
+    } else {
+      pop.hidden = true;
+    }
+
+    var g = guideFor(), box = $('guide');
+    box.classList.toggle('done', !!g.done);
+    $('guideStep').textContent = g.n;
+    $('guideText').textContent = g.t;
+    var extra = '';
+    if (g.link) extra = '<button class="guide-link" data-act="' + g.link.act + '">' + g.link.label + '</button>';
+    if (g.next) extra = '<button class="guide-next" data-act="' + g.next.act + '"' + (g.next.v ? ' data-v="' + g.next.v + '"' : '') + '>' + g.next.label + '</button>';
+    $('guideExtra').innerHTML = extra;
+  }
+
+  function slideInPanel() {
+    var panel = $('panel');
+    panel.classList.add('enter');
+    panel.getBoundingClientRect();
+    panel.classList.remove('enter');
+  }
+
+  function openPanel(wait) {
+    s.stage = 'scanning'; s.collapsed = false;
+    draw(); slideInPanel();
+    later(function () { s.stage = 'results'; draw(); }, wait);
+  }
+
+  var actions = {
+    scen: function (el) { start(el.dataset.v); },
+    restart: function () { start(s.scen); },
+    open: function (el) {
+      s.item = STORE_ITEMS[+el.dataset.v];
+      s.stage = 'scanning'; s.autoOpen = true;
+      draw(); $('panel').hidden = true; $('page').className = 'shop';
+      later(function () { draw(); slideInPanel(); }, 700);
+      later(function () { s.stage = 'results'; s.autoOpen = false; draw(); }, 3000);
+    },
+    icon: function () {
+      if (s.stage === 'popup') { s.stage = s.scen === 'manual' ? 'noPanel' : 'closed'; draw(); return; }
+      if (s.stage === 'noPanel' || s.stage === 'closed') { s.stage = 'popup'; draw(); return; }
+      nudge();
+    },
+    compare: function () { openPanel(1500); },
+    puzzle: function () {
+      if (s.stage === 'unpinned') { s.stage = 'puzzle'; draw(); return; }
+      if (s.stage === 'puzzle') { s.stage = 'unpinned'; draw(); return; }
+      nudge();
+    },
+    pin: function () { s.pinned = true; s.stage = 'noPanel'; draw(); },
+    unpin: function () { start('manual', { unpinned: true }); },
+    buy: function () { if (s.stage === 'results') { s.stage = 'done'; draw(); } },
+    closePanel: function () { clearTimers(); s.stage = 'closed'; s.autoOpen = false; draw(); },
+    collapse: function () { s.collapsed = !s.collapsed; draw(); },
+    side: function () { s.panelSide = s.panelSide === 'right' ? 'left' : 'right'; draw(); },
+    goReal: function () { $('real').scrollIntoView(); }
+  };
+
+  function nudge() {
+    var g = $('guide');
+    g.classList.remove('nudge');
+    g.getBoundingClientRect();
+    g.classList.add('nudge');
+  }
+
+  $('sim').addEventListener('click', function (e) {
+    var el = e.target.closest('[data-act]');
+    if (el) { actions[el.dataset.act](el); return; }
+    if (e.target.closest('.viewport')) nudge();
+  });
+
+  /* ---------- Real screenshots with guided zoom ---------- */
+  var SHOTS = [
+    { id: 'products', label: 'מוצרים', w: 2890, h: 1388, alt: 'חלונית השוואת המחירים של התוסף בצד עמוד מוצר של בושם',
+      sum: 'בושם ב-367.20 ₪ באתר, ו-209 ₪ בחנות אחרת. חיסכון של 158 ₪.',
+      steps: [
+        { t: 'אתם בעמוד מוצר', d: 'גולשים כרגיל. כאן הבושם עולה 367.20 ₪.', r: [21, 56, 15, 14], z: 2.3 },
+        { t: 'החלונית קופצת לבד', d: 'היא נפתחת בצד המסך ומזהה את המוצר.', r: [80, 0, 20, 78], z: 1.25 },
+        { t: 'המחיר הזול מסומן', d: 'אותו בושם ב-209 ₪, עם התג ״הכי זול!״.', r: [80.5, 47, 18.5, 30], z: 2.6 }
+      ] },
+    { id: 'coupons', label: 'קופונים', w: 2980, h: 1650, alt: 'התוסף מציג קוד קופון בעמוד התשלום, וההנחה מופיעה בסיכום ההזמנה',
+      sum: 'קוד NEW10 הוריד 50.99 ₪ מהסל, בלי לחפש כלום.',
+      steps: [
+        { t: 'מגיעים לעמוד התשלום', d: 'התוסף קופץ עם הקופון של האתר ועם התנאים שלו.', r: [78, 0, 22, 54], z: 1.8 },
+        { t: 'זה הקוד', d: 'מעתיקים את הקוד מהחלונית.', r: [79, 26, 20.5, 9], z: 3 },
+        { t: 'ההנחה נכנסת לסיכום', d: 'מזינים אותו בשדה הקופון, והמחיר יורד.', r: [7, 43, 26, 25], z: 2.4 }
+      ] },
+    { id: 'flights', label: 'טיסות', w: 3010, h: 1650, alt: 'חלונית השוואת הטיסות של התוסף לצד עמוד הזמנת טיסה',
+      sum: 'תל אביב–לרנקה הלוך ושוב מ-$71, מתוך 169 טיסות שנמצאו.',
+      steps: [
+        { t: 'החלונית קופצת בזמן ההזמנה', d: 'אפשר להמשיך לגלוש באתר כרגיל.', r: [1.5, 0, 21.5, 96], z: 1.04 },
+        { t: 'המסלול כבר מולא', d: 'התוסף מזהה לבד את היעד ואת התאריכים.', r: [1.5, 8, 21.5, 23], z: 2.6 },
+        { t: 'הטיסה הזולה ראשונה', d: 'הלוך ושוב ב-$71, עם התג ״הכי זול״.', r: [2.5, 36, 20, 20], z: 2.8 }
+      ] },
+    { id: 'hotels', label: 'מלונות', w: 2994, h: 1523, alt: 'חלונית השוואת המלונות של התוסף לצד תוצאות חיפוש מלון',
+      sum: '6,156 ₪ לשבוע באתר, מול 5,497 ₪ כולל ארוחת בוקר. חיסכון של 659 ₪.',
+      steps: [
+        { t: 'המחיר באתר', d: 'שבוע במלון, 6,156 ₪ לכל השהייה.', r: [14, 51.5, 9, 10], z: 3 },
+        { t: 'החלונית קופצת לבד', d: 'אותו מלון ואותם תאריכים, באתרי הזמנות אחרים.', r: [78, 0, 22, 75], z: 1.3 },
+        { t: 'המחיר לכל השהייה', d: '5,497 ₪ ל-7 לילות, כולל ארוחת בוקר.', r: [79, 61, 20, 14], z: 3 }
+      ] }
+  ];
+
+  var frame = $('frame'), cur = 0;
+  frame.innerHTML = SHOTS.map(function (x) {
+    return '<img id="img-' + x.id + '" src="img/' + x.id + '.webp" alt="' + x.alt + '" width="' + x.w + '" height="' + x.h + '" hidden>';
+  }).join('') + '<div class="ring" id="ring" hidden></div><button class="zoom-out" id="zoomOut" hidden>לתמונה המלאה</button>';
+  $('pills').innerHTML = SHOTS.map(function (x, i) {
+    return '<button class="pill-tab" role="tab" data-i="' + i + '">' + x.label + '</button>';
+  }).join('');
+
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+  function focusStep(idx) {
+    var x = SHOTS[cur], img = $('img-' + x.id), ring = $('ring');
+    [].forEach.call($('steps').children, function (b, i) { b.setAttribute('aria-pressed', i === idx); });
+    if (idx === null) {
+      img.style.transform = 'none';
+      ring.hidden = true; $('zoomOut').hidden = true;
+      return;
+    }
+    var st = x.steps[idx], r = st.r, z = st.z;
+    var tx = clamp(50 - (r[0] + r[2] / 2) * z, 100 - 100 * z, 0);
+    var ty = clamp(50 - (r[1] + r[3] / 2) * z, 100 - 100 * z, 0);
+    img.style.transform = 'translate(' + tx + '%,' + ty + '%) scale(' + z + ')';
+    ring.hidden = false; $('zoomOut').hidden = false;
+    ring.style.left = (tx + r[0] * z) + '%';
+    ring.style.top = (ty + r[1] * z) + '%';
+    ring.style.width = (r[2] * z) + '%';
+    ring.style.height = (r[3] * z) + '%';
+  }
+
+  function showShot(i) {
+    cur = i;
+    var x = SHOTS[i];
+    SHOTS.forEach(function (o) { var im = $('img-' + o.id); im.hidden = o !== x; im.style.transform = 'none'; });
+    frame.style.aspectRatio = x.w + ' / ' + x.h;
+    [].forEach.call($('pills').children, function (b, n) { b.setAttribute('aria-selected', n === i); });
+    $('steps').innerHTML = x.steps.map(function (st, n) {
+      return '<button class="step" data-n="' + n + '" aria-pressed="false"><i>' + (n + 1) + '</i><div><b>' + st.t + '</b><span>' + st.d + '</span></div></button>';
+    }).join('');
+    $('shotSum').textContent = x.sum;
+    focusStep(null);
+  }
+
+  $('pills').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-i]');
+    if (b) showShot(+b.dataset.i);
+  });
+  $('steps').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-n]');
+    if (b) focusStep(+b.dataset.n);
+  });
+  $('zoomOut').addEventListener('click', function () { focusStep(null); });
+
+  /* ---------- "It didn't pop up" helper ---------- */
+  var HELP = {
+    start: { q: 'איפה אתם נמצאים עכשיו?', opts: [
+      ['בעמוד של מוצר, טיסה, מלון או תשלום', 'page'],
+      ['בדף הבית, או ברשימה של הרבה מוצרים', 'home'] ] },
+    home: { q: 'היכנסו לעמוד של מוצר אחד', a: 'התוסף צריך לדעת מה אתם מחפשים. לחצו על המוצר שמעניין אתכם, וחכו כמה שניות.', opts: [
+      ['נכנסתי, והוא עדיין לא קפץ', 'page'], ['קפץ!', 'yay'] ] },
+    page: { q: 'אתם רואים את אייקון התוסף ליד שורת הכתובת?', opts: [
+      ['כן, אני רואה אותו', 'icon'], ['לא', 'pin'] ] },
+    icon: { q: 'מפעילים אותו ידנית', a: 'כנראה האתר לא נתמך. לחצו על האייקון, ואז על ״השוואה באתר זה״.', sim: ['manual', false, 'לתרגל את זה בהדמיה'], opts: [
+      ['זה עבד', 'yay'], ['זה לא עבד', 'mail'] ] },
+    pin: { q: 'מצמידים את האייקון', a: 'לחצו על חלק הפאזל ליד שורת הכתובת, ואז על הנעץ שליד ״שם זה זול יותר״. לא מוצאים אותו ברשימה? כנראה התוסף לא מותקן.', sim: ['manual', true, 'לתרגל את זה בהדמיה'], opts: [
+      ['הצמדתי, מה עכשיו?', 'icon'], ['התוסף לא מותקן', 'install'] ] },
+    install: { q: 'מתקינים את התוסף', a: 'ההתקנה חינם ולוקחת כמה שניות. היא נעשית מחנות Chrome, בלחיצה על ״הוספה ל-Chrome״.', link: ['https://chromewebstore.google.com/detail/neigoggljhfnodeneidndcflnclldnpm', 'לחנות Chrome'], opts: [] },
+    yay: { q: 'מצוין!', a: 'מעכשיו זה מה שיקרה בכל קנייה: האתר נתמך, התוסף קופץ לבד. לא נתמך, שתי לחיצות.', opts: [] },
+    mail: { q: 'זה כבר עלינו', a: 'כתבו לנו לכתובת shamzezolyoter@gmail.com, וציינו באיזה אתר זה קרה.', opts: [] }
+  };
+
+  function drawHelp(key) {
+    var n = HELP[key], h = '<div class="helper-q">' + n.q + '</div>';
+    if (n.a) h += '<p class="helper-a">' + n.a + '</p>';
+    h += '<div class="helper-opts">';
+    if (n.sim) h += '<button class="opt solid" data-sim="' + n.sim[0] + '" data-unpin="' + n.sim[1] + '">' + n.sim[2] + '</button>';
+    if (n.link) h += '<a class="opt solid" style="text-decoration:none" href="' + n.link[0] + '">' + n.link[1] + '</a>';
+    n.opts.forEach(function (o) { h += '<button class="opt" data-go="' + o[1] + '">' + o[0] + '</button>'; });
+    if (key !== 'start') h += '<button class="opt quiet" data-go="start">להתחיל מחדש</button>';
+    h += '</div>';
+    $('helper').innerHTML = h;
+  }
+
+  $('helper').addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    if (b.dataset.go) { drawHelp(b.dataset.go); return; }
+    if (b.dataset.sim) {
+      start(b.dataset.sim, { unpinned: b.dataset.unpin === 'true' });
+      $('sim').scrollIntoView();
+    }
+  });
+
+  /* ---------- Copy address ---------- */
+  $('copyMail').addEventListener('click', function () {
+    var btn = this, addr = $('mailAddr').textContent;
+    function selectIt() {
+      var r = document.createRange(); r.selectNodeContents($('mailAddr'));
+      var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    }
+    if (!navigator.clipboard) { selectIt(); return; }
+    navigator.clipboard.writeText(addr).then(function () {
+      btn.textContent = 'הועתק';
+      setTimeout(function () { btn.textContent = 'העתקה'; }, 1800);
+    }, selectIt);
+  });
+
+  start('auto');
+  showShot(0);
+  drawHelp('start');
+})();
+</script>
+<!--ARTIFACT-BODY-END-->
+</body>
+</html>
