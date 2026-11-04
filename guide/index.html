@@ -6,7 +6,7 @@
 <!--ARTIFACT-START-->
 <title>מדריך שם זה זול יותר</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="מדריך קצר ואינטרקטיבי: התוסף קופץ לבד באתרים נתמכים, ובכל אתר אחר מפעילים אותו בלחיצה על האייקון ואז על ״השוואה באתר זה״.">
+<meta name="description" content="מדריך קצר ואינטרקטיבי: התוסף עובד באתרים של מוצרים, טיסות ומלונות: הוא קופץ לבד באתרים נתמכים, ובאחרים מפעילים אותו מהאייקון דרך ״בצע השוואה באתר זה״.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: blue brand band opens the page, the live browser simulator overlaps it, then real screenshots, troubleshooting, FAQ. */
@@ -42,6 +42,10 @@ main :focus-visible { outline-color: var(--brand-dark); }
 .hero h1 em { font-style: normal; color: var(--yellow); }
 .hero .lead { font-size: clamp(17px, 2.4vw, 20px); margin-top: 14px; max-width: 42em; color: #e7eefc; }
 .q { font-weight: 700; color: #fff; white-space: nowrap; }
+.hero .lead b { color: #fff; font-weight: 700; }
+.jump { display: flex; flex-wrap: wrap; gap: 6px 8px; margin-top: 16px; }
+.jump a { color: #fff; text-decoration: none; font-size: 15px; font-weight: 500; border: 1px solid rgba(255,255,255,.45); border-radius: 99px; padding: 4px 13px; }
+.jump a:hover { background: rgba(255,255,255,.15); }
 .hero-note { margin-top: 12px; font-size: 15px; color: #c9d8f5; }
 .hero-note a { color: #fff; }
 
@@ -55,6 +59,11 @@ main :focus-visible { outline-color: var(--brand-dark); }
 .sim-tab[aria-selected="true"] { border-color: var(--brand); background: var(--brand-soft); }
 .sim-tab[aria-selected="true"] b { color: var(--brand-dark); }
 
+.sim-tab.ok b::after { content: " ✓"; color: var(--green-dark); }
+.site-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 15px; color: var(--muted); }
+.site-row button { border: 1px solid var(--line); border-radius: 99px; padding: 4px 14px; font-weight: 500; color: var(--ink); background: #fff; }
+.site-row button:hover { border-color: var(--brand); }
+.site-row button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
 .guide { display: flex; gap: 12px; align-items: center; background: #fff8e1; border: 1px solid #f4dd98; border-radius: 12px; padding: 12px 14px; min-height: 76px; }
 .guide.done { background: var(--green-soft); border-color: #a9e0c3; }
 .guide-step { flex: none; font-size: 13px; font-weight: 700; background: var(--ink); color: #fff; border-radius: 99px; padding: 3px 11px; white-space: nowrap; }
@@ -79,7 +88,7 @@ button.tb-ico:hover { background: var(--chrome); }
 .hint { animation: pulse 1.4s infinite; outline: 2px solid #ffaa00; outline-offset: 1px; }
 .tb-ico.hint { border-radius: 50%; }
 
-.viewport { position: relative; height: 400px; overflow: hidden; background: #fff; }
+.viewport { position: relative; height: 450px; overflow: hidden; background: #fff; }
 .shop { height: 100%; overflow: hidden; display: flex; flex-direction: column; transition: padding .35s; }
 .shop.room-right { padding-right: 290px; }
 .shop.room-left { padding-left: 290px; }
@@ -97,6 +106,18 @@ button.tb-ico:hover { background: var(--chrome); }
 .product .pic { width: 190px; font-size: 80px; flex: none; }
 .product h3 { font-size: 22px; font-weight: 700; }
 .product .price { font-size: 30px; font-weight: 800; margin-block: 6px 10px; }
+.product .note { color: var(--muted); font-size: 15px; }
+.pick { border-radius: 8px; padding: 0 6px; display: block; }
+.news h3 { font-size: 19px; font-weight: 700; }
+.news p { color: var(--muted); margin-block: 2px 16px; }
+.shop.selecting .shop-body { padding-top: 165px; }
+.sel { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: min(320px, calc(100% - 24px)); background: #fff; border-top: 4px solid #4CAF50; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px rgba(16,24,40,.22); text-align: center; display: grid; gap: 4px; z-index: 3; line-height: 1.35; }
+.sel small { color: #666; font-size: 13px; }
+.sel b { font-weight: 700; overflow-wrap: anywhere; }
+.sel-btns { display: flex; justify-content: center; gap: 14px; margin-top: 6px; }
+.sel-v, .sel-x { width: 46px; height: 36px; border-radius: 8px; color: #fff; font-weight: 700; text-align: center; }
+.sel-v { background: var(--green-dark); }
+.sel-x { background: #c9372c; }
 .fake-buy { display: inline-block; background: var(--ink); color: #fff; border-radius: 10px; padding: 8px 18px; font-weight: 600; font-size: 15px; }
 
 /* The extension's side panel, drawn after the real one */
@@ -114,6 +135,8 @@ button.tb-ico:hover { background: var(--chrome); }
 .panel.collapsed .panel-body { display: none; }
 .p-item { display: flex; gap: 10px; align-items: center; background: var(--brand-soft); border-radius: 12px; padding: 8px; font-weight: 600; font-size: 15px; line-height: 1.25; }
 .p-item i { font-style: normal; font-size: 26px; }
+.fld { display: grid; gap: 1px; border: 1px solid var(--line); border-radius: 9px; padding: 4px 10px; line-height: 1.3; }
+.fld small { color: var(--muted); font-size: 12px; }
 .offer { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; border: 1px solid var(--line); border-radius: 12px; padding: 9px 11px; width: 100%; background: #fff; box-shadow: 0 2px 6px rgba(16,24,40,.06); line-height: 1.3; }
 button.offer:hover { border-color: var(--brand); }
 .offer b { font-weight: 600; }
@@ -125,11 +148,16 @@ button.offer:hover { border-color: var(--brand); }
 @keyframes shine { to { background-position: -200% 0; } }
 
 /* Extension popup and Chrome's puzzle menu */
-.pop { position: absolute; top: 8px; left: 56px; width: min(270px, calc(100% - 24px)); background: #fff; border-radius: 14px; box-shadow: 0 12px 36px rgba(16,24,40,.28); padding: 14px; display: grid; gap: 10px; z-index: 3; }
+.pop { position: absolute; top: 8px; left: 56px; width: min(260px, calc(100% - 24px)); background: #fff; border-radius: 14px; box-shadow: 0 12px 36px rgba(16,24,40,.28); padding: 14px; display: grid; gap: 10px; z-index: 3; }
 .pop-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; }
 .pop-brand .mark { background: var(--brand); color: #fff; width: 26px; height: 26px; font-size: 14px; border-radius: 7px; }
-.pop-compare { background: var(--brand); color: #fff; font-weight: 700; border-radius: 11px; padding: 11px; text-align: center; }
-.pop-compare:hover { background: var(--brand-dark); }
+.pop-green { background: #3d8b40; color: #fff; font-weight: 700; font-size: 15px; border-radius: 6px; padding: 9px 6px; text-align: center; width: 100%; }
+.pop-green:hover { background: #2f7433; }
+.pop-line { border: 1px solid #4CAF50; color: #3d8b40; font-weight: 700; font-size: 15px; border-radius: 6px; padding: 7px; text-align: center; }
+.pop-title { font-size: 16px !important; color: var(--ink) !important; font-weight: 700 !important; }
+.pop-steps { margin: 0; padding-inline-start: 20px; font-size: 14px; line-height: 1.45; }
+.pop-error { color: #c9372c; font-weight: 700; text-align: center; font-size: 15px; line-height: 1.3; }
+.ext-mark { background: var(--brand); color: #fff; width: 26px; height: 26px; font-size: 14px; border-radius: 7px; }
 .pop-row { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; }
 .pop-row .n { flex: 1; min-width: 0; }
 .pin { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; flex: none; }
@@ -145,6 +173,16 @@ section { padding-block: 56px 0; }
 .sec-head { max-width: 44em; display: grid; gap: 8px; margin-bottom: 22px; }
 h2 { font-size: clamp(26px, 4vw, 34px); font-weight: 800; }
 .sec-head p { color: var(--muted); }
+
+/* Where it works */
+.kinds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.kind { background: #fff; border-radius: 14px; box-shadow: var(--shadow); padding: 16px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.kind-pic { font-size: 32px; line-height: 1.2; }
+.kind h3 { font-size: 20px; font-weight: 700; }
+.kind p { color: var(--muted); font-size: 16px; line-height: 1.45; }
+.not-here { margin-top: 14px; background: #fff8e1; border: 1px solid #f4dd98; border-radius: 12px; padding: 12px 16px; }
+.not-here b { font-weight: 700; }
+.text-btn { color: var(--brand-dark); text-decoration: underline; font-weight: 500; }
 
 /* Real screenshots */
 .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
@@ -217,7 +255,8 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
   .product .price { font-size: 23px; }
   .tb-ico.deco { display: none; }
   .pop { left: 8px; }
-  .steps { grid-template-columns: 1fr; }
+  .steps, .kinds { grid-template-columns: 1fr; }
+  .shop.selecting .shop-body { padding-top: 175px; }
   .helper { padding: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -234,8 +273,9 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
 <header class="hero">
   <div class="wrap">
     <div class="brand"><span class="mark" aria-hidden="true">₪</span> שם זה זול יותר</div>
-    <h1>התוסף קופץ לבד.<br><em>ואם לא, שתי לחיצות.</em></h1>
-    <p class="lead">באתרים נתמכים התוסף קופץ לבד. בכל אתר אחר לוחצים על האייקון שלו, ואז על <span class="q">״השוואה באתר זה״</span>. נסו את שתי הדרכים כאן למטה.</p>
+    <h1>התוסף קופץ לבד.<br><em>ואם לא, מפעילים אותו בכמה לחיצות.</em></h1>
+    <p class="lead">שם זה זול יותר עובד רק באתרים של <b>מוצרים, טיסות ומלונות</b>. באתרים נתמכים הוא קופץ לבד. באתרים מהסוגים האלה שהוא עוד לא מכיר, לוחצים על האייקון שלו ואז על <span class="q">״בצע השוואה באתר זה״</span>. נסו את שתי הדרכים כאן למטה.</p>
+    <nav class="jump" aria-label="ניווט במדריך"><a href="#sim">תרגול</a><a href="#where">איפה זה עובד</a><a href="#real">צילומי מסך</a><a href="#help">לא קפץ לי</a><a href="#faq">שאלות</a></nav>
     <p class="hero-note">התוסף עוד לא מותקן אצלכם? <a href="https://chromewebstore.google.com/detail/neigoggljhfnodeneidndcflnclldnpm">להתקנה חינם מחנות Chrome</a></p>
   </div>
 </header>
@@ -246,6 +286,13 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
       <div class="sim-tabs" role="tablist" aria-label="בחירת סוג אתר">
         <button class="sim-tab" id="tab-auto" role="tab" aria-selected="true" data-act="scen" data-v="auto"><b>אתר נתמך</b><span>התוסף קופץ לבד</span></button>
         <button class="sim-tab" id="tab-manual" role="tab" aria-selected="false" data-act="scen" data-v="manual"><b>אתר שאינו נתמך</b><span>מפעילים אותו בעצמכם</span></button>
+      </div>
+      <div class="site-row" id="siteRow" hidden>
+        <span>על איזה אתר לתרגל?</span>
+        <button data-act="site" data-v="shop">חנות</button>
+        <button data-act="site" data-v="hotel">מלונות</button>
+        <button data-act="site" data-v="flight">טיסות</button>
+        <button data-act="site" data-v="news">חדשות</button>
       </div>
       <div class="guide" id="guide" aria-live="polite">
         <span class="guide-step" id="guideStep"></span>
@@ -261,6 +308,7 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
         <div class="viewport" id="viewport">
           <div class="shop" id="page"></div>
           <aside class="panel" id="panel" hidden aria-label="חלונית התוסף"></aside>
+          <div class="sel" id="sel" hidden></div>
           <div class="pop" id="pop" hidden></div>
         </div>
       </div>
@@ -269,6 +317,19 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
         <button class="restart" data-act="restart">להתחיל מחדש</button>
       </div>
     </div>
+
+    <section id="where">
+      <div class="sec-head">
+        <h2>איפה התוסף עובד</h2>
+        <p>רק באתרים שמוכרים אחד משלושת הדברים האלה:</p>
+      </div>
+      <div class="kinds">
+        <div class="kind"><span class="kind-pic" aria-hidden="true">🛍️</span><h3>מוצרים</h3><p>בעמוד של מוצר הוא משווה מחירים. בעמוד התשלום הוא מציג קופונים.</p></div>
+        <div class="kind"><span class="kind-pic" aria-hidden="true">✈️</span><h3>טיסות</h3><p>הוא בודק את אותו מסלול ואת אותם תאריכים באתרים אחרים.</p></div>
+        <div class="kind"><span class="kind-pic" aria-hidden="true">🏨</span><h3>מלונות</h3><p>הוא בודק את אותו מלון ואת אותם תאריכים באתרי הזמנות אחרים.</p></div>
+      </div>
+      <p class="not-here"><b>באתרים אחרים אין לו מה להשוות.</b> באתרי חדשות, בנקים או רשתות חברתיות התוסף לא יקפוץ, וזה תקין. <button class="text-btn" id="tryNews">לראות מה קורה בהדמיה</button></p>
+    </section>
 
     <section id="real">
       <div class="sec-head">
@@ -295,9 +356,11 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
       <div class="sec-head"><h2>שאלות שחוזרות</h2></div>
       <div class="faq">
         <details><summary>כמה זה עולה?</summary><p>התוסף חינם לחלוטין, ולא צריך להירשם כדי להשתמש בו.</p></details>
-        <details><summary>איך אדע אם האתר נתמך?</summary><p>לא צריך לבדוק מראש. אם התוסף קפץ, האתר נתמך. אם הוא לא קפץ, לחצו על האייקון שלו ועל ״השוואה באתר זה״.</p></details>
+        <details><summary>איך אדע אם האתר נתמך?</summary><p>לא צריך לבדוק מראש. אם התוסף קפץ, האתר נתמך. אם הוא לא קפץ באתר של מוצרים, טיסות או מלונות, לחצו על האייקון שלו ועל ״בצע השוואה באתר זה״.</p></details>
+        <details><summary>באילו אתרים הוא לא עובד?</summary><p>בכל אתר שאין בו מוצר, טיסה או מלון, למשל חדשות, בנקים ורשתות חברתיות. באתר כזה תוצג ההודעה ״לא ניתן לבצע השוואה באתר זה״.</p></details>
+        <details><summary>למה בהפעלה ידנית צריך ללחוץ על הכותרת ועל המחיר?</summary><p>באתר שהתוסף לא מכיר הוא עוד לא יודע איפה כתובים שם המוצר והמחיר שלו. שתי הלחיצות מראות לו מה לחפש. במלונות ובטיסות ממלאים במקום זה טופס קצר.</p></details>
         <details><summary>מתי בדיוק הוא קופץ?</summary><p>בעמוד של מוצר הוא משווה מחירים, בעמוד התשלום הוא מציג קופונים, ובחיפוש טיסה או מלון הוא בודק את אותם תאריכים באתרים אחרים.</p></details>
-        <details><summary>החלונית מפריעה לי. איך סוגרים אותה?</summary><p>לחצו על ה-✕ בפינת החלונית. אפשר לנסות את זה בהדמיה למעלה.</p></details>
+        <details><summary>החלונית מפריעה לי. איך סוגרים אותה?</summary><p>✕ סוגר אותה, ▲ ממזער אותה, והחץ מעביר אותה לצד השני של המסך. אפשר לנסות את כל אלה בהדמיה למעלה.</p></details>
         <details><summary>זה עובד גם בטלפון?</summary><p>התוסף מיועד לדפדפן Chrome במחשב. בטלפון אפשר לחפש מחירים וקופונים ב<a href="https://shamze.com/cupons.html">אתר של שם זה זול יותר</a>.</p></details>
         <details><summary>איך מסירים את התוסף?</summary><p>לחיצה ימנית על אייקון התוסף, ואז ״הסרה מ-Chrome״. אפשר להסיר בכל רגע.</p></details>
       </div>
@@ -328,53 +391,82 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
     { pic: '☕', name: 'מכונת קפה', price: 899, offers: [['חנות ב׳', 749], ['חנות ג׳', 799], ['חנות א׳', 849]] },
     { pic: '🎒', name: 'תיק גב', price: 219, offers: [['חנות ג׳', 159], ['חנות א׳', 179], ['חנות ב׳', 199]] }
   ];
-  var SMALL_ITEM = { pic: '💡', name: 'מנורת שולחן', price: 249, offers: [['חנות ב׳', 189], ['חנות א׳', 215], ['חנות ג׳', 239]] };
+  var SITES = {
+    shop: { type: 'product', shop: 'החנות הקטנה של השכונה', url: 'www.neighborhood-shop.example/lamp',
+      item: { pic: '💡', name: 'מנורת שולחן', price: 249, buy: 'הוספה לסל', offers: [['חנות ב׳', 189], ['חנות א׳', 215], ['חנות ג׳', 239]] } },
+    hotel: { type: 'hotel', shop: 'מלונות קטנים', url: 'www.small-hotels.example/sea-hotel',
+      item: { pic: '🏨', name: 'מלון הים', note: 'שבוע, 12.10 עד 19.10', price: 6100, buy: 'להזמנה', offers: [['אתר א׳', 5400], ['אתר ב׳', 5650], ['אתר ג׳', 5900]] },
+      fields: [['עיר', 'תל אביב'], ['תאריך כניסה', '12.10.2026'], ['תאריך יציאה', '19.10.2026'], ['אורחים', '2']] },
+    flight: { type: 'flight', shop: 'טיסות בקליק', url: 'www.click-flights.example/lca',
+      item: { pic: '✈️', name: 'תל אביב–לרנקה', note: 'הלוך ושוב, 12.10 עד 19.10', price: 120, cur: '$', buy: 'להזמנה', offers: [['סוכנות א׳', 89], ['סוכנות ב׳', 97], ['סוכנות ג׳', 110]] },
+      fields: [['מוצא', 'תל אביב (TLV)'], ['יעד', 'לרנקה (LCA)'], ['תאריך יציאה', '12.10.2026'], ['תאריך חזרה', '19.10.2026']] },
+    news: { type: 'none', shop: 'חדשות היום', url: 'www.daily-news.example' }
+  };
+  var COMPARE_LABEL = 'בצע השוואה באתר זה';
+  var TYPE_BUTTONS = [['product', 'השוואת מוצר'], ['hotel', 'השוואת מלונות'], ['flight', 'השוואת טיסות']];
 
-  var s, timers = [];
+  var s, timers = [], finished = {};
   function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
   function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+  function priceOf(item, n) { return item.cur ? item.cur + n.toLocaleString('he-IL') : money(n); }
 
   function start(scen, opts) {
+    opts = opts || {};
     clearTimers();
+    var site = opts.site || 'shop';
     s = {
-      scen: scen,
-      item: scen === 'manual' ? SMALL_ITEM : null,
+      scen: scen, site: site,
+      item: scen === 'manual' ? SITES[site].item || null : null,
       stage: scen === 'manual' ? 'noPanel' : 'home',
-      pinned: !(opts && opts.unpinned),
+      pinned: !opts.unpinned,
       panelSide: 'right', collapsed: false
     };
     if (scen === 'manual' && !s.pinned) s.stage = 'unpinned';
     draw();
   }
 
-  function shopHtml() {
+  function site() { return SITES[s.site]; }
+  function inStages() { for (var i = 0; i < arguments.length; i++) if (s.stage === arguments[i]) return true; return false; }
+
+  function pageHtml() {
     if (s.scen === 'auto' && !s.item) {
       return '<div class="shop-head"><span>החנות לדוגמה</span><small>כל המוצרים</small></div><div class="shop-body"><div class="grid">' +
         STORE_ITEMS.map(function (p, i) {
           return '<button class="tile' + (i === 0 ? ' hint' : '') + '" data-act="open" data-v="' + i + '"><span class="pic" aria-hidden="true">' + p.pic + '</span><b>' + p.name + '</b><span class="cost">' + money(p.price) + '</span></button>';
         }).join('') + '</div></div>';
     }
+    if (s.scen === 'manual' && s.site === 'news') {
+      return '<div class="shop-head"><span>חדשות היום</span></div><div class="shop-body news"><h3>מזג האוויר: גשם קל בסוף השבוע</h3><p>התחזית לימים הקרובים, עיר אחר עיר.</p><h3>הליגה חוזרת אחרי הפגרה</h3><p>כל מה שצריך לדעת לקראת המחזור הבא.</p></div>';
+    }
     var p = s.item;
-    var shop = s.scen === 'auto' ? 'החנות לדוגמה' : 'החנות הקטנה של השכונה';
-    return '<div class="shop-head"><span>' + shop + '</span></div><div class="shop-body"><div class="product"><span class="pic" aria-hidden="true">' + p.pic + '</span><div><h3>' + p.name + '</h3><div class="price">' + money(p.price) + '</div><span class="fake-buy">הוספה לסל</span></div></div></div>';
+    var shop = s.scen === 'auto' ? 'החנות לדוגמה' : site().shop;
+    var title = '<h3>' + p.name + '</h3>', price = '<div class="price">' + priceOf(p, p.price) + '</div>';
+    if (s.stage === 'pickTitle') title = '<button class="pick hint" data-act="pickTitle"><h3>' + p.name + '</h3></button>';
+    if (s.stage === 'pickPrice') price = '<button class="pick hint" data-act="pickPrice"><div class="price">' + priceOf(p, p.price) + '</div></button>';
+    return '<div class="shop-head"><span>' + shop + '</span></div><div class="shop-body"><div class="product"><span class="pic" aria-hidden="true">' + p.pic + '</span><div>' + title + (p.note ? '<div class="note">' + p.note + '</div>' : '') + price + '<span class="fake-buy">' + (p.buy || 'הוספה לסל') + '</span></div></div></div>';
   }
 
   function panelHtml() {
     var p = s.item;
     var arrow = s.panelSide === 'right' ? '←' : '→';
     var head = '<div class="panel-head"><span class="t">שם זה זול יותר</span>' +
-      '<button class="ph-btn" data-act="collapse" aria-label="' + (s.collapsed ? 'פתיחת החלונית' : 'כיווץ החלונית') + '">' + (s.collapsed ? '▼' : '▲') + '</button>' +
+      '<button class="ph-btn" data-act="collapse" aria-label="' + (s.collapsed ? 'הרחבת החלונית' : 'מזעור החלונית') + '">' + (s.collapsed ? '▼' : '▲') + '</button>' +
       '<button class="ph-btn" data-act="side" aria-label="העברת החלונית לצד השני">' + arrow + '</button>' +
       '<button class="ph-btn" data-act="closePanel" aria-label="סגירת החלונית">✕</button></div>';
+    if (s.stage === 'form') {
+      var title = site().type === 'hotel' ? 'חיפוש מלונות ידני' : 'חיפוש טיסה ידני';
+      return head + '<div class="panel-body"><b>' + title + '</b>' + site().fields.map(function (f) {
+        return '<div class="fld"><small>' + f[0] + '</small><span>' + f[1] + '</span></div>';
+      }).join('') + '<button class="pop-green hint" data-act="formSearch">חיפוש</button></div>';
+    }
     var item = '<div class="p-item"><i aria-hidden="true">' + p.pic + '</i><span>' + p.name + '</span></div>';
     if (s.stage === 'scanning') {
-      return head + '<div class="panel-body">' + item + '<div class="scan">מחפש בחנויות אחרות…<div class="scan-bar"></div><div class="scan-bar"></div></div></div>';
+      return head + '<div class="panel-body">' + item + '<div class="scan">מחפש באתרים אחרים…<div class="scan-bar"></div><div class="scan-bar"></div></div></div>';
     }
     var rows = p.offers.map(function (o, i) {
-      var save = p.price - o[1];
-      var inner = '<b>' + o[0] + '</b><span class="amt">' + money(o[1]) + '</span>' +
+      var inner = '<b>' + o[0] + '</b><span class="amt">' + priceOf(p, o[1]) + '</span>' +
         (i === 0 ? '<span class="pill">הכי זול!</span>' : '<span></span>') +
-        '<span class="save">חיסכון של ' + money(save) + '</span>';
+        '<span class="save">חיסכון של ' + priceOf(p, p.price - o[1]) + '</span>';
       return i === 0
         ? '<button class="offer' + (s.stage === 'results' ? ' hint' : '') + '" data-act="buy">' + inner + '</button>'
         : '<div class="offer">' + inner + '</div>';
@@ -382,41 +474,106 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
     return head + '<div class="panel-body">' + item + rows + '</div>';
   }
 
-  function guideFor() {
-    var a = s.scen === 'auto';
+  /* The popup and its dialogs follow the extension's own popup.html */
+  function popHtml() {
+    var error = s.stage === 'blocked' ? '<div class="pop-error">לא ניתן לבצע השוואה באתר זה</div>' : '';
+    if (inStages('popup', 'blocked')) {
+      return '<button class="pop-green' + (s.stage === 'popup' ? ' hint' : '') + '" data-act="compare">' + COMPARE_LABEL + '</button>' +
+        '<span class="pop-line">המוצרים שלי</span><span class="pop-line">מדריך</span>' + error;
+    }
+    if (s.stage === 'type') {
+      var want = site().type === 'none' ? 'product' : site().type;
+      return '<h4 class="pop-title">מה תרצה להשוות?</h4>' + TYPE_BUTTONS.map(function (b) {
+        return '<button class="pop-green' + (b[0] === want ? ' hint' : '') + '" data-act="chooseType" data-v="' + b[0] + '">' + b[1] + '</button>';
+      }).join('');
+    }
+    if (s.stage === 'howto') {
+      return '<h4 class="pop-title">כדי לבצע השוואה, יש לבצע:</h4><ol class="pop-steps"><li>להיכנס לעמוד מוצר</li><li>ללחוץ על ״עמוד מוצר פתוח״</li><li>ללחוץ על כותרת המוצר ולאשר (V)</li><li>ללחוץ על מחיר המוצר ולאשר (V)</li></ol>' +
+        '<button class="pop-green hint" data-act="pageOpen">עמוד מוצר פתוח</button>';
+    }
+    if (s.stage === 'puzzle') {
+      return '<h4>תוספים</h4><div class="pop-row"><span class="mark ext-mark" aria-hidden="true">₪</span><span class="n">שם זה זול יותר</span><button class="pin hint" data-act="pin" aria-label="הצמדת התוסף לסרגל"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3H8v2l1.5 1.5V12L6 15v2h5.2v5h1.6v-5H18v-2l-3.5-3V6.5L16 5V3Z"/></svg></button></div>';
+    }
+    return '';
+  }
+
+  /* The small panel the extension shows at the top of the page while picking title and price */
+  function selHtml() {
+    var p = s.item;
     switch (s.stage) {
-      case 'home': return { n: 'שלב 1 מתוך 3', t: 'נכנסתם לחנות נתמכת. בדף הבית עוד אין מה להשוות. לחצו על מוצר כדי להיכנס אליו.' };
-      case 'scanning': return a && s.autoOpen
-        ? { n: 'שלב 2 מתוך 3', t: 'רק נכנסתם לעמוד המוצר, והתוסף כבר קופץ לבד בצד המסך. אין צורך ללחוץ על שום דבר.' }
-        : { n: 'שלב 2 מתוך 3', t: 'התוסף בודק את המוצר הזה בחנויות אחרות.' };
-      case 'results': return { n: 'שלב 3 מתוך 3', t: 'זה אותו מוצר, במחירים של חנויות אחרות. לחצו על המחיר המסומן ״הכי זול״.' };
-      case 'done':
-        var save = s.item.price - s.item.offers[0][1];
-        return { n: 'סיימתם', done: true, t: 'מעולה! עברתם ל' + s.item.offers[0][0] + ' וחסכתם ' + money(save) + '.',
-          next: a ? { act: 'scen', v: 'manual', label: 'ואם האתר לא נתמך? נסו את זה' } : { act: 'goReal', label: 'לצילומי מסך מאתרים אמיתיים' } };
-      case 'closed': return { n: 'החלונית סגורה', t: 'סגרתם את החלונית. רוצים אותה בחזרה? לחצו על אייקון התוסף למעלה.' };
-      case 'noPanel': return { n: 'שלב 1 מתוך 3', t: 'התוסף לא קפץ, וזה תקין: האתר הזה לא נתמך. לחצו על אייקון התוסף, המסומן למעלה.', link: { act: 'unpin', label: 'אצלי לא מופיע אייקון כזה' } };
+      case 'pickTitle': return '<small>שלב 1 מתוך 2 · כותרת המוצר</small><b>לחץ על כותרת המוצר (Esc לביטול)</b>';
+      case 'confirmTitle': return '<small>שלב 1 מתוך 2 · כותרת המוצר</small><b>כותרת המוצר: ' + p.name + '</b><div class="sel-btns"><button class="sel-v hint" data-act="okTitle" aria-label="אישור">V</button><button class="sel-x" data-act="noTitle" aria-label="בחירה מחדש">X</button></div>';
+      case 'pickPrice': return '<small>שלב 2 מתוך 2 · מחיר המוצר</small><b>לחץ על מחיר המוצר (Esc לביטול)</b>';
+      case 'confirmPrice': return '<small>שלב 2 מתוך 2 · מחיר המוצר</small><b>מחיר המוצר: ' + priceOf(p, p.price) + '</b><div class="sel-btns"><button class="sel-v hint" data-act="okPrice" aria-label="אישור">V</button><button class="sel-x" data-act="noPrice" aria-label="בחירה מחדש">X</button></div>';
+      case 'saved': return '<b>ההשוואה הוגדרה לאתר זה</b>';
+    }
+    return '';
+  }
+
+  function stepLabel() {
+    if (s.scen === 'auto') return 'שלב ' + (s.stage === 'home' ? 1 : s.stage === 'scanning' ? 2 : 3) + ' מתוך 3';
+    var type = site().type;
+    var map = type === 'product'
+      ? { noPanel: 1, popup: 2, type: 3, howto: 4, pickTitle: 5, confirmTitle: 5, pickPrice: 6, confirmPrice: 6, saved: 7, scanning: 7, results: 7 }
+      : type === 'none' ? { noPanel: 1, popup: 2, type: 3 }
+      : { noPanel: 1, popup: 2, type: 3, form: 4, scanning: 5, results: 5 };
+    var total = type === 'product' ? 7 : type === 'none' ? 3 : 5;
+    return 'שלב ' + map[s.stage] + ' מתוך ' + total;
+  }
+
+  function guideFor() {
+    var n = stepLabel(), type = s.scen === 'manual' ? site().type : 'product';
+    switch (s.stage) {
+      case 'home': return { n: n, t: 'נכנסתם לחנות נתמכת. בדף הבית עוד אין מה להשוות. לחצו על מוצר כדי להיכנס אליו.' };
+      case 'noPanel':
+        if (type === 'none') return { n: n, t: 'זה אתר חדשות, ולכן התוסף לא קפץ. נראה מה קורה אם בכל זאת מנסים. לחצו על אייקון התוסף, המסומן למעלה.' };
+        return { n: n, t: 'התוסף לא קפץ, כי הוא עוד לא מכיר את האתר הזה. לחצו על אייקון התוסף, המסומן למעלה.', link: { act: 'unpin', label: 'אצלי לא מופיע אייקון כזה' } };
       case 'unpinned': return { n: 'איפה האייקון?', t: 'האייקון מוסתר בתוך תפריט התוספים של Chrome. לחצו על חלק הפאזל, המסומן למעלה.' };
       case 'puzzle': return { n: 'איפה האייקון?', t: 'לחצו על הנעץ שליד ״שם זה זול יותר״. כך האייקון יישאר תמיד ליד שורת הכתובת.' };
-      case 'popup': return { n: 'שלב 2 מתוך 3', t: 'נפתח חלון קטן של התוסף. לחצו על ״השוואה באתר זה״.' };
+      case 'popup': return { n: n, t: 'נפתח החלון של התוסף. לחצו על ״' + COMPARE_LABEL + '״.' };
+      case 'type':
+        if (type === 'hotel') return { n: n, t: 'התוסף שואל מה להשוות. אנחנו באתר מלונות, אז לחצו על ״השוואת מלונות״.' };
+        if (type === 'flight') return { n: n, t: 'התוסף שואל מה להשוות. אנחנו באתר טיסות, אז לחצו על ״השוואת טיסות״.' };
+        return { n: n, t: 'התוסף שואל מה להשוות. לחצו על ״השוואת מוצר״.' };
+      case 'blocked': return { n: 'זה בסדר', done: true, t: 'התוסף מציג ״לא ניתן לבצע השוואה באתר זה״, כי אין כאן מוצר להשוות. הוא מיועד לאתרים של מוצרים, טיסות ומלונות.', next: { act: 'site', v: 'shop', label: 'לתרגל על חנות' } };
+      case 'howto': return { n: n, t: 'אתם כבר בעמוד המוצר, אז לחצו על ״עמוד מוצר פתוח״. החלון ייסגר ותעברו לעמוד עצמו.' };
+      case 'pickTitle': return { n: n, t: 'התוסף צריך לדעת מה אתם מחפשים. לחצו על שם המוצר בעמוד, המסומן בכתום.' };
+      case 'confirmTitle': return { n: n, t: 'בדקו שהכותרת נכונה ולחצו V. אם נבחר טקסט אחר, לחצו X ובחרו שוב.' };
+      case 'pickPrice': return { n: n, t: 'עכשיו לחצו על מחיר המוצר בעמוד.' };
+      case 'confirmPrice': return { n: n, t: 'בדקו שהמחיר נכון ולחצו V.' };
+      case 'saved': return { n: n, t: 'התוסף למד איפה נמצאים השם והמחיר, ועכשיו הוא מחפש באתרים אחרים.' };
+      case 'form': return { n: n, t: 'נפתח טופס חיפוש בצד המסך. באתר אמיתי ממלאים בו את הפרטים. כאן הם כבר מולאו, אז לחצו על ״חיפוש״.' };
+      case 'scanning':
+        if (s.scen === 'auto') return { n: n, t: 'רק נכנסתם לעמוד המוצר, והתוסף כבר קופץ לבד בצד המסך. אין צורך ללחוץ על שום דבר.' };
+        return { n: n, t: 'התוסף מחפש באתרים אחרים.' };
+      case 'results': return { n: n, t: 'אלה המחירים באתרים אחרים. לחצו על המחיר המסומן ״הכי זול״.' };
+      case 'done':
+        var a = s.scen === 'auto';
+        return { n: 'סיימתם', done: true, t: 'מעולה! עברתם ל' + s.item.offers[0][0] + ' וחסכתם ' + priceOf(s.item, s.item.price - s.item.offers[0][1]) + '.',
+          next: a ? { act: 'scen', v: 'manual', label: 'ואם האתר לא נתמך? נסו את זה' } : { act: 'goWhere', label: 'להמשיך במדריך' } };
+      case 'closed': return { n: 'החלונית סגורה', t: 'סגרתם את החלונית, והעמוד נשאר פתוח לפניכם.', next: { act: 'restart', label: 'לנסות שוב' } };
     }
   }
 
   function draw() {
-    var isHome = s.scen === 'auto' && !s.item;
-    $('tab-auto').setAttribute('aria-selected', s.scen === 'auto');
-    $('tab-manual').setAttribute('aria-selected', s.scen === 'manual');
-    $('url').textContent = s.scen === 'auto'
-      ? 'www.example-store.co.il' + (isHome ? '' : '/product')
-      : 'www.neighborhood-shop.example/lamp';
-    $('page').innerHTML = shopHtml();
+    var isHome = s.scen === 'auto' && !s.item, manual = s.scen === 'manual';
+    $('tab-auto').setAttribute('aria-selected', !manual);
+    $('tab-manual').setAttribute('aria-selected', manual);
+    $('tab-auto').classList.toggle('ok', !!finished.auto);
+    $('tab-manual').classList.toggle('ok', !!finished.manual);
+    $('siteRow').hidden = !manual;
+    [].forEach.call($('siteRow').querySelectorAll('[data-v]'), function (b) {
+      b.setAttribute('aria-pressed', b.dataset.v === s.site);
+    });
+    $('url').textContent = manual ? site().url : 'www.example-store.co.il' + (isHome ? '' : '/product');
+    $('page').innerHTML = pageHtml();
 
     var ext = $('extIco'), puz = $('puzzle');
     ext.hidden = !s.pinned;
-    ext.classList.toggle('hint', s.stage === 'noPanel' || s.stage === 'closed');
+    ext.classList.toggle('hint', s.stage === 'noPanel');
     puz.classList.toggle('hint', s.stage === 'unpinned');
 
-    var showPanel = s.stage === 'scanning' || s.stage === 'results' || s.stage === 'done';
+    var showPanel = inStages('form', 'scanning', 'results', 'done');
     var panel = $('panel');
     panel.hidden = !showPanel;
     if (showPanel) {
@@ -424,19 +581,17 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
       panel.classList.toggle('left', s.panelSide === 'left');
       panel.classList.toggle('collapsed', s.collapsed);
     }
-    $('page').classList.toggle('room-right', showPanel && s.panelSide === 'right');
-    $('page').classList.toggle('room-left', showPanel && s.panelSide === 'left');
+    $('page').className = 'shop';
+    if (showPanel) $('page').classList.add(s.panelSide === 'right' ? 'room-right' : 'room-left');
 
-    var pop = $('pop');
-    if (s.stage === 'popup') {
-      pop.innerHTML = '<div class="pop-brand"><span class="mark" aria-hidden="true">₪</span> שם זה זול יותר</div><button class="pop-compare hint" data-act="compare">השוואה באתר זה</button>';
-      pop.hidden = false;
-    } else if (s.stage === 'puzzle') {
-      pop.innerHTML = '<h4>תוספים</h4><div class="pop-row"><span class="mark" style="background:var(--brand);color:#fff;width:26px;height:26px;font-size:14px;border-radius:7px" aria-hidden="true">₪</span><span class="n">שם זה זול יותר</span><button class="pin hint" data-act="pin" aria-label="הצמדת התוסף לסרגל"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3H8v2l1.5 1.5V12L6 15v2h5.2v5h1.6v-5H18v-2l-3.5-3V6.5L16 5V3Z"/></svg></button></div>';
-      pop.hidden = false;
-    } else {
-      pop.hidden = true;
-    }
+    var sel = selHtml();
+    $('sel').hidden = !sel;
+    $('sel').innerHTML = sel;
+    if (sel) $('page').classList.add('selecting');
+
+    var pop = popHtml();
+    $('pop').hidden = !pop;
+    $('pop').innerHTML = pop;
 
     var g = guideFor(), box = $('guide');
     box.classList.toggle('done', !!g.done);
@@ -463,32 +618,48 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
 
   var actions = {
     scen: function (el) { start(el.dataset.v); },
-    restart: function () { start(s.scen); },
+    site: function (el) { start('manual', { site: el.dataset.v, unpinned: s.scen === 'manual' && !s.pinned }); },
+    restart: function () { start(s.scen, { site: s.site }); },
     open: function (el) {
       s.item = STORE_ITEMS[+el.dataset.v];
-      s.stage = 'scanning'; s.autoOpen = true;
+      s.stage = 'scanning';
       draw(); $('panel').hidden = true; $('page').className = 'shop';
       later(function () { draw(); slideInPanel(); }, 700);
-      later(function () { s.stage = 'results'; s.autoOpen = false; draw(); }, 3000);
+      later(function () { s.stage = 'results'; draw(); }, 3000);
     },
     icon: function () {
-      if (s.stage === 'popup') { s.stage = s.scen === 'manual' ? 'noPanel' : 'closed'; draw(); return; }
-      if (s.stage === 'noPanel' || s.stage === 'closed') { s.stage = 'popup'; draw(); return; }
+      if (s.stage === 'noPanel') { s.stage = 'popup'; draw(); return; }
+      if (inStages('popup', 'type', 'howto', 'blocked')) { s.stage = 'noPanel'; draw(); return; }
       nudge();
     },
-    compare: function () { openPanel(1500); },
+    compare: function () { s.stage = 'type'; draw(); },
+    chooseType: function (el) {
+      var type = site().type, v = el.dataset.v;
+      if (type === 'none' && v === 'product') { s.stage = 'blocked'; draw(); return; }
+      if (v !== type) { nudge(); return; }
+      if (v === 'product') { s.stage = 'howto'; draw(); return; }
+      s.stage = 'form'; s.collapsed = false; draw(); slideInPanel();
+    },
+    formSearch: function () { s.stage = 'scanning'; draw(); later(function () { s.stage = 'results'; draw(); }, 1500); },
+    pageOpen: function () { s.stage = 'pickTitle'; draw(); },
+    pickTitle: function () { s.stage = 'confirmTitle'; draw(); },
+    noTitle: function () { s.stage = 'pickTitle'; draw(); },
+    okTitle: function () { s.stage = 'pickPrice'; draw(); },
+    pickPrice: function () { s.stage = 'confirmPrice'; draw(); },
+    noPrice: function () { s.stage = 'pickPrice'; draw(); },
+    okPrice: function () { s.stage = 'saved'; draw(); later(function () { openPanel(1500); }, 1300); },
     puzzle: function () {
       if (s.stage === 'unpinned') { s.stage = 'puzzle'; draw(); return; }
       if (s.stage === 'puzzle') { s.stage = 'unpinned'; draw(); return; }
       nudge();
     },
     pin: function () { s.pinned = true; s.stage = 'noPanel'; draw(); },
-    unpin: function () { start('manual', { unpinned: true }); },
-    buy: function () { if (s.stage === 'results') { s.stage = 'done'; draw(); } },
-    closePanel: function () { clearTimers(); s.stage = 'closed'; s.autoOpen = false; draw(); },
+    unpin: function () { start('manual', { site: s.site, unpinned: true }); },
+    buy: function () { if (s.stage === 'results') { finished[s.scen] = true; s.stage = 'done'; draw(); } },
+    closePanel: function () { clearTimers(); s.stage = 'closed'; draw(); },
     collapse: function () { s.collapsed = !s.collapsed; draw(); },
     side: function () { s.panelSide = s.panelSide === 'right' ? 'left' : 'right'; draw(); },
-    goReal: function () { $('real').scrollIntoView(); }
+    goWhere: function () { $('where').scrollIntoView(); }
   };
 
   function nudge() {
@@ -504,6 +675,15 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
     if (e.target.closest('.viewport')) nudge();
   });
 
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && inStages('pickTitle', 'confirmTitle', 'pickPrice', 'confirmPrice')) { s.stage = 'noPanel'; draw(); }
+  });
+
+  $('tryNews').addEventListener('click', function () {
+    start('manual', { site: 'news' });
+    $('sim').scrollIntoView();
+  });
+
   /* ---------- Real screenshots with guided zoom ---------- */
   var SHOTS = [
     { id: 'products', label: 'מוצרים', w: 2890, h: 1388, alt: 'חלונית השוואת המחירים של התוסף בצד עמוד מוצר של בושם',
@@ -517,7 +697,7 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
       sum: 'קוד NEW10 הוריד 50.99 ₪ מהסל, בלי לחפש כלום.',
       steps: [
         { t: 'מגיעים לעמוד התשלום', d: 'התוסף קופץ עם הקופון של האתר ועם התנאים שלו.', r: [78, 0, 22, 54], z: 1.8 },
-        { t: 'זה הקוד', d: 'מעתיקים את הקוד מהחלונית.', r: [79, 26, 20.5, 9], z: 3 },
+        { t: 'זה הקוד', d: 'זה הקוד שמזינים בעמוד התשלום.', r: [79, 26, 20.5, 9], z: 3 },
         { t: 'ההנחה נכנסת לסיכום', d: 'מזינים אותו בשדה הקופון, והמחיר יורד.', r: [7, 43, 26, 25], z: 2.4 }
       ] },
     { id: 'flights', label: 'טיסות', w: 3010, h: 1650, alt: 'חלונית השוואת הטיסות של התוסף לצד עמוד הזמנת טיסה',
@@ -592,17 +772,19 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
   var HELP = {
     start: { q: 'איפה אתם נמצאים עכשיו?', opts: [
       ['בעמוד של מוצר, טיסה, מלון או תשלום', 'page'],
-      ['בדף הבית, או ברשימה של הרבה מוצרים', 'home'] ] },
+      ['בדף הבית, או ברשימה של הרבה מוצרים', 'home'],
+      ['באתר אחר, כמו חדשות או בנק', 'other'] ] },
+    other: { q: 'כאן התוסף לא אמור לקפוץ', a: 'הוא עובד רק באתרים של מוצרים, טיסות ומלונות. כשתגיעו לאתר כזה, הוא יופיע או שתוכלו להפעיל אותו ידנית.', sim: ['manual', false, 'לראות את זה בהדמיה', 'news'], opts: [] },
     home: { q: 'היכנסו לעמוד של מוצר אחד', a: 'התוסף צריך לדעת מה אתם מחפשים. לחצו על המוצר שמעניין אתכם, וחכו כמה שניות.', opts: [
       ['נכנסתי, והוא עדיין לא קפץ', 'page'], ['קפץ!', 'yay'] ] },
     page: { q: 'אתם רואים את אייקון התוסף ליד שורת הכתובת?', opts: [
       ['כן, אני רואה אותו', 'icon'], ['לא', 'pin'] ] },
-    icon: { q: 'מפעילים אותו ידנית', a: 'כנראה האתר לא נתמך. לחצו על האייקון, ואז על ״השוואה באתר זה״.', sim: ['manual', false, 'לתרגל את זה בהדמיה'], opts: [
+    icon: { q: 'מפעילים אותו ידנית', a: 'כנראה התוסף עוד לא מכיר את האתר. לחצו על האייקון ועל ״בצע השוואה באתר זה״, ובחרו מוצר, מלונות או טיסות.', sim: ['manual', false, 'לתרגל את זה בהדמיה'], opts: [
       ['זה עבד', 'yay'], ['זה לא עבד', 'mail'] ] },
     pin: { q: 'מצמידים את האייקון', a: 'לחצו על חלק הפאזל ליד שורת הכתובת, ואז על הנעץ שליד ״שם זה זול יותר״. לא מוצאים אותו ברשימה? כנראה התוסף לא מותקן.', sim: ['manual', true, 'לתרגל את זה בהדמיה'], opts: [
       ['הצמדתי, מה עכשיו?', 'icon'], ['התוסף לא מותקן', 'install'] ] },
     install: { q: 'מתקינים את התוסף', a: 'ההתקנה חינם ולוקחת כמה שניות. היא נעשית מחנות Chrome, בלחיצה על ״הוספה ל-Chrome״.', link: ['https://chromewebstore.google.com/detail/neigoggljhfnodeneidndcflnclldnpm', 'לחנות Chrome'], opts: [] },
-    yay: { q: 'מצוין!', a: 'מעכשיו זה מה שיקרה בכל קנייה: האתר נתמך, התוסף קופץ לבד. לא נתמך, שתי לחיצות.', opts: [] },
+    yay: { q: 'מצוין!', a: 'מעכשיו זה מה שיקרה: באתר נתמך התוסף קופץ לבד, ובאתר שהוא לא מכיר מפעילים אותו מהאייקון.', opts: [] },
     mail: { q: 'זה כבר עלינו', a: 'כתבו לנו לכתובת shamzezolyoter@gmail.com, וציינו באיזה אתר זה קרה.', opts: [] }
   };
 
@@ -610,7 +792,7 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
     var n = HELP[key], h = '<div class="helper-q">' + n.q + '</div>';
     if (n.a) h += '<p class="helper-a">' + n.a + '</p>';
     h += '<div class="helper-opts">';
-    if (n.sim) h += '<button class="opt solid" data-sim="' + n.sim[0] + '" data-unpin="' + n.sim[1] + '">' + n.sim[2] + '</button>';
+    if (n.sim) h += '<button class="opt solid" data-sim="' + n.sim[0] + '" data-unpin="' + n.sim[1] + '" data-site="' + (n.sim[3] || 'shop') + '">' + n.sim[2] + '</button>';
     if (n.link) h += '<a class="opt solid" style="text-decoration:none" href="' + n.link[0] + '">' + n.link[1] + '</a>';
     n.opts.forEach(function (o) { h += '<button class="opt" data-go="' + o[1] + '">' + o[0] + '</button>'; });
     if (key !== 'start') h += '<button class="opt quiet" data-go="start">להתחיל מחדש</button>';
@@ -623,7 +805,7 @@ footer { padding-block: 18px; font-size: 14px; color: var(--muted); }
     if (!b) return;
     if (b.dataset.go) { drawHelp(b.dataset.go); return; }
     if (b.dataset.sim) {
-      start(b.dataset.sim, { unpinned: b.dataset.unpin === 'true' });
+      start(b.dataset.sim, { unpinned: b.dataset.unpin === 'true', site: b.dataset.site });
       $('sim').scrollIntoView();
     }
   });
