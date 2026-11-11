@@ -61,6 +61,7 @@
       text-align: center;
     }
 
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     main { flex: 1; }
 
     /* ===== Header ===== */
@@ -198,10 +199,15 @@
       .tab-button .tab-icon { display: inline; font-size: 16px; line-height: 1; }
     }
 
-    @media (max-width: 360px) {
-      .tabs-container { gap: 5px; }
-      .tab-button { font-size: 14px; padding: 8px 10px; gap: 4px; }
-      .tab-button .tab-icon { display: inline; font-size: 16px; }
+    /* מסכים צרים (כולל אייפון עם הגדלת טקסט/תצוגה): ארבעת הטאבים בשורה אחת, בלי גלילה */
+    @media (max-width: 400px) {
+      .tabs-container { gap: 4px; padding-inline: 10px; scroll-padding-inline: 10px; }
+      .tab-button {
+        flex: 1 1 auto; justify-content: center; gap: 3px;
+        padding: 8px clamp(5px, 1.8vw, 10px);
+        font-size: clamp(12.5px, 3.9vw, 14.5px);
+      }
+      .tab-button .tab-icon { display: inline; font-size: clamp(14px, 4.2vw, 16px); }
     }
 
     .tab-content { display: none; }
@@ -616,6 +622,14 @@
         background: var(--light-green); color: var(--primary-green); font-size: 15px; font-weight: 800;
       }
       .elec-promo-close:hover { background: #d1fae5; }
+    }
+    @media (max-width: 400px) {
+      .elec-promo { margin-top: 12px; }
+      .elec-promo-main { padding: 12px 14px 12px 46px; gap: 8px; }
+      .elec-promo-icon { font-size: 20px; }
+      .elec-promo-title { font-size: 15px; }
+      .elec-promo-desc { font-size: 13px; line-height: 1.45; }
+      .elec-promo-close { top: 8px; left: 8px; }
     }
 
 
