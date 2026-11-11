@@ -106,6 +106,20 @@
 
     .fav-header-btn:hover { background: rgba(255, 255, 255, 0.26); transform: translateY(-1px); }
 
+    /* iOS: הכפתור מוביל ל-SROK - בלי חיתוך התווית */
+    header a.install-button.is-ios { max-width: none; overflow: visible; text-overflow: clip; }
+
+    /* מובייל: כותרת מלאה, מועדפים בדסקטופ בלבד */
+    @media (max-width: 768px) {
+      header h1 { overflow: visible; text-overflow: clip; }
+      #favHeaderBtn, .fav-btn { display: none !important; }
+    }
+    @media (max-width: 360px) {
+      header h1 { font-size: 1.1rem; }
+      header .logo-container img { width: 34px; height: 34px; }
+      header a.install-button { padding: 7px 12px; font-size: 14px; }
+    }
+
     .fav-count-badge {
       background: #facc15;
       color: #14532d;
@@ -159,14 +173,35 @@
       box-shadow: 0 6px 16px -6px rgba(5, 150, 105, 0.65);
     }
 
+    .tab-button:focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
+
+    /* מובייל (מוקאפ א): טאבים ככדורים נפרדים עם אייקון, בגלילה אופקית מקצה לקצה */
     @media (max-width: 768px) {
-      .tabs-container { gap: 3px; padding: 5px; border-radius: 16px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      .tab-button { flex: 1 1 0; min-width: 0; padding: 9px 6px; font-size: 13px; border-radius: 12px; }
-      .tab-button .tab-icon { display: none; }
+      .tabs-container {
+        background: transparent; box-shadow: none; border-radius: 0; max-width: none;
+        justify-content: flex-start; flex-wrap: nowrap; gap: 5px;
+        overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        margin: 0 -16px 6px; padding: 6px 12px 10px; scroll-padding-inline: 12px;
+      }
+      .tabs-container::-webkit-scrollbar { display: none; }
+      /* מרכוז כשיש מקום, בלי לחתוך את הטאב הראשון/האחרון כשיש גלילה */
+      .tabs-container > .tab-button:first-child { margin-inline-start: auto; }
+      .tabs-container > .tab-button:last-child { margin-inline-end: auto; }
+      .tab-button {
+        flex: 0 0 auto; min-height: 44px; min-width: 44px; padding: 8px 12px; gap: 5px;
+        font-size: 14.5px; font-weight: 700; color: #1e293b;
+        background: #fff; border: 1px solid #e2e8f0; border-radius: 9999px;
+        box-shadow: 0 2px 6px -3px rgba(15, 23, 42, 0.15);
+      }
+      .tab-button:hover { background: #fff; color: #0f172a; }
+      .tab-button.active { border-color: transparent; }
+      .tab-button .tab-icon { display: inline; font-size: 16px; line-height: 1; }
     }
 
     @media (max-width: 360px) {
-      .tab-button { font-size: 12px; padding: 8px 4px; }
+      .tabs-container { gap: 5px; }
+      .tab-button { font-size: 14px; padding: 8px 10px; gap: 4px; }
+      .tab-button .tab-icon { display: inline; font-size: 16px; }
     }
 
     .tab-content { display: none; }
@@ -549,7 +584,40 @@
       .search-hero-title { font-size: 22px; }
       .search-hero-sub { font-size: 14px; margin-bottom: 12px; }
       .suggest-label { display: none; }
+      /* צ'יפים: גלילה מקצה לקצה, הראשון והאחרון לא נחתכים */
+      .suggest-row { margin-inline: -16px; }
+      .suggest-chips { min-width: 0; padding: 2px 16px; scroll-padding-inline: 16px; }
     }
+
+    /* מובייל: חלונית החשמל כבועת דיבור שמצביעה על טאב חשמל */
+    @media (max-width: 768px) {
+      .elec-promo {
+        background: #fff; color: #1e293b;
+        border: 2px solid #6ee7b7; border-radius: 18px;
+        width: min(100%, 360px); margin: 14px 0 22px auto; margin-inline: auto 0;
+        box-shadow: 0 10px 24px -14px rgba(5, 150, 105, 0.55);
+      }
+      .elec-promo:hover { transform: none; box-shadow: 0 10px 24px -14px rgba(5, 150, 105, 0.55); }
+      .elec-promo::before, .elec-promo::after {
+        content: ''; position: absolute; left: var(--elec-arrow-left, 50%);
+        width: 0; height: 0; border-style: solid; transform: translateX(-50%); pointer-events: none;
+      }
+      .elec-promo::before { top: -14px; border-width: 0 13px 14px; border-color: transparent transparent #6ee7b7; }
+      .elec-promo::after { top: -10px; border-width: 0 11px 11px; border-color: transparent transparent #fff; }
+      .elec-promo.no-arrow::before, .elec-promo.no-arrow::after { display: none; }
+      .elec-promo-main { padding: 14px 18px 14px 50px; gap: 10px; }
+      .elec-promo-icon { font-size: 22px; }
+      .elec-promo-text { padding-left: 0; }
+      .elec-promo-title { color: var(--primary-green); }
+      .elec-promo-desc { color: #334155; opacity: 1; }
+      .elec-promo-main:focus-visible { outline-offset: -3px; }
+      .elec-promo-close {
+        top: 10px; left: 10px; width: 32px; height: 32px;
+        background: var(--light-green); color: var(--primary-green); font-size: 15px; font-weight: 800;
+      }
+      .elec-promo-close:hover { background: #d1fae5; }
+    }
+
 
     /* ===== דף השוואת חשמל ===== */
     .elec-hero {
@@ -1453,6 +1521,13 @@
     .footer-links a:hover, .footer-links a:focus-visible { text-decoration-thickness: 2px; text-decoration-color: #fff; }
     .footer-links a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
     .footer-sep { display: none; }
+    /* מובייל: פוטר קומפקטי - הקישורים בשורה אחת (נשברת רק אם אין מקום) */
+    @media (max-width: 639px) {
+      footer.site-footer { padding-top: 10px; padding-bottom: 12px; }
+      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; max-width: none; gap: 0 2px; }
+      .footer-links a { min-height: 36px; padding: 0 7px; font-size: 13px; }
+      footer.site-footer .footer-copy { margin-top: 2px; font-size: 12px; opacity: 0.9; }
+    }
     @media (min-width: 640px) {
       .footer-links { display: flex; flex-wrap: wrap; justify-content: center; max-width: none; gap: 0; }
       .footer-sep { display: inline; padding: 0 0.25rem; }
@@ -1485,15 +1560,15 @@
   <div class="flex flex-col flex-1">
     <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
       <!-- טאבים -->
-      <div class="tabs-container">
-        <button class="tab-button active" data-tab="products"><span class="tab-icon">🛒</span> מוצרים</button>
-        <button class="tab-button" data-tab="flights"><span class="tab-icon">✈️</span> טיסות</button>
-        <button class="tab-button" data-tab="hotels"><span class="tab-icon">🏨</span> מלונות</button>
-        <button class="tab-button" data-tab="electricity"><span class="tab-icon">⚡</span> חשמל</button>
+      <div class="tabs-container" role="tablist" aria-label="קטגוריות">
+        <button class="tab-button active" data-tab="products" id="tab-products" role="tab" aria-selected="true" aria-controls="products-tab" tabindex="0"><span class="tab-icon" aria-hidden="true">🛒</span> מוצרים</button>
+        <button class="tab-button" data-tab="flights" id="tab-flights" role="tab" aria-selected="false" aria-controls="flights-tab" tabindex="-1"><span class="tab-icon" aria-hidden="true">✈️</span> טיסות</button>
+        <button class="tab-button" data-tab="hotels" id="tab-hotels" role="tab" aria-selected="false" aria-controls="hotels-tab" tabindex="-1"><span class="tab-icon" aria-hidden="true">🏨</span> מלונות</button>
+        <button class="tab-button" data-tab="electricity" id="tab-electricity" role="tab" aria-selected="false" aria-controls="electricity-tab" tabindex="-1"><span class="tab-icon" aria-hidden="true">⚡</span> חשמל</button>
       </div>
 
       <!-- תוכן טאב מוצרים -->
-      <div id="products-tab" class="tab-content active">
+      <div id="products-tab" class="tab-content active" role="tabpanel" aria-labelledby="tab-products">
         <!-- חלונית קידום: השוואה בחשמל (מוסתרת בזמן חיפוש) -->
         <div id="elecPromo" class="elec-promo">
           <button id="elecPromoOpen" type="button" class="elec-promo-main">
@@ -1585,7 +1660,7 @@
       </div>
 
       <!-- תוכן טאב טיסות -->
-      <div id="flights-tab" class="tab-content">
+      <div id="flights-tab" class="tab-content" role="tabpanel" aria-labelledby="tab-flights">
         <h2 class="text-3xl font-bold text-center mb-8">השוואת מחירי טיסות</h2>
 
         <div class="flight-search-container">
@@ -1676,7 +1751,7 @@
       </div>
 
       <!-- תוכן טאב מלונות -->
-      <div id="hotels-tab" class="tab-content">
+      <div id="hotels-tab" class="tab-content" role="tabpanel" aria-labelledby="tab-hotels">
         <h2 class="text-3xl font-bold text-center mb-8">השוואת מחירי מלונות</h2>
 
         <div class="flight-search-container">
@@ -1751,7 +1826,7 @@
       </div>
 
       <!-- תוכן טאב השוואה בחשמל -->
-      <div id="electricity-tab" class="tab-content">
+      <div id="electricity-tab" class="tab-content" role="tabpanel" aria-labelledby="tab-electricity">
         <h2 class="text-3xl font-bold text-center mb-8">משווים בקלות בין ספקי חשמל</h2>
 
         <!-- Hero -->
@@ -1860,7 +1935,7 @@
       </div>
     </main>
 
-    <footer class="bg-green-700 text-white py-8">
+    <footer class="site-footer bg-green-700 text-white py-8">
       <div class="container mx-auto text-center">
         <nav aria-label="קישורים בתחתית העמוד">
           <ul class="footer-links">
@@ -1870,7 +1945,7 @@
             <li><span class="footer-sep" aria-hidden="true">·</span><a href="mailto:shamzezolyoter@gmail.com">צור קשר</a></li>
           </ul>
         </nav>
-        <p class="mt-4 text-sm">© <span data-current-year>2026</span> שם זה זול יותר - כל הזכויות שמורות</p>
+        <p class="footer-copy mt-4 text-sm">© <span data-current-year>2026</span> שם זה זול יותר - כל הזכויות שמורות</p>
       </div>
       <script>document.querySelectorAll('[data-current-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });</script>
     </footer>
@@ -2184,7 +2259,20 @@
         if (hotelsTabBtn) hotelsTabBtn.style.display = 'none';
       }
 
-      // מודל מועדפים
+      // כפתור התקנה: ב-iPhone/iPad/iPod (כולל iPadOS שמדווח כ-Mac עם מגע) מוביל ל-SROK.
+      // ברירת המחדל ב-HTML (חנות Chrome) נשארת לאנדרואיד, דסקטופ ו-no-JS.
+      (function () {
+        const ua = navigator.userAgent || '';
+        const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const btn = document.querySelector('header a.install-button');
+        if (isIOS && btn) {
+          btn.href = './srok/';
+          btn.textContent = 'התקנת SROK';
+          btn.classList.add('is-ios');
+        }
+      })();
+
+      // מודל מועדפים (דסקטופ בלבד; הכפתור מוסתר במובייל)
       document.getElementById('favHeaderBtn').addEventListener('click', openFavoritesModal);
       document.getElementById('favsModalClose').addEventListener('click', () => {
         document.getElementById('favsModalBackdrop').classList.remove('show');
@@ -2469,14 +2557,19 @@
       // ============================================================
       // לוגיקת טאבים
       // ============================================================
+      var positionElecArrow = null; // מוגדר למטה, עם חלונית החשמל
       function switchToTab(tabName) {
-        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-        const btn = document.querySelector(`[data-tab="${tabName}"]`);
-        if (btn) btn.classList.add('active');
+        document.querySelectorAll('.tab-button').forEach(btn => {
+          const on = btn.dataset.tab === tabName;
+          btn.classList.toggle('active', on);
+          btn.setAttribute('aria-selected', on ? 'true' : 'false');
+          btn.tabIndex = on ? 0 : -1;
+        });
 
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
         const content = document.getElementById(`${tabName}-tab`);
         if (content) content.classList.add('active');
+        if (typeof positionElecArrow === 'function') positionElecArrow();
       }
 
       // שמות שאפשר לשים ב-?tab= (באנגלית או בעברית)
@@ -2522,6 +2615,32 @@
         });
       });
 
+      // מקלדת בטאבים (RTL): חץ ימינה = הטאב שמימין בתצוגה, Home/End, Enter/רווח מפעילים (click)
+      const tabsContainer = document.querySelector('.tabs-container');
+      tabsContainer.addEventListener('keydown', (e) => {
+        if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(e.key)) return;
+        const tabs = [...tabsContainer.querySelectorAll('.tab-button')].filter(b => b.style.display !== 'none');
+        const i = tabs.indexOf(document.activeElement);
+        if (i < 0) return;
+        e.preventDefault();
+        const rtl = getComputedStyle(tabsContainer).direction === 'rtl';
+        let j;
+        if (e.key === 'Home') j = 0;
+        else if (e.key === 'End') j = tabs.length - 1;
+        else {
+          const forward = (e.key === 'ArrowLeft') === rtl; // ב-RTL: שמאלה = הבא ב-DOM
+          j = (i + (forward ? 1 : -1) + tabs.length) % tabs.length;
+        }
+        tabs.forEach(b => { b.tabIndex = -1; });
+        tabs[j].tabIndex = 0;
+        tabs[j].focus();
+      });
+      // כשהפוקוס יוצא מסרגל הטאבים, רק הטאב הנבחר נשאר בסדר ה-Tab
+      tabsContainer.addEventListener('focusout', (e) => {
+        if (tabsContainer.contains(e.relatedTarget)) return;
+        tabsContainer.querySelectorAll('.tab-button').forEach(b => { b.tabIndex = b.classList.contains('active') ? 0 : -1; });
+      });
+
       // חלונית קידום חשמל
       const elecPromo = document.getElementById('elecPromo');
       const elecPromoOpen = document.getElementById('elecPromoOpen');
@@ -2533,10 +2652,45 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         };
         elecPromoOpen.addEventListener('click', goToElectricity);
-        elecPromoClose.addEventListener('click', () => {
+        const closeElecPromo = () => {
           elecPromo.style.display = 'none';
           searchInput.focus();
+        };
+        elecPromoClose.addEventListener('click', closeElecPromo);
+        // Esc סוגר את הבועה - רק כשאין פאנל הצעות/מודל מועדפים פתוח (להם Esc משלהם)
+        document.addEventListener('keydown', (e) => {
+          if (e.key !== 'Escape' || e.defaultPrevented) return;
+          if (offersPanel && offersPanel.classList.contains('open')) return;
+          if (document.getElementById('favsModalBackdrop').classList.contains('show')) return;
+          if (elecPromo.style.display === 'none' || !elecPromo.offsetParent) return;
+          closeElecPromo();
         });
+
+        // חץ הבועה (מובייל) מיושר למרכז טאב חשמל; מוסתר אם הטאב מחוץ לאזור הנראה
+        const elecTabBtn = document.querySelector('[data-tab="electricity"]');
+        const mqMobile = window.matchMedia('(max-width: 768px)');
+        positionElecArrow = () => {
+          if (!mqMobile.matches || !elecPromo.offsetParent || !elecTabBtn || !elecTabBtn.offsetParent) {
+            elecPromo.classList.add('no-arrow');
+            return;
+          }
+          const tab = elecTabBtn.getBoundingClientRect();
+          const bar = tabsContainer.getBoundingClientRect();
+          const box = elecPromo.getBoundingClientRect();
+          const cx = tab.left + tab.width / 2;
+          const x = cx - box.left;
+          const visible = cx >= bar.left + 12 && cx <= bar.right - 12 && x >= 22 && x <= box.width - 22;
+          elecPromo.classList.toggle('no-arrow', !visible);
+          if (visible) elecPromo.style.setProperty('--elec-arrow-left', x + 'px');
+        };
+        let arrowRaf = 0;
+        const scheduleArrow = () => { cancelAnimationFrame(arrowRaf); arrowRaf = requestAnimationFrame(positionElecArrow); };
+        window.addEventListener('resize', positionElecArrow);
+        tabsContainer.addEventListener('scroll', scheduleArrow, { passive: true });
+        if (mqMobile.addEventListener) mqMobile.addEventListener('change', scheduleArrow);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleArrow);
+        window.addEventListener('load', positionElecArrow);
+        positionElecArrow();
       }
 
       // ============================================================
@@ -3456,6 +3610,7 @@
         const row = document.getElementById('suggestRow');
         const chips = document.getElementById('suggestChips');
         if (row) row.style.display = (show && chips && chips.children.length > 0) ? 'flex' : 'none';
+        if (show && typeof positionElecArrow === 'function') positionElecArrow();
       }
 
       // --- חיפושים אחרונים של מוצרים ---
