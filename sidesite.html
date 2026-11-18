@@ -1131,17 +1131,16 @@
       return shipKnown(o) ? o.totalPrice : Number(o.price);
     }
 
-    // מיון לפי comparablePrice, ובתיקו משלוח ידוע קודם.
-    // התג רק להצעה עם משלוח ידוע; אם אין אף אחת כזו — למחיר הנמוך, כמו קודם.
+    // המחיר בדף שהמשתמש צופה בו לא כולל משלוח, ולכן ההשוואה (מיון, תג "הכי זול",
+    // "חיסכון"/"יקר ב") לפי המחיר בלי משלוח. דמי המשלוח מוצגים רק כמידע (shippingView).
+    // בתיקו במחיר — משלוח ידוע קודם, ואז הזול יותר כולל משלוח.
     function rankOffers(offers) {
-      const sorted = offers.slice().sort((a, b) => (shipComparable(a) - shipComparable(b)) || (shipKnown(b) - shipKnown(a)));
-      if (!sorted.length) return { sorted, cheapest: null, isCheapest: () => false };
-      const known = sorted.filter(shipKnown);
-      const cheapest = known.length ? known[0] : sorted[0];
-      const isCheapest = known.length
-        ? o => shipKnown(o) && o.totalPrice === cheapest.totalPrice
-        : o => Number(o.price) === Number(cheapest.price);
-      return { sorted, cheapest, isCheapest };
+      const sorted = offers.slice().sort((a, b) =>
+        (Number(a.price) - Number(b.price)) || (shipKnown(b) - shipKnown(a)) || (shipComparable(a) - shipComparable(b)));
+      if (!sorted.length) return { sorted, cheapest: null, lowest: null, isCheapest: () => false };
+      const lowest = sorted[0];
+      const min = Number(lowest.price);
+      return { sorted, cheapest: lowest, lowest, isCheapest: o => Number(o.price) === min };
     }
 
     function shipIls(n) {
@@ -1149,7 +1148,7 @@
       return '₪' + v.toLocaleString('he-IL', { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 });
     }
 
-    // "+₪29 משלוח" רק כשיש דמי משלוח; free ו-unknown לא מציגים כלום (התג עדיין מבחין ביניהם)
+    // "+₪29 משלוח" רק כשיש דמי משלוח; free ו-unknown לא מציגים כלום. מידע בלבד — לא משפיע על ההשוואה
     function shippingView(o) {
       if (shipStatus(o) !== 'paid' || typeof o.shipping.amount !== 'number') return '';
       return `<span class="ship-line"><bdi dir="ltr">+${shipIls(o.shipping.amount)}</bdi> משלוח</span>`;
@@ -1206,8 +1205,8 @@
           const priceDiff = numericPrice - offer.price;
           const isCheapest = isCheapestOffer(offer);
           const shipHtml = shippingView(offer);
-          // התצוגה לפי המחיר הכולל (כולל משלוח) כשידוע; GA נשאר לפי priceDiff
-          const shownDiff = Math.round((numericPrice - shipComparable(offer)) * 100) / 100;
+          // לפי המחיר בלי משלוח, כמו המחיר בדף שהמשתמש צופה בו
+          const shownDiff = Math.round((numericPrice - Number(offer.price)) * 100) / 100;
 const savingsText = numericPrice <= 0
             ? ''
             : shownDiff > 0

@@ -555,7 +555,7 @@
                     return;
                 }
 
-                // הצגת הצעות מסודרות לפי מחיר כולל משלוח (rankOffers בתוך renderOffersList)
+                // הצגת הצעות מסודרות לפי מחיר בלי משלוח (rankOffers בתוך renderOffersList)
                 renderOffersList(data.offers);
 
                 gtag('event', 'offers_fetch_success', {
@@ -595,17 +595,16 @@
           return shipKnown(o) ? o.totalPrice : Number(o.price);
         }
 
-        // מיון לפי comparablePrice, ובתיקו משלוח ידוע קודם.
-        // התג רק להצעה עם משלוח ידוע; אם אין אף אחת כזו — למחיר הנמוך, כמו קודם.
+        // המחיר בדף שהמשתמש צופה בו לא כולל משלוח, ולכן ההשוואה (מיון, תג "הכי זול",
+        // "חיסכון"/"יקר ב") לפי המחיר בלי משלוח. דמי המשלוח מוצגים רק כמידע (shippingView).
+        // בתיקו במחיר — משלוח ידוע קודם, ואז הזול יותר כולל משלוח.
         function rankOffers(offers) {
-          const sorted = offers.slice().sort((a, b) => (shipComparable(a) - shipComparable(b)) || (shipKnown(b) - shipKnown(a)));
-          if (!sorted.length) return { sorted, cheapest: null, isCheapest: () => false };
-          const known = sorted.filter(shipKnown);
-          const cheapest = known.length ? known[0] : sorted[0];
-          const isCheapest = known.length
-            ? o => shipKnown(o) && o.totalPrice === cheapest.totalPrice
-            : o => Number(o.price) === Number(cheapest.price);
-          return { sorted, cheapest, isCheapest };
+          const sorted = offers.slice().sort((a, b) =>
+            (Number(a.price) - Number(b.price)) || (shipKnown(b) - shipKnown(a)) || (shipComparable(a) - shipComparable(b)));
+          if (!sorted.length) return { sorted, cheapest: null, lowest: null, isCheapest: () => false };
+          const lowest = sorted[0];
+          const min = Number(lowest.price);
+          return { sorted, cheapest: lowest, lowest, isCheapest: o => Number(o.price) === min };
         }
 
         function shipIls(n) {
@@ -651,8 +650,8 @@
             list.className = 'offers-list';
 
             sorted.forEach((o) => {
-                // לפי המחיר הכולל (כולל משלוח) כשידוע
-                const diff = numericOriginal ? Math.round((numericOriginal - shipComparable(o)) * 100) / 100 : 0;
+                // לפי המחיר בלי משלוח, כמו המחיר בדף שהמשתמש צופה בו
+                const diff = numericOriginal ? Math.round((numericOriginal - Number(o.price)) * 100) / 100 : 0;
 
                 const card = document.createElement('a');
                 card.className = 'offer-card';
