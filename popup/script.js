@@ -255,6 +255,9 @@ function handleCurrentUrlMode(url, sitesData) {
             case "modalFlightComparison":
                 features.push('השוואת מחירי טיסות');
                 break;
+            case "modalEventTickets":
+                features.push('השוואת מחירי כרטיסים להופעות');
+                break;
         }
 
         // Check for kupon property
@@ -262,9 +265,9 @@ function handleCurrentUrlMode(url, sitesData) {
             features.push('איתור קופון');
         }
 
-        // If no features found
+        // האתר נמצא ברשימה אבל הסוג לא מוכר כאן (למשל סוג חדש בתוסף) — הוא כן נתמך
         if (features.length === 0) {
-            return 'לא זוהו תכונות נתמכות';
+            return 'השוואה זמינה באתר זה';
         }
 
         return features.join(' • ');
@@ -281,6 +284,19 @@ function handleCurrentUrlMode(url, sitesData) {
     }
 
     function findSiteByUrl(baseUrl, sitesData) {
+        // קודם התאמה מדויקת של שם האתר בלי www (www.comy.co.il ↔ comy.co.il),
+        // ורק אחר כך הבדיקה הישנה, כדי שאתרים שעבדו קודם לא ישתנו
+        const stripWww = (h) => String(h || '').toLowerCase().replace(/^www\./, '');
+        const host = stripWww(baseUrl);
+        const exact = sitesData.find(site => {
+            try {
+                return stripWww(new URL(site.URL).hostname) === host;
+            } catch (e) {
+                return false;
+            }
+        });
+        if (exact) return exact;
+
         return sitesData.find(site => {
             try {
                 const siteHostname = new URL(site.URL).hostname;
